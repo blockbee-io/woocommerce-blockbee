@@ -20,7 +20,7 @@ All you need is to provide your crypto address.
 
 The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto directly on your store, with a simple setup and no sign-ups required.
 
-####Accepted cryptocurrencies & tokens include:
+#### Accepted cryptocurrencies & tokens include:
 
 * (BTC) Bitcoin
 * (ETH) Ethereum
