@@ -1,0 +1,601 @@
+.blockbee_payment-panel {
+    max-width: 700px;
+    width: 100%;
+    margin: 60px auto;
+}
+
+.blockbee_payment_details {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.blockbee_details_copy {
+    padding: 7px 10px;
+    margin: 0 5px;
+    background: #e0e0e0 !important;
+    font-weight: bold;
+    color: #000 !important;
+    border: 0;
+}
+
+.blockbee_details_box {
+    width: 100%;
+}
+
+.blockbee_details_text {
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: .045em;
+}
+
+.blockbee_qrcode_wrapper {
+    max-width: 100%;
+    margin: 0 auto 26px;
+}
+
+.blockbee_qrcode_wrapper .inner-wrapper {
+    background: #FFF;
+    border-radius: 15px;
+    padding: 10px 10px 0 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+}
+
+.blockbee_qrcode_wrapper .inner-wrapper img {
+    mix-blend-mode: multiply;
+}
+
+.blockbee_qrcode_buttons {
+    display: flex;
+    flex-direction: row;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-top: 10px;
+}
+
+.blockbee_qrcode_buttons button {
+    display: inline-block;
+    width: 100%;
+    height: 42px;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: .045em;
+    background: #E0E0E0 !important;
+    color: #000 !important;
+    border: 0 !important;
+}
+
+.blockbee_qrcode_buttons button.active {
+    background-color: #FFF !important;
+    color: #000;
+    box-shadow: none !important;
+}
+
+.blockbee_details_input {
+    position: relative;
+    display: block;
+    height: 75px;
+    background-color: #fff;
+    border-radius: 50px;
+    margin: 26px 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.blockbee_details_input .blockbee_copy .blockbee_tooltip {
+    left: 25%;
+}
+
+.blockbee_details_input span {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    height: 100%;
+    padding: 0 8%;
+    line-height: 20px;
+    white-space: normal;
+    line-break: anywhere;
+}
+
+.blockbee_copy {
+    position: relative;
+}
+
+.blockbee_copy .blockbee_copy_icon_tooltip {
+    visibility: hidden;
+    width: 100px;
+    background-color: rgba(66, 66, 66, .8);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0 !important;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -50px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+}
+
+.blockbee_copy .blockbee_copy_icon_tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.blockbee_copy:hover .blockbee_copy_icon_tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.blockbee_copy_icon {
+    position: absolute;
+    top: calc(50% - 15px);
+    width: 24px;
+    height: 28px;
+    right: 25px;
+    padding: 0 !important;
+    background-size: contain !important;
+    background: transparent url(./files/blockbee_copy_icon.svg) no-repeat !important;
+    border: 0 !important;
+}
+
+.blockbee_copy_icon_tooltip {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    visibility: hidden;
+}
+
+.blockbee_loader {
+    position: absolute;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    background-image: url(./files/blockbee_loader.svg);
+    background-size: contain;
+    top: calc(50% - 25px);
+    bottom: 0;
+    background-repeat: no-repeat;
+}
+
+.blockbee_loader_payment_processing {
+    background-image: url(./files/blockbee_loader.svg);
+    background-size: 150%;
+    background-repeat: no-repeat;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    background-position: center;
+}
+
+.blockbee_buttons_container {
+    display: flex;
+    justify-content: center;
+    padding: 13px 0;
+    background-color: #FAFAFA;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    max-width: 180px;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 50px;
+}
+
+.blockbee_buttons_container a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #F9C310;
+    font-weight: 600;
+    letter-spacing: .045em;
+    width: 140px;
+    height: 38px;
+    border-radius: 50px;
+    border: 3px solid #F9C310;
+    font-size: 13px;
+    margin: 0 6px;
+    text-decoration: none !important;
+}
+
+.blockbee_buttons_container a:hover {
+    color: #FFF;
+    background-color: #F9C310;
+}
+
+.blockbee_buttons_container a span {
+    display: none;
+    white-space: nowrap;
+}
+
+.blockbee_buttons_container a span.active {
+    display: block;
+}
+
+.blockbee_branding {
+    margin-top: 26px;
+    text-align: center;
+}
+
+.blockbee_branding a {
+    text-decoration: none;
+}
+
+.blockbee_branding span {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    font-style: italic;
+    margin-bottom: 4px;
+    color: #757575;
+    letter-spacing: 1px;
+}
+
+.blockbee_branding img {
+    display: inline-block !important;
+}
+
+.blockbee_progress {
+    display: flex;
+    margin-top: 52px;
+    flex-wrap: wrap;
+}
+
+.blockbee_progress .blockbee_progress_icon {
+    position: relative;
+    width: 33.33%;
+    flex: 0 0 33.33%;
+    text-align: center;
+}
+
+.blockbee_notification_text {
+    display: block;
+    width: 100%;
+    flex: 0 0 100%;
+    margin-top: 35px;
+    text-align: center;
+}
+
+.blockbee_notification_text span {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 14px;
+}
+
+.blockbee_progress .blockbee_progress_icon.waiting_network {
+    position: relative;
+}
+
+.blockbee_progress .blockbee_progress_icon.waiting_payment:before,
+.blockbee_progress .blockbee_progress_icon.waiting_network:before {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 2px;
+    background: #F9C310 !important;
+    top: 28%;
+    right: -18%;
+}
+
+.blockbee_progress .blockbee_progress_icon.waiting_payment.done:before,
+.blockbee_progress .blockbee_progress_icon.waiting_network.done:before {
+    background: #66BB6A !important;
+}
+
+.blockbee_progress .blockbee_progress_icon svg {
+    margin: 0 auto 12px;
+}
+
+.blockbee_progress .blockbee_progress_icon.done svg path {
+    fill: #66BB6A;
+}
+
+.blockbee_progress .blockbee_progress_icon p {
+    width: 154px;
+    margin: 0 auto;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.blockbee_payment_confirmed {
+    width: 100%;
+}
+
+.blockbee_payment_confirmed h2,
+.blockbee_payment_processing h2,
+.blockbee_payment_cancelled h2 {
+    display: block;
+    text-align: center;
+    font-size: 28px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 26px;
+    margin-bottom: 15px;
+}
+
+.blockbee_payment_confirmed .blockbee_payment_confirmed_icon,
+.blockbee_payment_processing .blockbee_payment_confirmed_icon,
+.blockbee_payment_cancelled .blockbee_payment_cancelled_icon {
+    text-align: center !important;
+    margin-bottom: 15px;
+}
+
+.blockbee_payment_confirmed .blockbee_payment_confirmed_icon svg,
+.blockbee_payment_cancelled .blockbee_payment_cancelled_icon svg {
+    max-width: 100% !important;
+    width: 100px !important;
+    margin: 0 auto !important;
+    display: inline-block !important;
+}
+
+.blockbee_payment_processing h5 {
+    text-align: center;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: -10px;
+}
+
+.blockbee_payment_notification {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.blockbee_history .blockbee_history_fill {
+    border-radius: 15px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    text-align: center;
+    width: 70%;
+    margin: 20px auto;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    border-collapse: collapse;
+}
+
+.blockbee_history .blockbee_history_fill th {
+    border: 0;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.blockbee_history .blockbee_history_fill td {
+    border: 0;
+    font-size: 14px;
+    text-align: center;
+    padding: 8px 0;
+    overflow: auto;
+}
+
+.blockbee_notification_cancel {
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.blockbee_history_date {
+    font-size: 10px;
+    display: block;
+}
+
+.blockbee_time_refresh {
+    display: block;
+    text-align: center;
+    margin: 10px 0 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media screen and (max-width: 768.98px) {
+    .blockbee_details_input span {
+        font-size: 16px;
+        word-break: break-all;
+    }
+
+    .blockbee_copy_icon {
+        width: 17px;
+        height: 20px;
+        right: 20px;
+        top: calc(50% - 11px);
+    }
+
+    .blockbee_progress .blockbee_progress_icon.waiting_network:before,
+    .blockbee_progress .blockbee_progress_icon.waiting_payment:before {
+        width: 60px !important;
+    }
+
+    .blockbee_progress .blockbee_progress_icon.waiting_network:before {
+        right: -17%;
+    }
+
+    .blockbee_progress .blockbee_progress_icon.waiting_payment:before {
+        right: -17%;
+    }
+}
+
+@media screen and (max-width: 575.98px) {
+    .blockbee_details_copy {
+        display: block;
+        margin: 12px auto;
+    }
+
+    .blockbee_details_input span {
+        padding: 0 60px 0 30px;
+        font-size: 14px;
+    }
+
+    .blockbee_progress {
+        flex-direction: column;
+    }
+
+    .blockbee_progress .blockbee_progress_icon {
+        width: 100%;
+        flex: 0 0 100%;
+    }
+
+    .blockbee_progress .blockbee_progress_icon.waiting_payment:before,
+    .blockbee_progress .blockbee_progress_icon.waiting_network:before {
+        width: 2px !important;
+        height: 40px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        top: unset;
+        bottom: -55px;
+    }
+
+    .blockbee_progress .blockbee_progress_icon.waiting_network {
+        margin: 70px 0;
+    }
+
+    .blockbee_details_input {
+        margin-bottom: 64px;
+    }
+
+    .blockbee_loader {
+        top: unset;
+        bottom: -56px;
+        right: 0;
+        left: 0;
+        margin: 0 auto;
+    }
+
+    .blockbee_history .blockbee_history_fill {
+        width: 100%;
+    }
+}
+
+.blockbee_payment-panel.dark {
+    color: #fafafa;
+}
+
+.blockbee_payment-panel.dark .blockbee_details_input {
+    background-color: #424242 !important;
+    color: #FAFAFA !important;
+}
+
+.blockbee_payment-panel.dark .blockbee_loader {
+    filter: invert(1);
+}
+
+.blockbee_payment-panel.dark .blockbee_details_copy {
+    background-color: #424242 !important;
+    color: #FAFAFA !important;
+}
+
+.blockbee_payment-panel.dark .blockbee_copy .blockbee_copy_icon_tooltip {
+    background-color: rgba(245, 245, 245, 1) !important;
+    color: #121212 !important;
+}
+
+.blockbee_payment-panel.dark .blockbee_copy .blockbee_copy_icon_tooltip::after {
+    border-color: rgba(245, 245, 245, 1) transparent transparent transparent !important;
+}
+
+.blockbee_payment-panel.dark .blockbee_buttons_container {
+    background-color: #424242 !important;
+    color: #FAFAFA !important;
+}
+
+.blockbee_payment-panel.dark .blockbee_buttons_container a {
+    color: #FBD760 !important;
+    border: 3px solid #FBD760 !important;
+}
+
+.blockbee_payment-panel.dark .blockbee_buttons_container a:hover {
+    background-color: #FBD760 !important;
+    color: #212121 !important;
+}
+
+.blockbee_payment-panel.dark .blockbee_copy_icon {
+    background: transparent url(./files/blockbee_copy_icon_dark.svg) no-repeat !important
+}
+
+.blockbee_payment-panel.dark .blockbee_progress_icon svg path {
+    fill: #FBD760 !important;
+}
+
+.blockbee_payment-panel.dark .blockbee_progress .blockbee_progress_icon.waiting_payment:before,
+.blockbee_payment-panel.dark .blockbee_progress .blockbee_progress_icon.waiting_network:before {
+    background: #FBD760 !important;
+}
+
+.blockbee_payment-panel.dark .blockbee_payment_confirmed h2,
+.blockbee_payment-panel.dark .blockbee_payment_cancelled h2 {
+    color: #FFF;
+}
+
+@media (prefers-color-scheme: dark) {
+    .blockbee_payment-panel.auto {
+        color: #fafafa;
+    }
+
+    .blockbee_payment-panel.auto .blockbee_details_input {
+        background-color: #424242 !important;
+        color: #FAFAFA !important;
+    }
+
+    .blockbee_payment-panel.auto .blockbee_loader {
+        filter: invert(1);
+    }
+
+    .blockbee_payment-panel.auto .blockbee_details_copy {
+        background-color: #424242 !important;
+        color: #FAFAFA !important;
+    }
+
+    .blockbee_payment-panel.auto .blockbee_copy .blockbee_copy_icon_tooltip {
+        background-color: rgba(245, 245, 245, 1) !important;
+        color: #121212 !important;
+    }
+
+    .blockbee_payment-panel.auto .blockbee_copy .blockbee_copy_icon_tooltip::after {
+        border-color: rgba(245, 245, 245, 1) transparent transparent transparent !important;
+    }
+
+    .blockbee_payment-panel.auto .blockbee_buttons_container {
+        background-color: #424242 !important;
+        color: #FAFAFA !important;
+    }
+
+    .blockbee_payment-panel.auto .blockbee_buttons_container a {
+        color: #FBD760 !important;
+        border: 3px solid #FBD760 !important;
+    }
+
+    .blockbee_payment-panel.auto .blockbee_buttons_container a:hover {
+        background-color: #FBD760 !important;
+        color: #212121 !important;
+    }
+
+    .blockbee_payment-panel.auto .blockbee_copy_icon {
+        background: transparent url(./files/blockbee_copy_icon_dark.svg) no-repeat !important
+    }
+
+    .blockbee_payment-panel.auto .blockbee_progress_icon svg path {
+        fill: #FBD760 !important;
+    }
+
+    .blockbee_payment-panel.auto .blockbee_progress .blockbee_progress_icon.waiting_payment:before,
+    .blockbee_payment-panel.auto .blockbee_progress .blockbee_progress_icon.waiting_network:before {
+        background: #FBD760 !important;
+    }
+
+    .blockbee_payment-panel.auto .blockbee_payment_confirmed h2, .blockbee_payment-panel.auto .blockbee_payment_cancelled h2 {
+        color: #FFF;
+    }
+}
