@@ -1,13 +1,13 @@
 <?php
 /*
-Plugin Name: BlockBee Payment Gateway for WooCommerce
+Plugin Name: BlockBee Cryptocurrency Payment Gateway
 Plugin URI: https://blockbee.io/resources/woocommerce/
 Description: Accept cryptocurrency payments on your WooCommerce website
 Version: 1.0.0
 Requires at least: 5
 Tested up to: 6.0.2
 WC requires at least: 5.8
-WC tested up to: 6.8.0
+WC tested up to: 6.9.4
 Requires PHP: 7.2
 Author: BlockBee
 Author URI: https://blockbee.io/
@@ -18,12 +18,12 @@ require_once 'define.php';
 
 function blockbee_missing_wc_notice()
 {
-    echo '<div class="error"><p><strong>' . sprintf(esc_html__('BlockBee requires WooCommerce to be installed and active. You can download %s here.', 'blockbee'), '<a href="https://woocommerce.com/" target="_blank">WooCommerce</a>') . '</strong></p></div>';
+    echo '<div class="error"><p><strong>' . sprintf(esc_html__('BlockBee requires WooCommerce to be installed and active. You can download %s here.', 'blockbee-cryptocurrency-payment-gateway'), '<a href="https://woocommerce.com/" target="_blank">WooCommerce</a>') . '</strong></p></div>';
 }
 
 function blockbee_missing_bcmath()
 {
-    echo '<div class="error"><p><strong>' . sprintf(esc_html__('BlockBee requires PHP\'s BCMath extension. You can know more about it %s.', 'blockbee'), '<a href="https://www.php.net/manual/en/book.bc.php" target="_blank">here</a>') . '</strong></p></div>';
+    echo '<div class="error"><p><strong>' . sprintf(esc_html__('BlockBee requires PHP\'s BCMath extension. You can know more about it %s.', 'blockbee-cryptocurrency-payment-gateway'), '<a href="https://www.php.net/manual/en/book.bc.php" target="_blank">here</a>') . '</strong></p></div>';
 }
 
 function blockbee_include_gateway($methods)
@@ -52,7 +52,7 @@ function blockbee_loader()
 
     blockbee_include_dirs($dirs);
 
-    $mo_file_path = dirname(__FILE__) . '/languages/blockbee-payment-gateway-for-woocommerce-' . get_locale() . '.mo';
+    $mo_file_path = dirname(__FILE__) . '/languages/blockbee-crypto-payment-gateway-for-woocommerce-' . get_locale() . '.mo';
     load_textdomain('blockbee', $mo_file_path);
 
     $blockbee = new WC_BlockBee_Gateway();

@@ -12,7 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2022-09-22T12:23:50+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
-"X-Domain: blockbee\n"
+"X-Domain: blockbee-cryptocurrency-payment-gateway\n"
 
 #. Plugin Name of the plugin
 msgid "BlockBee Payment Gateway for WooCommerce"

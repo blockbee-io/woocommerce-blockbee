@@ -1,4 +1,4 @@
-=== BlockBee Payment Gateway for WooCommerce ===
+=== BlockBee Cryptocurrency Payment Gateway ===
 Contributors: blockbee
 Tags: crypto payments, woocommerce, payment gateway, crypto, payment, pay with crypto, payment request, bitcoin, bnb, usdt, ethereum, monero, litecoin, bitcoin cash, shib, doge
 Requires at least: 5

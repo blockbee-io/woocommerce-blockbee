@@ -1,4 +1,4 @@
-![BlockBee](https://blockbee.io/static/assets/images/blockbee_logo_nospaces.png)
+[<img src="https://blockbee.io/static/assets/images/blockbee_logo_nospaces.png" width="300"/>](image.png)
 
 # BlockBee Payment Gateway for WooCommerce
 Accept cryptocurrency payments on your WooCommerce website
