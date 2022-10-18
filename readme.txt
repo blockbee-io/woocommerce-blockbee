@@ -3,7 +3,7 @@ Contributors: blockbee
 Tags: crypto payments, woocommerce, payment gateway, crypto, payment, pay with crypto, payment request, bitcoin, bnb, usdt, ethereum, monero, litecoin, bitcoin cash, shib, doge
 Requires at least: 5
 Tested up to: 6.0.3
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 7.2
 WC requires at least: 5.8
 WC tested up to: 7.0.0
@@ -66,14 +66,14 @@ Supported currencies for automatic exchange rates are:
 * (USD) US Dollar
 
 If your WooCommerce's currency is none of the above, the exchange rates will default to USD.
-If you're using WooCommerce in a different currency not listed here and need support, please [contact us](https://blockbee.io) via our live chat.
+If you're using WooCommerce in a different currency not listed here and need support, please [contact us](https://blockbee.io/contacts/) via our live chat.
 
 **Note:** BlockBee will not exchange your crypto for FIAT or other crypto, just convert the value
 
 = Why choose BlockBee? =
 
 BlockBee has no setup fees, no monthly fees, no hidden costs, and you don't even need to sign-up!
-Simply set your crypto addresses and you're ready to go. As soon as your customers pay we forward your earnings directly to your own wallet.
+Simply set your crypto addresses, and you're ready to go. As soon as your customers pay we forward your earnings directly to your own wallet.
 
 BlockBee has a low 1% fee on the transactions processed. No hidden costs.
 For more info on our fees [click here](https://blockbee.io/get_started/#fees)
@@ -154,7 +154,10 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.0 =
 * Initial release.
+
+= 1.0.1 =
+* Minor fixes.
 
 == Upgrade Notice ==
