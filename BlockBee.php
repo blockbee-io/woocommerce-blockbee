@@ -5,9 +5,9 @@ Plugin URI: https://blockbee.io/resources/woocommerce/
 Description: Accept cryptocurrency payments on your WooCommerce website
 Version: 1.0.0
 Requires at least: 5
-Tested up to: 6.0.2
+Tested up to: 6.0.3
 WC requires at least: 5.8
-WC tested up to: 6.9.4
+WC tested up to: 7.0.0
 Requires PHP: 7.2
 Author: BlockBee
 Author URI: https://blockbee.io/

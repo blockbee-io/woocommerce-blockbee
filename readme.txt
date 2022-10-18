@@ -2,11 +2,11 @@
 Contributors: blockbee
 Tags: crypto payments, woocommerce, payment gateway, crypto, payment, pay with crypto, payment request, bitcoin, bnb, usdt, ethereum, monero, litecoin, bitcoin cash, shib, doge
 Requires at least: 5
-Tested up to: 6.0.2
+Tested up to: 6.0.3
 Stable tag: 1.0.0
 Requires PHP: 7.2
 WC requires at least: 5.8
-WC tested up to: 6.8.0
+WC tested up to: 7.0.0
 License: MIT
 
 Accept cryptocurrency payments on your WooCommerce website
