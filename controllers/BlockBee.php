@@ -509,7 +509,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 			$already_paid      = $calc['already_paid'];
 			$already_paid_fiat = $calc['already_paid_fiat'];
 
-			$min_tx = floatval( $order->get_meta( 'cryptapi_min' ) );
+			$min_tx = floatval( $order->get_meta( 'blockbee_min' ) );
 
 			$remaining_pending = $calc['remaining_pending'];
 			$remaining_fiat    = $calc['remaining_fiat'];
@@ -567,7 +567,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 
 			$callbacks = BlockBee\Helper::check_logs( $order->get_meta( 'blockbee_callback_url' ), $order->get_meta( 'blockbee_currency' ) );
 
-			$order->update_meta_data( 'cryptapi_last_checked', time() );
+			$order->update_meta_data( 'blockbee_last_checked', time() );
 			$order->save_meta_data();
 
 			if($callbacks) {
@@ -596,6 +596,8 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 		$crypto_coin = strtoupper( $order->get_meta( 'blockbee_currency' ) );
 
 		$history = json_decode( $order->get_meta( 'blockbee_history' ), true );
+
+        $apikey = $this->api_key;
 
 		if(!$data['uuid']) {
 			if ( ! $validation ) {
@@ -688,19 +690,19 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 				}
 				$order->save();
 			}
-			if ( ! $validation ) {
-				die( "*ok*" );
-			} else {
-				return;
-			}
+            if ( ! $validation ) {
+                die( "*ok*" );
+            } else {
+                return;
+            }
 		}
 
-		if ( $remaining_pending < $min_tx ) {
-			$order->update_meta_data( 'blockbee_qr_code_value', BlockBee\Helper::get_static_qrcode( $order->get_meta( 'blockbee_address' ), $order->get_meta( 'blockbee_currency' ), $min_tx, $this->qrcode_size )['qr_code'] );
-		} else {
-			$order->update_meta_data( 'blockbee_qr_code_value', BlockBee\Helper::get_static_qrcode( $order->get_meta( 'blockbee_address' ), $order->get_meta( 'blockbee_currency' ), $remaining_pending, $this->qrcode_size )['qr_code'] );
-		}
-		$order->save_meta_data();
+        if ( $remaining_pending < $min_tx ) {
+            $order->update_meta_data( 'blockbee_qr_code_value', BlockBee\Helper::get_static_qrcode( $order->get_meta( 'blockbee_address' ), $order->get_meta( 'blockbee_currency' ), $min_tx, $apikey, $this->qrcode_size )['qr_code'] );
+        } else {
+            $order->update_meta_data( 'blockbee_qr_code_value', BlockBee\Helper::get_static_qrcode( $order->get_meta( 'blockbee_address' ), $order->get_meta( 'blockbee_currency' ), $remaining_pending, $apikey, $this->qrcode_size )['qr_code'] );
+        }
+        $order->save_meta_data();
 
 		if ( ! $validation ) {
 			die( "*ok*" );
