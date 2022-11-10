@@ -97,9 +97,9 @@ For more info on our fees [click here](https://blockbee.io/get_started/#fees)
 
 = Using FTP =
 
-1. Download `woocommerce-blockbee.zip`
-2. Extract the `woocommerce-blockbee` directory to your computer
-3. Upload the `woocommerce-blockbee` directory to the `/wp-content/plugins/` directory
+1. Download `blockbee-cryptocurrency-payment-gateway.zip`
+2. Extract the `blockbee-cryptocurrency-payment-gateway` directory to your computer
+3. Upload the `blockbee-cryptocurrency-payment-gateway` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
 
 = Updating =
@@ -113,8 +113,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 3. Activate the payment method (if inactive)
 4. Set the name you wish to show your users on Checkout (for example: "Cryptocurrency")
 5. Fill the payment method's description (for example: "Pay with cryptocurrency")
-6. Select which cryptocurrencies you wish to accept (control + click to select many)
-7. Input your addresses to the cryptocurrencies you selected. This is where your funds will be sent to, so make sure the addresses are correct.
+6. Select which cryptocurrencies you wish to accept (control/command + click to select many). Addresses are set in BlockBee dashboard.
 8. Click "Save Changes"
 9. All done!
 
@@ -122,7 +121,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 = Do I need an API key? =
 
-No. You just need to insert your crypto address of the cryptocurrencies you wish to accept. Whenever a customer pays, the money will be automatically and instantly forwarded to your address.
+Yes. To use our service you will need to register at our [dashboard](https://dash.blockbee.io/) and create a new API Key.
 
 = How long do payments take before they're confirmed? =
 
@@ -135,7 +134,7 @@ If the WooCommerce order total is below the chosen cryptocurrency's minimum, an 
 
 = Where can I find more documentation on your service? =
 
-You can find more documentation about our service on our [get started](https://blockbee.io/get_started) page, our [technical documentation](https://blockbee.io/docs/) page or our [resources](https://blockbee.io/resources/) page.
+You can find more documentation about our service on our [get started](https://blockbee.io/) page, our [technical documentation](https://docs.blockbee.io/) page or our [e-commerce](https://blockbee.io/ecommerce/) page.
 If there's anything else you need that is not covered on those pages, please get in touch with us, we're here to help you!
 
 = Where can I get support? =
