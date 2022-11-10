@@ -110,7 +110,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 #### Do I need an API key?
 
-No. You just need to insert your crypto address of the cryptocurrencies you wish to accept. Whenever a customer pays, the money will be automatically and instantly forwarded to your address.
+Yes. To use our service you will need to register at our [dashboard](https://dash.blockbee.io/) and create a new API Key.
 
 #### How long do payments take before they're confirmed?
 
@@ -123,7 +123,7 @@ If the WooCommerce order total is below the chosen cryptocurrency's minimum, an 
 
 #### Where can I find more documentation on your service?
 
-You can find more documentation about our service on our [technical documentation](https://docs.blockbee.io/) page or our [resources](https://blockbee.io/ecommerce/) page.
+You can find more documentation about our service on our [website](https://blockbee.io/), our [technical documentation](https://docs.blockbee.io/) page or our [e-commerce](https://blockbee.io/ecommerce/) page.
 If there's anything else you need that is not covered on those pages, please get in touch with us, we're here to help you!
 
 #### Where can I get support? 

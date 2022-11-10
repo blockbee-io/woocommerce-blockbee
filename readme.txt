@@ -134,7 +134,7 @@ If the WooCommerce order total is below the chosen cryptocurrency's minimum, an 
 
 = Where can I find more documentation on your service? =
 
-You can find more documentation about our service on our [get started](https://blockbee.io/) page, our [technical documentation](https://docs.blockbee.io/) page or our [e-commerce](https://blockbee.io/ecommerce/) page.
+You can find more documentation about our service on our [website](https://blockbee.io/), our [technical documentation](https://docs.blockbee.io/) page or our [e-commerce](https://blockbee.io/ecommerce/) page.
 If there's anything else you need that is not covered on those pages, please get in touch with us, we're here to help you!
 
 = Where can I get support? =
