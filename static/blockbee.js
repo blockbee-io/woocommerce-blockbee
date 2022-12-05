@@ -15,9 +15,9 @@ function check_status(ajax_url) {
 
             if (data.cancelled === 1) {
                 jQuery('.blockbee_loader').remove();
-                jQuery('.blockbee_payments_wrapper').slideUp('400');
-                jQuery('.blockbee_payment_cancelled').slideDown('400');
-                jQuery('.blockbee_progress').slideUp('400');
+                jQuery('.blockbee_payments_wrapper').slideUp('200');
+                jQuery('.blockbee_payment_cancelled').slideDown('200');
+                jQuery('.blockbee_progress').slideUp('200');
                 is_paid = true;
             }
 
@@ -25,13 +25,12 @@ function check_status(ajax_url) {
                 waiting_payment.addClass('done');
                 waiting_network.addClass('done');
                 jQuery('.blockbee_loader').remove();
-                jQuery('.blockbee_notification_refresh').remove();
-                jQuery('.blockbee_notification_cancel').remove();
+                jQuery('.blockbee_payment_notification').remove();
 
                 setTimeout(function () {
-                    jQuery('.blockbee_payments_wrapper').slideUp('400');
-                    jQuery('.blockbee_payment_processing').slideDown('400');
-                }, 5000);
+                    jQuery('.blockbee_payments_wrapper').slideUp('200');
+                    jQuery('.blockbee_payment_processing').slideDown('200');
+                }, 300);
             }
 
             if (data.is_paid) {
@@ -39,14 +38,13 @@ function check_status(ajax_url) {
                 waiting_network.addClass('done');
                 payment_done.addClass('done');
                 jQuery('.blockbee_loader').remove();
-                jQuery('.blockbee_notification_refresh').remove();
-                jQuery('.blockbee_notification_cancel').remove();
+                jQuery('.blockbee_payment_notification').remove();
 
                 setTimeout(function () {
-                    jQuery('.blockbee_payments_wrapper').slideUp('400');
-                    jQuery('.blockbee_payment_processing').slideUp('400');
-                    jQuery('.blockbee_payment_confirmed').slideDown('400');
-                }, 5000);
+                    jQuery('.blockbee_payments_wrapper').slideUp('200');
+                    jQuery('.blockbee_payment_processing').slideUp('200');
+                    jQuery('.blockbee_payment_confirmed').slideDown('200');
+                }, 300);
 
                 is_paid = true;
             }
@@ -55,7 +53,7 @@ function check_status(ajax_url) {
                 jQuery('.blockbee_qrcode.value').attr("src", "data:image/png;base64," + data.qr_code_value);
             }
 
-            if (data.show_min_fee === 1) {
+            if (parseInt(data.show_min_fee) === 1) {
                 jQuery('.blockbee_notification_remaining').show();
             } else {
                 jQuery('.blockbee_notification_remaining').hide();

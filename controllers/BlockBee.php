@@ -518,15 +518,15 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 
 			$counter_calc = (int) $order->get_meta( 'blockbee_last_price_update' ) + (int) $this->refresh_value_interval - time();
 
-			if ( $remaining_pending <= 0 && ! $order->is_paid() ) {
+			if ( $remaining_pending <= 0 && !$order->is_paid() && !empty($history) ) {
 				$blockbee_pending = 1;
 			}
 
-			if ( $counter_calc <= 0 && ! $order->is_paid() ) {
-				$this->cronjob();
+			if (($counter_calc <= 0 && !$order->is_paid()) || ($remaining_pending <= 0 && empty($history))) {
+				$this->cronjob(true, $order_id);
 			}
 
-			if ( $remaining_pending <= $min_tx && $remaining_pending > 0 ) {
+			if ( ($remaining_pending <= $min_tx && $remaining_pending) > 0 && !$blockbee_pending ) {
 				$remaining_pending = $min_tx;
 				$showMinFee        = 1;
 			}
@@ -733,7 +733,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 		), home_url( '/wp-admin/admin-ajax.php' ) );
 
 		wp_enqueue_script( 'blockbee-payment', BLOCKBEE_PLUGIN_URL . 'static/blockbee.js', array(), BLOCKBEE_PLUGIN_VERSION, true );
-		wp_add_inline_script( 'blockbee-payment', "jQuery(function() {let ajax_url = '{$ajax_url}'; setTimeout(function(){check_status(ajax_url)}, 500)})" );
+		wp_add_inline_script( 'blockbee-payment', "jQuery(function() {let ajax_url = '{$ajax_url}'; setTimeout(function(){check_status(ajax_url)}, 200)})" );
 		wp_enqueue_style( 'blockbee-loader-css', BLOCKBEE_PLUGIN_URL . 'static/blockbee.css', false, BLOCKBEE_PLUGIN_VERSION );
 
 		$allowed_to_value = array(
@@ -1006,7 +1006,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 		<?php
 	}
 
-	function cronjob() {
+	function cronjob($force = false, $order_id = '') {
 		$order_timeout = intval( $this->order_cancellation_timeout );
 		$value_refresh = intval( $this->refresh_value_interval );
 
@@ -1042,8 +1042,9 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 
 			$order_timestamp = $order->get_date_created()->getTimestamp();
 
-			if ( $value_refresh !== 0 && ( (int) $last_price_update + (int) $value_refresh < time() ) && ! empty( $last_price_update ) ) {
-				if ( $remaining === $remaining_pending && $remaining_pending > 0 ) {
+			if ( $value_refresh !== 0 && ( (int)$last_price_update + (int)$value_refresh < time() ) && ! empty( $last_price_update ) || ((int)$order_id === $order->get_id() && $force) ) {
+				if ( ($remaining === $remaining_pending && $remaining_pending > 0) || ((int)$order_id === $order->get_id() && $force)) {
+
 					$blockbee_coin = $order->get_meta( 'blockbee_currency' );
 
 					$crypto_total = BlockBee\Helper::sig_fig( BlockBee\Helper::get_conversion( $woocommerce_currency, $blockbee_coin, $order->get_total( 'edit' ), $this->disable_conversion ), 6 );
