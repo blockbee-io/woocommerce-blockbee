@@ -3,7 +3,7 @@ Contributors: blockbee
 Tags: crypto payments, woocommerce, payment gateway, crypto, payment, pay with crypto, payment request, bitcoin, bnb, usdt, ethereum, monero, litecoin, bitcoin cash, shib, doge
 Requires at least: 5
 Tested up to: 6.1.0
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 Requires PHP: 7.2
 WC requires at least: 5.8
 WC tested up to: 7.0.0
@@ -13,12 +13,11 @@ Accept cryptocurrency payments on your WooCommerce website
 
 == Description ==
 
-Accept payments in Bitcoin, Ethereum, Bitcoin Cash, Litecoin, Monero, BNB, USDT, SHIB, DOGE and many more directly to your crypto wallet, without any sign-ups or lengthy processes.
-All you need is to provide your crypto address.
+Accept payments in Bitcoin, Ethereum, Bitcoin Cash, Litecoin, Monero, BNB, USDT, SHIB, DOGE and many more directly to your crypto wallet.
 
 = Allow users to pay with crypto directly on your store =
 
-The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto directly on your store, with a simple setup and no sign-ups required.
+The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto directly on your store, with a simple setup.
 
 = Accepted cryptocurrencies & tokens include: =
 
@@ -72,8 +71,9 @@ If you're using WooCommerce in a different currency not listed here and need sup
 
 = Why choose BlockBee? =
 
-BlockBee has no setup fees, no monthly fees, no hidden costs, and you don't even need to sign-up!
-Simply set your crypto addresses, and you're ready to go. As soon as your customers pay we forward your earnings directly to your own wallet.
+BlockBee has no setup fees, no monthly fees, no hidden costs.
+All you need to do is to register at our dashboard [click here](https://dash.blockbee.io/), set up your addresses, get an API Key, and you're ready to go.
+As soon as your customers pay we forward your earnings directly to your own wallet.
 
 BlockBee has a low 1% fee on the transactions processed. No hidden costs.
 For more info on our fees [click here](https://blockbee.io/get_started/#fees)
@@ -114,6 +114,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 4. Set the name you wish to show your users on Checkout (for example: "Cryptocurrency")
 5. Fill the payment method's description (for example: "Pay with cryptocurrency")
 6. Select which cryptocurrencies you wish to accept (control/command + click to select many). Addresses are set in BlockBee dashboard.
+7. Paste the API Key you got from your BlockBee dashboard.
 8. Click "Save Changes"
 9. All done!
 
@@ -129,7 +130,7 @@ This depends on the cryptocurrency you're using. Bitcoin usually takes up to 11 
 
 = Is there a minimum for a payment? =
 
-Yes, the minimums change according to the chosen cryptocurrency and can be checked [here](https://blockbee.io/fees/).
+Yes, the minimums change according to the chosen cryptocurrency and can be checked [here](https://blockbee.io/cryptocurrencies/).
 If the WooCommerce order total is below the chosen cryptocurrency's minimum, an error is raised to the user.
 
 = Where can I find more documentation on your service? =
@@ -163,6 +164,10 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Minor fixes.
 
 = 1.0.3 =
+* Minor fixes.
 * UI improvements.
+
+= 1.0.3 =
+* Minor fixes.
 
 == Upgrade Notice ==

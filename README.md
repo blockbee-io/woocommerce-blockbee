@@ -13,12 +13,11 @@ WooCommerce >= 5.8
 
 ### Description
 
-Accept payments in Bitcoin, Bitcoin Cash, Litecoin, Ethereum, Monero and IOTA directly to your crypto wallet, without any sign-ups or lengthy processes.
-All you need is to provide your crypto address.
+Accept payments in Bitcoin, Bitcoin Cash, Litecoin, Ethereum, Monero and IOTA directly to your crypto wallet.
 
 #### Allow users to pay with crypto directly on your store
 
-The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto directly on your store, with a simple setup and no sign-ups required.
+The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto directly on your store, with a simple setup.
 
 #### Accepted cryptocurrencies & tokens include:
 
@@ -144,5 +143,8 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 #### 1.0.3
 * Minor fixes
 * UI improvements
+
+#### 1.0.4
+* Minor fixes
 
 ### Upgrade Notice
