@@ -891,7 +891,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 						if ( intval( $this->order_cancellation_timeout ) != 0 ) {
 							?>
                             <span class="blockbee_notification_cancel" data-text="<?php echo esc_attr(__( 'Order will be cancelled in less than a minute.', 'blockbee-cryptocurrency-payment-gateway' )); ?>">
-                                    <?php echo esc_attr(sprintf( __( 'This order will be valid for %s', 'blockbee' ), '<strong><span class="blockbee_cancel_timer" data-timestamp="' . $cancel_timer . '">' . date( 'H:i', $cancel_timer ) . '</span></strong>' )); ?>
+                                    <?php echo sprintf( __( 'This order will be valid for %s', 'blockbee' ), '<strong><span class="blockbee_cancel_timer" data-timestamp="' . esc_attr($cancel_timer) . '">' . date( 'H:i', $cancel_timer ) . '</span></strong>' ); ?>
                                 </span>
 							<?php
 						}
