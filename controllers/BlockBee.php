@@ -443,6 +443,8 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 				$qr_code_data_value = BlockBee\Helper::get_static_qrcode( $addr_in, $selected, $crypto_total, $apikey, $this->qrcode_size );
 				$qr_code_data       = BlockBee\Helper::get_static_qrcode( $addr_in, $selected, '', $apikey, $this->qrcode_size );
 
+                $order->add_meta_data( 'blockbee_version', BLOCKBEE_PLUGIN_VERSION );
+                $order->add_meta_data( 'blockbee_php_version', PHP_VERSION );
 				$order->add_meta_data( 'blockbee_nonce', $nonce );
 				$order->add_meta_data( 'blockbee_address', $addr_in );
 				$order->add_meta_data( 'blockbee_total', BlockBee\Helper::sig_fig( $crypto_total, 6 ) );
@@ -509,7 +511,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 			$already_paid      = $calc['already_paid'];
 			$already_paid_fiat = $calc['already_paid_fiat'];
 
-			$min_tx = floatval( $order->get_meta( 'blockbee_min' ) );
+			$min_tx = (float) $order->get_meta( 'blockbee_min' );
 
 			$remaining_pending = $calc['remaining_pending'];
 			$remaining_fiat    = $calc['remaining_fiat'];
@@ -540,11 +542,11 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 				'show_min_fee'      => $showMinFee,
 				'order_history'     => json_decode( $order->get_meta( 'blockbee_history' ), true ),
 				'counter'           => (string) $counter_calc,
-				'crypto_total'      => floatval( $order->get_meta( 'blockbee_total' ) ),
+				'crypto_total'      => (float) $order->get_meta( 'blockbee_total' ),
 				'already_paid'      => $already_paid,
 				'remaining'         => $remaining_pending <= 0 ? 0 : $remaining_pending,
 				'fiat_remaining'    => $remaining_fiat <= 0 ? 0 : $remaining_fiat,
-				'already_paid_fiat' => floatval( $already_paid_fiat ) <= 0 ? 0 : floatval( $already_paid_fiat ),
+				'already_paid_fiat' => $already_paid_fiat <= 0 ? 0 : $already_paid_fiat,
 				'fiat_symbol'       => get_woocommerce_currency_symbol(),
 			];
 
@@ -589,9 +591,9 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 	}
 
 	function process_callback_data( $data, $order, $validation = false ) {
-		$paid = floatval( $data['value_coin'] );
+		$paid = (float) $data['value_coin'];
 
-		$min_tx = floatval( $order->get_meta( 'blockbee_min' ) );
+		$min_tx = (float) $order->get_meta( 'blockbee_min' );
 
 		$crypto_coin = strtoupper( $order->get_meta( 'blockbee_currency' ) );
 
@@ -662,7 +664,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 			);
 
 			if ( $remaining > 0 ) {
-				if ( $remaining < $min_tx ) {
+				if ( $remaining <= $min_tx ) {
 					$order->add_order_note( __( 'Payment detected and confirmed. Customer still need to send', 'blockbee-cryptocurrency-payment-gateway' ) . ' ' . $min_tx . $crypto_coin, false );
 				} else {
 					$order->add_order_note( __( 'Payment detected and confirmed. Customer still need to send', 'blockbee-cryptocurrency-payment-gateway' ) . ' ' . $remaining . $crypto_coin, false );
@@ -670,39 +672,46 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 			}
 		}
 
-		if ( $remaining_pending <= 0 ) {
-			if ( $remaining <= 0 ) {
-				$order->payment_complete( $data['address_in'] );
-				if ( $this->virtual_complete ) {
-					$count_products = count( $order->get_items() );
-					$count_virtual  = 0;
-					foreach ( $order->get_items() as $order_item ) {
-						$item     = wc_get_product( $order_item->get_product_id() );
-						$item_obj = $item->get_type() === 'variable' ? wc_get_product( $order_item['variation_id'] ) : $item;
+        if ( $remaining <= 0 ) {
+            /**
+             * Changes the order Status to "completed"
+             */
+            $order->payment_complete( $data['address_in'] );
+            if ( $this->virtual_complete ) {
+                $count_products = count( $order->get_items() );
+                $count_virtual  = 0;
+                foreach ( $order->get_items() as $order_item ) {
+                    $item     = wc_get_product( $order_item->get_product_id() );
+                    $item_obj = $item->get_type() === 'variable' ? wc_get_product( $order_item['variation_id'] ) : $item;
 
-						if ( $item_obj->is_virtual() ) {
-							$count_virtual += 1;
-						}
-					}
-					if ( $count_virtual === $count_products ) {
-						$order->update_status( 'completed' );
-					}
-				}
-				$order->save();
-			}
+                    if ( $item_obj->is_virtual() ) {
+                        $count_virtual += 1;
+                    }
+                }
+                if ( $count_virtual === $count_products ) {
+                    $order->update_status( 'completed' );
+                }
+            }
+
+            $order->save();
+
             if ( ! $validation ) {
                 die( "*ok*" );
             } else {
                 return;
             }
-		}
+        }
 
+        /**
+         * Refreshes the QR Code. If payment is marked as completed, it won't get here.
+         */
         if ( $remaining_pending < $min_tx ) {
             $order->update_meta_data( 'blockbee_qr_code_value', BlockBee\Helper::get_static_qrcode( $order->get_meta( 'blockbee_address' ), $order->get_meta( 'blockbee_currency' ), $min_tx, $apikey, $this->qrcode_size )['qr_code'] );
         } else {
             $order->update_meta_data( 'blockbee_qr_code_value', BlockBee\Helper::get_static_qrcode( $order->get_meta( 'blockbee_address' ), $order->get_meta( 'blockbee_currency' ), $remaining_pending, $apikey, $this->qrcode_size )['qr_code'] );
         }
-        $order->save_meta_data();
+
+        $order->save();
 
 		if ( ! $validation ) {
 			die( "*ok*" );
@@ -766,7 +775,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 						} else {
 							echo esc_attr( 'display: none' );
 						}
-						?>; width: <?php echo intval( $this->qrcode_size ) + 20; ?>px;">
+						?>; width: <?php echo (int) $this->qrcode_size + 20; ?>px;">
 							<?php
 							if ( $crypto_allowed_value == true ) {
 								?>
@@ -866,7 +875,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 									); ?>
                             </div>
 							<?php
-							if ( intval( $this->refresh_value_interval ) != 0 ) {
+							if ( (int) $this->refresh_value_interval != 0 ) {
 								?>
                                 <div class="blockbee_time_refresh">
 									<?php echo esc_attr(sprintf( __( 'The %1s conversion rate will be adjusted in', 'blockbee-cryptocurrency-payment-gateway' ),
@@ -888,7 +897,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
                             </div>
                         </div>
 						<?php
-						if ( intval( $this->order_cancellation_timeout ) != 0 ) {
+						if ( (int) $this->order_cancellation_timeout != 0 ) {
 							?>
                             <span class="blockbee_notification_cancel" data-text="<?php echo esc_attr(__( 'Order will be cancelled in less than a minute.', 'blockbee-cryptocurrency-payment-gateway' )); ?>">
                                     <?php echo sprintf( __( 'This order will be valid for %s', 'blockbee' ), '<strong><span class="blockbee_cancel_timer" data-timestamp="' . esc_attr($cancel_timer) . '">' . date( 'H:i', $cancel_timer ) . '</span></strong>' ); ?>
@@ -1007,8 +1016,8 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 	}
 
 	function cronjob($force = false, $order_id = '') {
-		$order_timeout = intval( $this->order_cancellation_timeout );
-		$value_refresh = intval( $this->refresh_value_interval );
+		$order_timeout = (int) $this->order_cancellation_timeout;
+		$value_refresh = (int) $this->refresh_value_interval;
 
 		if ( $order_timeout === 0 && $value_refresh === 0 ) {
 			return;
@@ -1032,7 +1041,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 
 			$history = json_decode( $order->get_meta( 'blockbee_history' ), true );
 
-			$min_tx = floatval( $order->get_meta( 'blockbee_min' ) );
+			$min_tx = (float) $order->get_meta( 'blockbee_min' );
 
 			$calc = $this->calc_order( $history, $order->get_meta( 'blockbee_total' ), $order->get_meta( 'blockbee_total_fiat' ) );
 
@@ -1096,11 +1105,11 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 		}
 
 		return [
-			'already_paid'      => floatval( $already_paid ),
-			'already_paid_fiat' => floatval( $already_paid_fiat ),
-			'remaining'         => floatval( $remaining ),
-			'remaining_pending' => floatval( $remaining_pending ),
-			'remaining_fiat'    => floatval( $remaining_fiat )
+			'already_paid'      => (float) $already_paid,
+			'already_paid_fiat' => (float) $already_paid_fiat,
+			'remaining'         => (float) $remaining,
+			'remaining_pending' => (float) $remaining_pending,
+			'remaining_fiat'    => (float) $remaining_fiat
 		];
 	}
 

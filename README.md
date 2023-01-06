@@ -150,4 +150,7 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 #### 1.0.5
 * Minor fixes
 
+#### 1.0.6
+* Minor fixes
+
 ### Upgrade Notice

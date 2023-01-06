@@ -2,11 +2,11 @@
 Contributors: blockbee
 Tags: crypto payments, woocommerce, payment gateway, crypto, payment, pay with crypto, payment request, bitcoin, bnb, usdt, ethereum, monero, litecoin, bitcoin cash, shib, doge
 Requires at least: 5
-Tested up to: 6.1.0
-Stable tag: 1.0.5
+Tested up to: 6.1.1
+Stable tag: 1.0.6
 Requires PHP: 7.2
 WC requires at least: 5.8
-WC tested up to: 7.0.0
+WC tested up to: 7.2.2
 License: MIT
 
 Accept cryptocurrency payments on your WooCommerce website
@@ -25,7 +25,6 @@ The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto dire
 * (ETH) Ethereum
 * (BCH) Bitcoin Cash
 * (LTC) Litecoin
-* (XMR) Monero
 * (TRX) Tron
 * (BNB) Binance Coin
 * (USDT) USDT
@@ -76,7 +75,7 @@ All you need to do is to register at our dashboard [click here](https://dash.blo
 As soon as your customers pay we forward your earnings directly to your own wallet.
 
 BlockBee has a low 1% fee on the transactions processed. No hidden costs.
-For more info on our fees [click here](https://blockbee.io/get_started/#fees)
+For more info on our fees [click here](https://blockbee.io/fees/)
 
 == Installation ==
 
@@ -147,7 +146,7 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 1. The settings panel used to configure the gateway
 2. Set your crypto addresses (part 1)
 3. Set your crypto addresses (part 2)
-4. Example of payment using Litecoins
+4. Example of payment using Litecoin
 5. The QR code can be set to provide only the address or the address with the amount: the user can choose with one click
 6. Once the payment is received, the system will wait for network confirmations
 7. The payment is confirmed!
@@ -171,6 +170,9 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Minor fixes.
 
 = 1.0.5 =
+* Minor fixes.
+
+= 1.0.6 =
 * Minor fixes.
 
 == Upgrade Notice ==
