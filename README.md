@@ -157,4 +157,7 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Minor fixes
 * Improvements on the callback processing algorithm
 
+#### 1.0.8
+* Minor fixes
+* 
 ### Upgrade Notice
