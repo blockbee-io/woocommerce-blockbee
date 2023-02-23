@@ -270,10 +270,18 @@ class Helper
             $url .= "?{$data}";
         }
 
-        error_log($url);
+        for ($y = 0; $y < 5; $y++) {
+            try {
+                $response = json_decode(wp_remote_retrieve_body(wp_remote_get($url)), $assoc);
 
-        $response = wp_remote_retrieve_body(wp_remote_get($url));
+                if ($response->status == 'success') {
+                    return $response;
+                }
+            } catch (Exception $e) {
+                //
+            }
+        }
 
-        return json_decode($response, $assoc);
+        return json_decode('{"status": "error"}', $assoc);
     }
 }
