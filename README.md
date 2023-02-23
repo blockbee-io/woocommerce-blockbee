@@ -163,4 +163,16 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 #### 1.0.9
 * Minor fixes
 
+#### 1.0.10
+* Minor fixes
+
+#### 1.0.11
+* Minor fixes
+
+#### 1.0.12
+* Minor fixes
+
+#### 1.0.13
+* Minor fixes
+
 ### Upgrade Notice
