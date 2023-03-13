@@ -274,7 +274,7 @@ class Helper
             try {
                 $response = json_decode(wp_remote_retrieve_body(wp_remote_get($url)), $assoc);
 
-                if ($response->status == 'success' || !empty($response['btc'])) {
+                if ($response && $response->status == 'success' || !empty($response['btc'])) {
                     return $response;
                 }
             } catch (Exception $e) {

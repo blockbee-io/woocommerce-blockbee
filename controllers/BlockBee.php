@@ -501,8 +501,20 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 
 		try {
 			$order = new WC_Order( $order_id );
+            $counter_calc = (int) $order->get_meta( 'blockbee_last_price_update' ) + (int) $this->refresh_value_interval - time();
 
-			$showMinFee = 0;
+            if (!$order->is_paid()) {
+                if ($counter_calc <= 0) {
+                    $updated = $this->refresh_value($order);
+
+                    if ($updated) {
+                        $order = new WC_Order($order_id);
+                        $counter_calc = (int) $order->get_meta( 'blockbee_last_price_update' ) + (int) $this->refresh_value_interval - time();
+                    }
+                }
+            }
+
+            $showMinFee = 0;
 
 			$history = json_decode( $order->get_meta( 'blockbee_history' ), true );
 
@@ -521,7 +533,6 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 
 			$blockbee_pending = 0;
 
-			$counter_calc = (int) $order->get_meta( 'blockbee_last_price_update' ) + (int) $this->refresh_value_interval - time();
 
 			if ( $remaining_pending <= 0 && !$order->is_paid() && !empty($history) ) {
 				$blockbee_pending = 1;
@@ -529,10 +540,9 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 
             if (!$order->is_paid()) {
                 if ($counter_calc <= 0) {
-                    $this->cronjob(true, $order_id);
+                    $this->refresh_value($order);
                 }
             }
-
 
 			if ( ($remaining_pending <= $min_tx && $remaining_pending) > 0 && !$blockbee_pending ) {
 				$remaining_pending = $min_tx;
@@ -730,7 +740,14 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 		}
 		WC_BlockBee_Gateway::$HAS_TRIGGERED = true;
 
-		$order             = new WC_Order( $order_id );
+        $order = new WC_Order($order_id);
+        // run value conversion
+        $updated = $this->refresh_value($order);
+
+        if ($updated) {
+            $order = new WC_Order($order_id);
+        }
+
 		$total             = $order->get_total();
 		$currency_symbol   = get_woocommerce_currency_symbol();
 		$address_in        = $order->get_meta( 'blockbee_address' );
@@ -1021,74 +1038,27 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 		<?php
 	}
 
-	function cronjob($force = false, $order_id = '') {
+	function cronjob() {
 		$order_timeout = (int) $this->order_cancellation_timeout;
-		$value_refresh = (int) $this->refresh_value_interval;
 
-		if ( $order_timeout === 0 && $value_refresh === 0 ) {
+		if ( $order_timeout === 0 ) {
 			return;
 		}
 
 		$orders = wc_get_orders( array(
 			'status'         => array( 'wc-on-hold' ),
 			'payment_method' => 'blockbee',
+            'date_created' => '<' . (time() - $order_timeout),
 		) );
 
 		if ( empty( $orders ) ) {
 			return;
 		}
 
-		$apikey = $this->api_key;
-
-		$woocommerce_currency = get_woocommerce_currency();
-
 		foreach ( $orders as $order ) {
-			$last_price_update = $order->get_meta( 'blockbee_last_price_update' );
-
-			$history = json_decode( $order->get_meta( 'blockbee_history' ), true );
-
-			$min_tx = (float) $order->get_meta( 'blockbee_min' );
-
-            $blockbee_total = $order->get_meta( 'blockbee_total' );
-            $order_total = $order->get_total( 'edit' );
-
-			$calc = $this->calc_order( $history, $order->get_meta( 'blockbee_total' ), $order->get_meta( 'blockbee_total_fiat' ) );
-
-			$remaining         = $calc['remaining'];
-			$remaining_pending = $calc['remaining_pending'];
-			$already_paid      = $calc['already_paid'];
-
-			$order_timestamp = $order->get_date_created()->getTimestamp();
-
-			if ( $value_refresh !== 0 && ( (int)$last_price_update + (int)$value_refresh < time() ) && ! empty( $last_price_update ) || ((int)$order_id === $order->get_id() && $force) ) {
-				if ( ($remaining === $remaining_pending && $remaining_pending > 0) || ((int)$order_id === $order->get_id() && $force && $remaining === $remaining_pending && $remaining_pending > 0)) {
-                    $blockbee_coin = $order->get_meta( 'blockbee_currency' );
-
-                    $crypto_conversion = (float) BlockBee\Helper::get_conversion( $woocommerce_currency, $blockbee_coin, $order_total, $this->disable_conversion );
-					$crypto_total = BlockBee\Helper::sig_fig($crypto_conversion, 6 );
-					$order->update_meta_data( 'blockbee_total', $crypto_total );
-
-					$calc_cron              = $this->calc_order( $history, $crypto_total, $order_total );
-					$crypto_remaining_total = $calc_cron['remaining_pending'];
-
-					if ( $remaining_pending <= $min_tx && ! $remaining_pending <= 0 ) {
-						$qr_code_data_value = BlockBee\Helper::get_static_qrcode( $order->get_meta( 'blockbee_address' ), $blockbee_coin, $min_tx, $apikey, $this->qrcode_size );
-					} else {
-						$qr_code_data_value = BlockBee\Helper::get_static_qrcode( $order->get_meta( 'blockbee_address' ), $blockbee_coin, $crypto_remaining_total, $apikey, $this->qrcode_size );
-					}
-
-					$order->update_meta_data( 'blockbee_qr_code_value', $qr_code_data_value['qr_code'] );
-				}
-
-				$order->update_meta_data( 'blockbee_last_price_update', time() );
-				$order->save();
-			}
-
-			if ( $order_timeout !== 0 && ( $order_timestamp + $order_timeout ) <= time() && $already_paid <= 0 && (int) $order->get_meta( 'blockbee_cancelled' ) === 0 ) {
-				$order->update_status( 'cancelled', __( 'Order cancelled due to lack of payment.', 'blockbee-cryptocurrency-payment-gateway' ) );
-				$order->update_meta_data( 'blockbee_cancelled', '1' );
-				$order->save();
-			}
+            $order->update_status( 'cancelled', __( 'Order cancelled due to lack of payment.', 'blockbee-cryptocurrency-payment-gateway' ) );
+            $order->update_meta_data( 'blockbee_cancelled', '1' );
+            $order->save();
 		}
 	}
 
@@ -1327,4 +1297,50 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 		<?php
 		WC_BlockBee_Gateway::$HAS_TRIGGERED = true;
 	}
+
+    function refresh_value($order)
+    {
+        $value_refresh = (int)$this->refresh_value_interval;
+
+        if ($value_refresh === 0) {
+            return false;
+        }
+
+        $woocommerce_currency = get_woocommerce_currency();
+        $last_price_update = $order->get_meta('blockbee_last_price_update');
+        $min_tx = (float)$order->get_meta('blockbee_min');
+        $history = json_decode($order->get_meta('blockbee_history'), true);
+        $apikey = $this->api_key;
+        $blockbee_total = $order->get_meta('blockbee_total');
+        $order_total = $order->get_total('edit');
+
+        $calc = $this->calc_order($history, $blockbee_total, $order_total);
+        $remaining = $calc['remaining'];
+        $remaining_pending = $calc['remaining_pending'];
+
+        if ((int)$last_price_update + $value_refresh < time() && !empty($last_price_update) && $remaining === $remaining_pending && $remaining_pending > 0) {
+            $blockbee_coin = $order->get_meta('blockbee_currency');
+
+            $crypto_conversion = (float)BlockBee\Helper::get_conversion($woocommerce_currency, $blockbee_coin, $order_total, $this->disable_conversion);
+            $crypto_total = BlockBee\Helper::sig_fig($crypto_conversion, 6);
+            $order->update_meta_data('blockbee_total', $crypto_total);
+
+            $calc_cron = $this->calc_order($history, $crypto_total, $order_total);
+            $crypto_remaining_total = $calc_cron['remaining_pending'];
+
+            if ($remaining_pending <= $min_tx && !$remaining_pending <= 0) {
+                $qr_code_data_value = BlockBee\Helper::get_static_qrcode($order->get_meta('blockbee_address'), $blockbee_coin, $min_tx, $apikey, $this->qrcode_size);
+            } else {
+                $qr_code_data_value = BlockBee\Helper::get_static_qrcode($order->get_meta('blockbee_address'), $blockbee_coin, $crypto_remaining_total, $apikey, $this->qrcode_size);
+            }
+
+            $order->update_meta_data('blockbee_qr_code_value', $qr_code_data_value['qr_code']);
+            $order->update_meta_data('blockbee_last_price_update', time());
+            $order->save_meta_data();
+
+            return true;
+        }
+
+        return false;
+    }
 }
