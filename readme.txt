@@ -2,11 +2,11 @@
 Contributors: blockbee
 Tags: crypto payments, woocommerce, payment gateway, crypto, payment, pay with crypto, payment request, bitcoin, bnb, usdt, ethereum, monero, litecoin, bitcoin cash, shib, doge
 Requires at least: 5
-Tested up to: 6.1.1
-Stable tag: 1.0.14
+Tested up to: 6.2
+Stable tag: 1.0.15
 Requires PHP: 7.2
 WC requires at least: 5.8
-WC tested up to: 7.4.1
+WC tested up to: 7.6.1
 License: MIT
 
 Accept cryptocurrency payments on your WooCommerce website
@@ -42,6 +42,22 @@ Exchange rates are fetched every 5 minutes from CoinGecko.
 
 Supported currencies for automatic exchange rates are:
 
+* (USD) United States Dollar
+* (EUR) Euro
+* (GBP) Great Britain Pound
+* (CAD) Canadian Dollar
+* (JPY) Japanese Yen
+* (AED) UAE Dollar
+* (MYR) Malaysian Ringgit
+* (IDR) Indonesian Rupiah
+* (THB) Thai Baht
+* (CHF) Swiss Franc
+* (COP) Colombian Peso
+* (SGD) Singapore Dollar
+* (RUB) Russian Ruble
+* (ZAR) South African Rand
+* (TRY) Turkish Lira
+* (LKR) Sri Lankan Rupee
 * (XAF) CFA Franc
 * (RON) Romanian Leu
 * (BGN) Bulgarian Lev
@@ -56,12 +72,6 @@ Supported currencies for automatic exchange rates are:
 * (CNY) Chinese Yuan
 * (BRL) Brazilian Real
 * (DKK) Danish Krone
-* (AED) UAE Dirham
-* (JPY) Japanese Yen
-* (CAD) Canadian Dollar
-* (GBP) GB Pound
-* (EUR) Euro
-* (USD) US Dollar
 
 If your WooCommerce's currency is none of the above, the exchange rates will default to USD.
 If you're using WooCommerce in a different currency not listed here and need support, please [contact us](https://blockbee.io/contacts/) via our live chat.
@@ -199,6 +209,9 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 
 = 1.0.14 =
 * Performance improvements.
+* Minor fixes.
+
+= 1.0.15 =
 * Minor fixes.
 
 == Upgrade Notice ==

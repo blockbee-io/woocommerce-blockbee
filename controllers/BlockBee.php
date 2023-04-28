@@ -2,6 +2,7 @@
 
 use BlockBee\Helper;
 
+#[AllowDynamicProperties]
 class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 	private static $HAS_TRIGGERED = false;
 	private static $COIN_OPTIONS = [];
@@ -631,7 +632,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 			$history[ $data['uuid'] ] = [
 				'timestamp'       => time(),
 				'value_paid'      => BlockBee\Helper::sig_fig( $paid, 6 ),
-				'value_paid_fiat' => $conversion[ get_woocommerce_currency() ],
+				'value_paid_fiat' => $conversion[strtoupper($order->get_currency())],
 				'pending'         => $data['pending']
 			];
 		} else {
