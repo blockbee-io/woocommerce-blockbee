@@ -608,6 +608,10 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 	}
 
 	function process_callback_data( $data, $order, $validation = false ) {
+        $coin = $data['coin'];
+
+        $saved_coin = $order->get_meta('blockbee_currency');
+
 		$paid = (float) $data['value_coin'];
 
 		$min_tx = (float) $order->get_meta( 'blockbee_min' );
@@ -617,6 +621,14 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway {
 		$history = json_decode( $order->get_meta( 'blockbee_history' ), true );
 
         $apikey = $this->api_key;
+
+        if ($coin !== $saved_coin) {
+            $order->add_order_note(
+                '[MISSMATCHED PAYMENT] Registered a ' . $paid . ' ' . strtoupper($coin) . '. Order not confirmed because requested currency is ' . $crypto_coin . '. If you wish, you may confirm it manually. (Funds were already forwarded to you).'
+            );
+
+            die("*ok*");
+        }
 
 		if(!$data['uuid']) {
 			if ( ! $validation ) {
