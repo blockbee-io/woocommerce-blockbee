@@ -207,4 +207,7 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Support for WooCommerce HPOS.
 * Minor fixes.
 
+#### 1.0.18
+* Add new choices for order cancellation.
+
 ### Upgrade Notice

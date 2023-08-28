@@ -256,6 +256,9 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     'default' => '0',
                     'options' => array(
                         '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
+                        '900' => __('15 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '1800' => __('30 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '2700' => __('45 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
                         '3600' => __('1 Hour', 'blockbee-cryptocurrency-payment-gateway'),
                         '21600' => __('6 Hours', 'blockbee-cryptocurrency-payment-gateway'),
                         '43200' => __('12 Hours', 'blockbee-cryptocurrency-payment-gateway'),
