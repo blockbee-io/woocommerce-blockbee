@@ -6,7 +6,6 @@ use BlockBee\Helper;
 class WC_BlockBee_Gateway extends WC_Payment_Gateway
 {
     private static $HAS_TRIGGERED = false;
-    private static $COIN_OPTIONS = [];
 
     function __construct()
     {
@@ -28,9 +27,6 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
             'subscription_date_changes',
             'multiple_subscriptions',
         );
-
-        $this->load_coins();
-
         $this->init_form_fields();
         $this->init_settings();
         $this->blockbee_settings();
@@ -65,20 +61,14 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
     function load_coins()
     {
-        if (WC_BlockBee_Gateway::$HAS_TRIGGERED) {
-            return;
-        }
-
         $transient = get_transient('blockbee_coins');
         if (!empty($transient)) {
-            WC_BlockBee_Gateway::$COIN_OPTIONS = $transient;
-
-            return;
+            return $transient;
         }
 
         $coins = BlockBee\Helper::get_supported_coins();
         set_transient('blockbee_coins', $coins, 86400);
-        WC_BlockBee_Gateway::$COIN_OPTIONS = $coins;
+        return $coins;
     }
 
     function admin_options()
@@ -118,9 +108,10 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
     function init_form_fields()
     {
-        if (!empty(WC_BlockBee_Gateway::$COIN_OPTIONS)) {
+        $load_coins = $this->load_coins();
+        if (!empty($load_coins)) {
             $coin_options = [];
-            foreach (WC_BlockBee_Gateway::$COIN_OPTIONS as $token => $coin) {
+            foreach ($load_coins as $token => $coin) {
                 $coin_options[$token] = $coin['name'];
             }
 
@@ -314,7 +305,9 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
     }
 
     function payment_fields()
-    { ?>
+    {
+        $load_coins = $this->load_coins();
+        ?>
         <div class="form-row form-row-wide">
             <p><?php echo esc_attr($this->description); ?></p>
             <ul style="margin-top: 7px; list-style: none outside;">
@@ -330,12 +323,12 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                             foreach ($this->coins as $val) {
                                 $apikey = $this->api_key;
                                 if (!empty($apikey)) { ?>
-                                    <option data-image="<?php echo esc_url(WC_BlockBee_Gateway::$COIN_OPTIONS[$val]['logo']); ?>"
+                                    <option data-image="<?php echo esc_url($load_coins[$val]['logo']); ?>"
                                             value="<?php echo esc_attr($val); ?>" <?php
                                     if (!empty($selected) && $selected === $val) {
                                         echo esc_attr("selected='true'");
                                     }
-                                    $crypto_name = is_array(WC_BlockBee_Gateway::$COIN_OPTIONS[$val]) ? esc_attr(WC_BlockBee_Gateway::$COIN_OPTIONS[$val]['name']) : esc_attr(WC_BlockBee_Gateway::$COIN_OPTIONS[$val]);
+                                    $crypto_name = is_array($load_coins[$val]) ? esc_attr($load_coins[$val]['name']) : esc_attr($load_coins[$val]);
                                     ?>> <?php echo esc_attr(__('Pay with', 'blockbee-cryptocurrency-payment-gateway') . ' ' . $crypto_name); ?></option>
                                     <?php
                                 }
@@ -376,7 +369,8 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
     function validate_fields()
     {
-        return array_key_exists(sanitize_text_field($_POST['blockbee_coin']), WC_BlockBee_Gateway::$COIN_OPTIONS);
+        $load_coins = $this->load_coins();
+        return array_key_exists(sanitize_text_field($_POST['blockbee_coin']), $load_coins);
     }
 
     function process_payment($order_id)
@@ -394,6 +388,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
         $apikey = $this->api_key;
 
         if (!empty($apikey)) {
+            $load_coins = $this->load_coins();
 
             $nonce = $this->generate_nonce();
 
@@ -475,7 +470,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                 $order->add_meta_data('blockbee_last_checked', $order->get_date_created()->getTimestamp());
                 $order->save_meta_data();
 
-                $order->update_status('on-hold', __('Awaiting payment', 'blockbee-cryptocurrency-payment-gateway') . ': ' . WC_BlockBee_Gateway::$COIN_OPTIONS[$selected]);
+                $order->update_status('on-hold', __('Awaiting payment', 'blockbee-cryptocurrency-payment-gateway') . ': ' . $load_coins[$selected]);
                 $woocommerce->cart->empty_cart();
 
                 return array(
