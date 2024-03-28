@@ -59,6 +59,11 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
         add_action('woocommerce_admin_order_data_after_order_details', array($this, 'order_detail_validate_logs'));
     }
 
+    function reset_load_coins() {
+        delete_transient('blockbee_coins');
+        $this->load_coins();
+    }
+
     function load_coins()
     {
         $transient = get_transient('blockbee_coins');
@@ -1263,6 +1268,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
     {
         // parent::update_option('coins', $_POST['coins']);
         parent::process_admin_options();
+        $this->reset_load_coins();
     }
 
     function add_email_link($order, $sent_to_admin, $plain_text, $email)

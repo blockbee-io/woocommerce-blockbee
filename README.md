@@ -7,7 +7,7 @@ Accept cryptocurrency payments on your WooCommerce website
 
 ```
 PHP >= 7.2
-Wordpress >= 5
+Wordpress >= 5.8
 WooCommerce >= 5.8
 ```
 
@@ -211,6 +211,9 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Add new choices for order cancellation.
 
 #### 1.0.19
+* Minor fixes and improvements.
+
+#### 1.0.20
 * Minor fixes and improvements.
 
 ### Upgrade Notice
