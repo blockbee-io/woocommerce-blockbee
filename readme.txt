@@ -3,7 +3,7 @@ Contributors: blockbee
 Tags: crypto payments, woocommerce, payment gateway, crypto, payment, pay with crypto, payment request, bitcoin, bnb, usdt, ethereum, monero, litecoin, bitcoin cash, shib, doge
 Requires at least: 5.8
 Tested up to: 6.5
-Stable tag: 1.0.20
+Stable tag: 1.1.0
 Requires PHP: 7.2
 WC requires at least: 5.8
 WC tested up to: 8.6.1
@@ -32,7 +32,7 @@ The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto dire
 * (DOGE) Dogecoin
 
 
-among many others, for a full list of the supported cryptocurrencies and tokens, check [this page](https://blockbee.io/pricing/).
+among many others, for a full list of the supported cryptocurrencies and tokens, check [this page](https://blockbee.io/fees/).
 
 = Auto-value conversion =
 
@@ -229,5 +229,8 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 
 = 1.0.20 =
 * Minor fixes and improvements.
+
+= 1.1.0 =
+* Support for new languages: German, French, Ukrainian, Russian and Chinese.
 
 == Upgrade Notice ==
