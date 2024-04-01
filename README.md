@@ -219,4 +219,7 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 #### 1.1.0
 * Support for new languages: German, French, Ukrainian, Russian and Chinese.
 
+#### 1.1.1
+* Minor fixes and improvements.
+
 ### Upgrade Notice
