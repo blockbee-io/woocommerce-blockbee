@@ -122,9 +122,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
         try {
             $load_coins = $this->load_coins();
         } catch (Exception $e) {
-            ?>
-            <div class="notice notice-error"><p>Error connecting to BlockBee servers. If persist please contact support.</p></div>
-            <?php
+            // pass
         }
 
         if (!empty($load_coins)) {

@@ -3,7 +3,7 @@ Contributors: blockbee
 Tags: crypto payments, woocommerce, payment gateway, crypto, payment, pay with crypto, payment request, bitcoin, bnb, usdt, ethereum, monero, litecoin, bitcoin cash, shib, doge
 Requires at least: 5.8
 Tested up to: 6.5.3
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 Requires PHP: 7.2
 WC requires at least: 5.8
 WC tested up to: 8.9.1
@@ -242,6 +242,9 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Minor fixes and improvements.
 
 = 1.1.4 =
+* Minor fixes and improvements.
+
+= 1.1.5 =
 * Minor fixes and improvements.
 
 == Upgrade Notice ==
