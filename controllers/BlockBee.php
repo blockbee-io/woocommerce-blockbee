@@ -118,189 +118,186 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
     function init_form_fields()
     {
-        if (WC_BlockBee_Gateway::$HAS_TRIGGERED) {
-            $load_coins = [];
-            try {
-                $load_coins = $this->load_coins();
-            } catch (Exception $e) {
-                ?>
-                <div class="notice notice-error"><p>Error connecting to BlockBee servers. If persist please contact support.</p></div>
-                <?php
-            }
-
-            if (!empty($load_coins)) {
-                $coin_options = [];
-                foreach ($load_coins as $token => $coin) {
-                    $coin_options[$token] = $coin['name'];
-                }
-
-                $this->form_fields = array(
-                    'enabled' => array(
-                        'title' => __('Enabled', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'checkbox',
-                        'label' => __('Enable BlockBee', 'blockbee-cryptocurrency-payment-gateway'),
-                        'default' => 'yes'
-                    ),
-                    'title' => array(
-                        'title' => __('Title', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'text',
-                        'description' => __('This controls the title which the user sees during checkout.', 'blockbee-cryptocurrency-payment-gateway'),
-                        'default' => __('Cryptocurrency', 'blockbee-cryptocurrency-payment-gateway'),
-                        'desc_tip' => true,
-                    ),
-                    'description' => array(
-                        'title' => __('Description', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'textarea',
-                        'default' => '',
-                        'description' => __('Payment method description that the customer will see on your checkout', 'blockbee-cryptocurrency-payment-gateway')
-                    ),
-                    'api_key' => array(
-                        'title' => __('API Key', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'text',
-                        'default' => '',
-                        'description' => sprintf(__('Insert here your BlockBee API Key. You can get one here: %1$s', 'blockbee-cryptocurrency-payment-gateway'), '<a href="https://dash.blockbee.io/" target="_blank">https://dash.blockbee.io/</a>')
-                    ),
-                    'show_crypto_logos' => array(
-                        'title' => __('Show crypto logos in checkout', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'checkbox',
-                        'label' => sprintf(__('Enable this to show the cryptocurrencies logos in the checkout %1$s %2$s Notice: %3$s It may break in some templates. Use at your own risk.', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>'),
-                        'default' => 'false'
-                    ),
-                    'add_blockchain_fee' => array(
-                        'title' => __('Add the blockchain fee to the order', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'checkbox',
-                        'label' => __("This will add an estimation of the blockchain fee to the order value", 'blockbee-cryptocurrency-payment-gateway'),
-                        'default' => 'no'
-                    ),
-                    'fee_order_percentage' => array(
-                        'title' => __('Service fee manager', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'select',
-                        'default' => '0',
-                        'options' => array(
-                            '0.05' => '5%',
-                            '0.048' => '4.8%',
-                            '0.045' => '4.5%',
-                            '0.042' => '4.2%',
-                            '0.04' => '4%',
-                            '0.038' => '3.8%',
-                            '0.035' => '3.5%',
-                            '0.032' => '3.2%',
-                            '0.03' => '3%',
-                            '0.028' => '2.8%',
-                            '0.025' => '2.5%',
-                            '0.022' => '2.2%',
-                            '0.02' => '2%',
-                            '0.018' => '1.8%',
-                            '0.015' => '1.5%',
-                            '0.012' => '1.2%',
-                            '0.01' => '1%',
-                            '0.0090' => '0.90%',
-                            '0.0085' => '0.85%',
-                            '0.0080' => '0.80%',
-                            '0.0075' => '0.75%',
-                            '0.0070' => '0.70%',
-                            '0.0065' => '0.65%',
-                            '0.0060' => '0.60%',
-                            '0.0055' => '0.55%',
-                            '0.0050' => '0.50%',
-                            '0.0040' => '0.40%',
-                            '0.0030' => '0.30%',
-                            '0.0025' => '0.25%',
-                            '0' => '0%',
-                        ),
-                        'description' => sprintf(__('Set the BlockBee service fee you want to charge the costumer. %1$s %2$s Note: %3$s Fee you want to charge your costumers (to cover BlockBee\'s fees fully or partially).', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>')
-                    ),
-                    'qrcode_default' => array(
-                        'title' => __('QR Code by default', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'checkbox',
-                        'label' => __('Show the QR Code by default.', 'blockbee-cryptocurrency-payment-gateway'),
-                        'default' => 'yes'
-                    ),
-                    'qrcode_size' => array(
-                        'title' => __('QR Code size', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'number',
-                        'default' => 300,
-                        'description' => __('QR code image size.', 'blockbee-cryptocurrency-payment-gateway')
-                    ),
-                    'qrcode_setting' => array(
-                        'title' => __('QR Code to show', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'select',
-                        'default' => 'without_amount',
-                        'options' => array(
-                            'without_amount' => __('Default Without Amount', 'blockbee-cryptocurrency-payment-gateway'),
-                            'amount' => __('Default Amount', 'blockbee-cryptocurrency-payment-gateway'),
-                            'hide_amount' => __('Hide Amount', 'blockbee-cryptocurrency-payment-gateway'),
-                            'hide_without_amount' => __('Hide Without Amount', 'blockbee-cryptocurrency-payment-gateway'),
-                        ),
-                        'description' => __('Select how you want to show the QR Code to the user. Either select a default to show first, or hide one of them.', 'blockbee-cryptocurrency-payment-gateway')
-                    ),
-                    'color_scheme' => array(
-                        'title' => __('Color Scheme', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'select',
-                        'default' => 'light',
-                        'description' => __('Selects the color scheme of the plugin to match your website (Light, Dark and Auto to automatically detect it).', 'blockbee-cryptocurrency-payment-gateway'),
-                        'options' => array(
-                            'light' => __('Light', 'blockbee-cryptocurrency-payment-gateway'),
-                            'dark' => __('Dark', 'blockbee-cryptocurrency-payment-gateway'),
-                            'auto' => __('Auto', 'blockbee-cryptocurrency-payment-gateway'),
-                        ),
-                    ),
-                    'refresh_value_interval' => array(
-                        'title' => __('Refresh converted value', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'select',
-                        'default' => '300',
-                        'options' => array(
-                            '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
-                            '300' => __('Every 5 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                            '600' => __('Every 10 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                            '900' => __('Every 15 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                            '1800' => __('Every 30 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                            '2700' => __('Every 45 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                            '3600' => __('Every 60 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                        ),
-                        'description' => sprintf(__('The system will automatically update the conversion value of the invoices (with real-time data), every X minutes. %1$s This feature is helpful whenever a customer takes long time to pay a generated invoice and the selected crypto a volatile coin/token (not stable coin). %1$s %4$s Warning: %3$s Setting this setting to none might create conversion issues, as we advise you to keep it at 5 minutes. %3$s', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>', '<strong style="color: #f44336;">'),
-                    ),
-                    'order_cancellation_timeout' => array(
-                        'title' => __('Order cancellation timeout', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'select',
-                        'default' => '0',
-                        'options' => array(
-                            '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
-                            '900' => __('15 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                            '1800' => __('30 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                            '2700' => __('45 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                            '3600' => __('1 Hour', 'blockbee-cryptocurrency-payment-gateway'),
-                            '21600' => __('6 Hours', 'blockbee-cryptocurrency-payment-gateway'),
-                            '43200' => __('12 Hours', 'blockbee-cryptocurrency-payment-gateway'),
-                            '64800' => __('18 Hours', 'blockbee-cryptocurrency-payment-gateway'),
-                            '86400' => __('24 Hours', 'blockbee-cryptocurrency-payment-gateway'),
-                        ),
-                        'description' => sprintf(__('Selects the amount of time the user has to  pay for the order. %1$s When this time is over, order will be marked as "Cancelled" and every paid value will be ignored. %1$s %2$s Notice: %3$s If the user still sends money to the generated address, value will still be redirected to you. %1$s %4$s Warning: %3$s We do not advice more than 1 Hour.', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>', '<strong style="color: #f44336;">'),
-                    ),
-                    'virtual_complete' => array(
-                        'title' => __('Completed status for virtual products', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'checkbox',
-                        'label' => sprintf(__('When this setting is enabled, the plugin will mark the order as "completed" then payment is received. %1$s Only for virtual products %2$s.', 'blockbee-cryptocurrency-payment-gateway'), '<strong>', '</strong>'),
-                        'default' => 'no'
-                    ),
-                    'coins' => array(
-                        'title' => __('Accepted cryptocurrencies', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'multiselect',
-                        'default' => '',
-                        'css' => 'height: 300px;',
-                        'options' => $coin_options,
-                        'description' => __("Select which coins do you wish to accept. CTRL + click to select multiple. Addresses must be set on the dashboard.", 'blockbee-cryptocurrency-payment-gateway'),
-                    ),
-                    'disable_conversion' => array(
-                        'title' => __('Disable price conversion', 'blockbee-cryptocurrency-payment-gateway'),
-                        'type' => 'checkbox',
-                        'label' => sprintf(__('%2$s Attention: This option will disable the price conversion for ALL cryptocurrencies! %3$s %1$s If you check this, pricing will not be converted from the currency of your shop to the cryptocurrency selected by the user, and users will be requested to pay the same value as shown on your shop, regardless of the cryptocurrency selected', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>'),
-                        'default' => 'no'
-                    ),
-                );
-            }
+        $load_coins = [];
+        try {
+            $load_coins = $this->load_coins();
+        } catch (Exception $e) {
+            ?>
+            <div class="notice notice-error"><p>Error connecting to BlockBee servers. If persist please contact support.</p></div>
+            <?php
         }
-        WC_BlockBee_Gateway::$HAS_TRIGGERED = true;
+
+        if (!empty($load_coins)) {
+            $coin_options = [];
+            foreach ($load_coins as $token => $coin) {
+                $coin_options[$token] = $coin['name'];
+            }
+
+            $this->form_fields = array(
+                'enabled' => array(
+                    'title' => __('Enabled', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'checkbox',
+                    'label' => __('Enable BlockBee', 'blockbee-cryptocurrency-payment-gateway'),
+                    'default' => 'yes'
+                ),
+                'title' => array(
+                    'title' => __('Title', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'text',
+                    'description' => __('This controls the title which the user sees during checkout.', 'blockbee-cryptocurrency-payment-gateway'),
+                    'default' => __('Cryptocurrency', 'blockbee-cryptocurrency-payment-gateway'),
+                    'desc_tip' => true,
+                ),
+                'description' => array(
+                    'title' => __('Description', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'textarea',
+                    'default' => '',
+                    'description' => __('Payment method description that the customer will see on your checkout', 'blockbee-cryptocurrency-payment-gateway')
+                ),
+                'api_key' => array(
+                    'title' => __('API Key', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'text',
+                    'default' => '',
+                    'description' => sprintf(__('Insert here your BlockBee API Key. You can get one here: %1$s', 'blockbee-cryptocurrency-payment-gateway'), '<a href="https://dash.blockbee.io/" target="_blank">https://dash.blockbee.io/</a>')
+                ),
+                'show_crypto_logos' => array(
+                    'title' => __('Show crypto logos in checkout', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'checkbox',
+                    'label' => sprintf(__('Enable this to show the cryptocurrencies logos in the checkout %1$s %2$s Notice: %3$s It may break in some templates. Use at your own risk.', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>'),
+                    'default' => 'false'
+                ),
+                'add_blockchain_fee' => array(
+                    'title' => __('Add the blockchain fee to the order', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'checkbox',
+                    'label' => __("This will add an estimation of the blockchain fee to the order value", 'blockbee-cryptocurrency-payment-gateway'),
+                    'default' => 'no'
+                ),
+                'fee_order_percentage' => array(
+                    'title' => __('Service fee manager', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'select',
+                    'default' => '0',
+                    'options' => array(
+                        '0.05' => '5%',
+                        '0.048' => '4.8%',
+                        '0.045' => '4.5%',
+                        '0.042' => '4.2%',
+                        '0.04' => '4%',
+                        '0.038' => '3.8%',
+                        '0.035' => '3.5%',
+                        '0.032' => '3.2%',
+                        '0.03' => '3%',
+                        '0.028' => '2.8%',
+                        '0.025' => '2.5%',
+                        '0.022' => '2.2%',
+                        '0.02' => '2%',
+                        '0.018' => '1.8%',
+                        '0.015' => '1.5%',
+                        '0.012' => '1.2%',
+                        '0.01' => '1%',
+                        '0.0090' => '0.90%',
+                        '0.0085' => '0.85%',
+                        '0.0080' => '0.80%',
+                        '0.0075' => '0.75%',
+                        '0.0070' => '0.70%',
+                        '0.0065' => '0.65%',
+                        '0.0060' => '0.60%',
+                        '0.0055' => '0.55%',
+                        '0.0050' => '0.50%',
+                        '0.0040' => '0.40%',
+                        '0.0030' => '0.30%',
+                        '0.0025' => '0.25%',
+                        '0' => '0%',
+                    ),
+                    'description' => sprintf(__('Set the BlockBee service fee you want to charge the costumer. %1$s %2$s Note: %3$s Fee you want to charge your costumers (to cover BlockBee\'s fees fully or partially).', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>')
+                ),
+                'qrcode_default' => array(
+                    'title' => __('QR Code by default', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'checkbox',
+                    'label' => __('Show the QR Code by default.', 'blockbee-cryptocurrency-payment-gateway'),
+                    'default' => 'yes'
+                ),
+                'qrcode_size' => array(
+                    'title' => __('QR Code size', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'number',
+                    'default' => 300,
+                    'description' => __('QR code image size.', 'blockbee-cryptocurrency-payment-gateway')
+                ),
+                'qrcode_setting' => array(
+                    'title' => __('QR Code to show', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'select',
+                    'default' => 'without_amount',
+                    'options' => array(
+                        'without_amount' => __('Default Without Amount', 'blockbee-cryptocurrency-payment-gateway'),
+                        'amount' => __('Default Amount', 'blockbee-cryptocurrency-payment-gateway'),
+                        'hide_amount' => __('Hide Amount', 'blockbee-cryptocurrency-payment-gateway'),
+                        'hide_without_amount' => __('Hide Without Amount', 'blockbee-cryptocurrency-payment-gateway'),
+                    ),
+                    'description' => __('Select how you want to show the QR Code to the user. Either select a default to show first, or hide one of them.', 'blockbee-cryptocurrency-payment-gateway')
+                ),
+                'color_scheme' => array(
+                    'title' => __('Color Scheme', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'select',
+                    'default' => 'light',
+                    'description' => __('Selects the color scheme of the plugin to match your website (Light, Dark and Auto to automatically detect it).', 'blockbee-cryptocurrency-payment-gateway'),
+                    'options' => array(
+                        'light' => __('Light', 'blockbee-cryptocurrency-payment-gateway'),
+                        'dark' => __('Dark', 'blockbee-cryptocurrency-payment-gateway'),
+                        'auto' => __('Auto', 'blockbee-cryptocurrency-payment-gateway'),
+                    ),
+                ),
+                'refresh_value_interval' => array(
+                    'title' => __('Refresh converted value', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'select',
+                    'default' => '300',
+                    'options' => array(
+                        '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
+                        '300' => __('Every 5 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '600' => __('Every 10 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '900' => __('Every 15 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '1800' => __('Every 30 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '2700' => __('Every 45 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '3600' => __('Every 60 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                    ),
+                    'description' => sprintf(__('The system will automatically update the conversion value of the invoices (with real-time data), every X minutes. %1$s This feature is helpful whenever a customer takes long time to pay a generated invoice and the selected crypto a volatile coin/token (not stable coin). %1$s %4$s Warning: %3$s Setting this setting to none might create conversion issues, as we advise you to keep it at 5 minutes. %3$s', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>', '<strong style="color: #f44336;">'),
+                ),
+                'order_cancellation_timeout' => array(
+                    'title' => __('Order cancellation timeout', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'select',
+                    'default' => '0',
+                    'options' => array(
+                        '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
+                        '900' => __('15 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '1800' => __('30 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '2700' => __('45 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '3600' => __('1 Hour', 'blockbee-cryptocurrency-payment-gateway'),
+                        '21600' => __('6 Hours', 'blockbee-cryptocurrency-payment-gateway'),
+                        '43200' => __('12 Hours', 'blockbee-cryptocurrency-payment-gateway'),
+                        '64800' => __('18 Hours', 'blockbee-cryptocurrency-payment-gateway'),
+                        '86400' => __('24 Hours', 'blockbee-cryptocurrency-payment-gateway'),
+                    ),
+                    'description' => sprintf(__('Selects the amount of time the user has to  pay for the order. %1$s When this time is over, order will be marked as "Cancelled" and every paid value will be ignored. %1$s %2$s Notice: %3$s If the user still sends money to the generated address, value will still be redirected to you. %1$s %4$s Warning: %3$s We do not advice more than 1 Hour.', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>', '<strong style="color: #f44336;">'),
+                ),
+                'virtual_complete' => array(
+                    'title' => __('Completed status for virtual products', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'checkbox',
+                    'label' => sprintf(__('When this setting is enabled, the plugin will mark the order as "completed" then payment is received. %1$s Only for virtual products %2$s.', 'blockbee-cryptocurrency-payment-gateway'), '<strong>', '</strong>'),
+                    'default' => 'no'
+                ),
+                'coins' => array(
+                    'title' => __('Accepted cryptocurrencies', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'multiselect',
+                    'default' => '',
+                    'css' => 'height: 300px;',
+                    'options' => $coin_options,
+                    'description' => __("Select which coins do you wish to accept. CTRL + click to select multiple. Addresses must be set on the dashboard.", 'blockbee-cryptocurrency-payment-gateway'),
+                ),
+                'disable_conversion' => array(
+                    'title' => __('Disable price conversion', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'checkbox',
+                    'label' => sprintf(__('%2$s Attention: This option will disable the price conversion for ALL cryptocurrencies! %3$s %1$s If you check this, pricing will not be converted from the currency of your shop to the cryptocurrency selected by the user, and users will be requested to pay the same value as shown on your shop, regardless of the cryptocurrency selected', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>'),
+                    'default' => 'no'
+                ),
+            );
+        }
     }
 
     function needs_setup()
