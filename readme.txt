@@ -2,11 +2,11 @@
 Contributors: blockbee
 Tags: crypto payments, woocommerce, payment gateway, crypto, payment, pay with crypto, payment request, bitcoin, bnb, usdt, ethereum, monero, litecoin, bitcoin cash, shib, doge
 Requires at least: 5.8
-Tested up to: 6.5
-Stable tag: 1.1.2
+Tested up to: 6.5.3
+Stable tag: 1.1.3
 Requires PHP: 7.2
 WC requires at least: 5.8
-WC tested up to: 8.6.1
+WC tested up to: 8.9.1
 License: MIT
 
 Accept cryptocurrency payments on your WooCommerce website
@@ -30,7 +30,6 @@ The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto dire
 * (USDT) USDT
 * (SHIB) Shiba Inu
 * (DOGE) Dogecoin
-
 
 among many others, for a full list of the supported cryptocurrencies and tokens, check [this page](https://blockbee.io/fees/).
 

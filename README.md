@@ -25,10 +25,11 @@ The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto dire
 * (ETH) Ethereum
 * (BCH) Bitcoin Cash
 * (LTC) Litecoin
-* (XMR) Monero
 * (TRX) Tron
 * (BNB) Binance Coin
 * (USDT) USDT
+* (SHIB) Shiba Inu
+* (DOGE) Dogecoin
 
 among many others, for a full list of the supported cryptocurrencies and tokens, check [this page](https://blockbee.io/cryptocurrencies/).
 
@@ -223,6 +224,9 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Minor fixes and improvements.
 
 #### 1.1.2
+* Minor fixes and improvements.
+
+#### 1.1.3
 * Minor fixes and improvements.
 
 ### Upgrade Notice
