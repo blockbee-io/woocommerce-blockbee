@@ -79,8 +79,6 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
             }
         }
 
-        $coins['eth']['name'] = $coins['eth']['name'] . ' (ERC20)';
-
         # Disabling XMR since it is not supported anymore.
         unset($coins['xmr']);
 
@@ -806,6 +804,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
         }
 
         $total = $order->get_total();
+        $coins = $this->load_coins();
         $currency_symbol = get_woocommerce_currency_symbol();
         $address_in = $order->get_meta('blockbee_address');
         $crypto_value = $order->get_meta('blockbee_total');
@@ -830,8 +829,6 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
             'eth',
             'bch',
             'ltc',
-            'miota',
-            'xmr',
         );
 
         $crypto_allowed_value = false;
@@ -883,6 +880,9 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                                             <?php
                                         }
                                         ?>
+                                        <div class="blockbee_qrcode_coin">
+                                            <?php echo esc_attr(strtoupper($coins[$crypto_coin]['name'])); ?>
+                                        </div>
                                     </figure>
                                     <?php
                                     if ($qr_code_setting != 'hide_amount' && $qr_code_setting != 'hide_without_amount') {
@@ -925,6 +925,9 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                                         <img class="blockbee_qrcode no_value"
                                              src="data:image/png;base64,<?php echo $qr_code_img; ?>"
                                              alt="<?php echo esc_attr(__('QR Code without value', 'blockbee-cryptocurrency-payment-gateway')); ?>"/>
+                                        <div class="blockbee_qrcode_coin">
+                                            <?php echo esc_attr(strtoupper($coins[$crypto_coin]['name'])); ?>
+                                        </div>
                                     </figure>
                                     <div class="blockbee_qrcode_buttons">
                                         <button class="blockbee_qrcode_btn no_value active"
@@ -933,14 +936,13 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                                         </button>
                                     </div>
                                 </div>
-
                                 <?php
                             }
                             ?>
                         </div>
                         <div class="blockbee_details_box">
                             <div class="blockbee_details_text">
-                                <?php echo esc_attr(__('PLEASE SEND', 'blockbee')); ?>
+                                <?php echo esc_attr(__('PLEASE SEND', 'blockbee-cryptocurrency-payment-gateway')); ?>
                                 <button class="blockbee_copy blockbee_details_copy"
                                         data-tocopy="<?php echo esc_attr($crypto_value); ?>">
                                     <span><b class="blockbee_value"><?php echo esc_attr($crypto_value); ?></b></span>
@@ -961,7 +963,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                             <div class="blockbee_payment_notification blockbee_notification_remaining"
                                  style="display: none">
                                 <?php echo '<strong>' . __('Notice', 'blockbee-cryptocurrency-payment-gateway') . '</strong>: ' . sprintf(__('For technical reasons, the minimum amount for each transaction is %1s, so we adjusted the value by adding the remaining to it.', 'blockbee-cryptocurrency-payment-gateway'),
-                                        esc_attr($min_tx) . ' ' . strtoupper(esc_attr($crypto_coin)),
+                                        esc_attr($min_tx) . ' ' . esc_attr(strtoupper($coins[$crypto_coin]['name'])),
                                         '<span class="blockbee_notification_remaining"></span>'
                                     ); ?>
                             </div>
@@ -970,7 +972,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                                 ?>
                                 <div class="blockbee_time_refresh">
                                     <?php echo esc_attr(sprintf(__('The %1s conversion rate will be adjusted in', 'blockbee-cryptocurrency-payment-gateway'),
-                                        strtoupper($crypto_coin)
+                                        esc_attr(strtoupper($coins[$crypto_coin]['name']))
                                     )); ?>
                                     <span class="blockbee_time_seconds_count"
                                           data-soon="<?php echo esc_attr(__('a moment', 'blockbee-cryptocurrency-payment-gateway')); ?>"
@@ -995,7 +997,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                             ?>
                             <span class="blockbee_notification_cancel"
                                   data-text="<?php echo esc_attr(__('Order will be cancelled in less than a minute.', 'blockbee-cryptocurrency-payment-gateway')); ?>">
-                                    <?php echo sprintf(__('This order will be valid for %s', 'blockbee'), '<strong><span class="blockbee_cancel_timer" data-timestamp="' . esc_attr($cancel_timer) . '">' . date('H:i', $cancel_timer) . '</span></strong>'); ?>
+                                    <?php echo sprintf(__('This order will be valid for %s', 'blockbee-cryptocurrency-payment-gateway'), '<strong><span class="blockbee_cancel_timer" data-timestamp="' . esc_attr($cancel_timer) . '">' . date('H:i', $cancel_timer) . '</span></strong>'); ?>
                                 </span>
                             <?php
                         }

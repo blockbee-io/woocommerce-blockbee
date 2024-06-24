@@ -599,3 +599,9 @@
         color: #FFF;
     }
 }
+
+.blockbee_qrcode_coin {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+}

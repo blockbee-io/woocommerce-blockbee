@@ -238,4 +238,7 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 #### 1.1.6
 * Minor improvements
 
+#### 1.1.7
+* Minor improvements
+
 ### Upgrade Notice
