@@ -7,7 +7,6 @@ use Exception;
 class Helper
 {
     private static $base_url = "https://api.blockbee.io";
-    private static $cryptapi_url = "https://api.cryptapi.io";
     private $callback_url = null;
     private $coin = null;
     private $pending = false;
@@ -42,14 +41,14 @@ class Helper
             $callback_url = "{$this->callback_url}?{$req_parameters}";
         }
 
-        $ca_params = [
+        $bb_params = [
             'apikey' => $apikey,
             'callback' => $callback_url,
             'pending' => $this->pending,
             'convert' => 1,
         ];
 
-        $response = Helper::_request($this->coin, 'create', $ca_params);
+        $response = Helper::_request($this->coin, 'create', $bb_params);
 
         if ($response->status == 'success') {
             $this->payment_address = $response->address_in;
@@ -60,7 +59,7 @@ class Helper
         return null;
     }
 
-	public static function check_logs($callback, $coin)
+    public static function check_logs($callback, $coin)
 	{
 
 		if (empty($coin) || empty($callback)) {
@@ -197,7 +196,6 @@ class Helper
         $response = Helper::_request($coin, 'estimate', $params);
 
         if ($response->status == 'success') {
-
             return $response->estimated_cost_currency;
         }
 
@@ -206,19 +204,33 @@ class Helper
 
     public static function process_callback($_get)
     {
-        $params = [
-            'address_in' => $_get['address_in'],
-            'address_out' => $_get['address_out'],
-            'txid_in' => $_get['txid_in'],
-            'txid_out' => isset($_get['txid_out']) ? $_get['txid_out'] : null,
-            'confirmations' => $_get['confirmations'],
-            'value' => $_get['value'],
-            'value_coin' => $_get['value_coin'],
-            'value_forwarded' => isset($_get['value_forwarded']) ? $_get['value_forwarded'] : null,
-            'value_forwarded_coin' => isset($_get['value_forwarded_coin']) ? $_get['value_forwarded_coin'] : null,
-            'coin' => $_get['coin'],
-            'pending' => isset($_get['pending']) ? $_get['pending'] : false,
-        ];
+        $type = $_GET['wc_api_type'] ?? null;
+
+        if ($type === 'checkout') {
+            $params = [
+                'wc_api_type' => $type,
+                'address' => $_get['address'] ?? null,
+                'txid' => $_get['txid'] ?? null,
+                'currency' => $_get['currency'] ?? null,
+                'exchange_rate' => $_get['exchange_rate'] ?? null,
+                'paid_coin' => $_get['paid_coin'] ?? null,
+                'paid_amount' => $_get['paid_amount'] ?? null,
+            ];
+        } else {
+            $params = [
+                'address_in' => $_get['address_in'],
+                'address_out' => $_get['address_out'],
+                'txid_in' => $_get['txid_in'],
+                'txid_out' => isset($_get['txid_out']) ? $_get['txid_out'] : null,
+                'confirmations' => $_get['confirmations'],
+                'value' => $_get['value'],
+                'value_coin' => $_get['value_coin'],
+                'value_forwarded' => isset($_get['value_forwarded']) ? $_get['value_forwarded'] : null,
+                'value_forwarded_coin' => isset($_get['value_forwarded_coin']) ? $_get['value_forwarded_coin'] : null,
+                'coin' => $_get['coin'],
+                'pending' => isset($_get['pending']) ? $_get['pending'] : false,
+            ];
+        }
 
         foreach ($_get as $k => $v) {
             if (isset($params[$k])) {
@@ -248,13 +260,60 @@ class Helper
         return $value;
     }
 
+    public function payment_request($redirect_url, $value, $currency, $order_id, $cancellation_timeout)
+    {
+        if (empty($redirect_url) || empty($value)) {
+            return null;
+        }
+
+        $notify_url = $this->callback_url;
+
+        if (!empty($this->parameters)) {
+            $req_parameters = http_build_query($this->parameters);
+            $redirect_url   = "{$redirect_url}?{$req_parameters}";
+            $notify_url   = "{$this->callback_url}?{$req_parameters}";
+        }
+
+        $bb_parameters = [
+            'redirect_url' => $redirect_url,
+            'notify_url' => $notify_url,
+            'apikey' => $this->apikey,
+            'value' => $value,
+            'currency' => $currency,
+            'item_description' => '#' . $order_id
+        ];
+
+        if ($cancellation_timeout) {
+            $bb_parameters['expire_at'] = (time() + 60) + $cancellation_timeout;
+        }
+
+        $response = Helper::_request(null, 'checkout/request', $bb_parameters);
+
+        if ($response->status === 'success') {
+            return $response;
+        }
+
+        return null;
+    }
+
+    public static function payment_logs($token, $api_key){
+        $params = [
+            'token' => $token,
+            'apikey' => $api_key
+        ];
+
+        $response = Helper::_request(null, 'checkout/logs', $params);
+
+        if ($response->status === 'success') {
+            return $response->notifications;
+        }
+
+        return null;
+    }
+
     private static function _request($coin, $endpoint, $params = [], $assoc = false)
     {
         $base_url = Helper::$base_url;
-
-        if($endpoint === 'info' || $endpoint === 'convert' || $endpoint === 'logs') {
-            $base_url = Helper::$cryptapi_url;
-        }
 
         if (!empty($params)) {
             $data = http_build_query($params);

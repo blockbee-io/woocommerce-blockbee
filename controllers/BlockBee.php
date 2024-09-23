@@ -57,6 +57,8 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
         add_filter('woocommerce_my_account_my_orders_actions', array($this, 'add_order_link'), 10, 2);
 
         add_action('woocommerce_admin_order_data_after_order_details', array($this, 'order_detail_validate_logs'));
+
+        add_action('admin_footer', array($this, 'hide_checkout_options'));
     }
 
     function reset_load_coins() {
@@ -98,12 +100,42 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
         <?php
     }
 
+    /*
+     * Responsible for hidding needless options if Checkout page is enabled.
+     */
+    function hide_checkout_options() {
+        ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function ($) {
+                // Initial check
+                toggleCheckoutDependentFields();
+
+                // When the checkbox is changed
+                $('input[name="woocommerce_blockbee_checkout_enabled"]').change(function () {
+                    toggleCheckoutDependentFields();
+                });
+
+                // Function to hide/show fields based on checkout_enabled
+                function toggleCheckoutDependentFields() {
+                    if ($('input[name="woocommerce_blockbee_checkout_enabled"]').is(':checked')) {
+                        $('.checkout-dependent').closest('tr').hide();
+                    } else {
+                        $('.checkout-dependent').closest('tr').show();
+                    }
+                }
+            });
+        </script>
+        <?php
+    }
+
+
     private function blockbee_settings()
     {
         $this->enabled = $this->get_option('enabled');
         $this->title = $this->get_option('title');
         $this->description = $this->get_option('description');
         $this->api_key = $this->get_option('api_key');
+        $this->checkout_enabled = $this->get_option('checkout_enabled') === 'yes';
         $this->qrcode_size = $this->get_option('qrcode_size');
         $this->qrcode_default = $this->get_option('qrcode_default') === 'yes';
         $this->qrcode_setting = $this->get_option('qrcode_setting');
@@ -146,7 +178,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     'title' => __('Title', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'text',
                     'description' => __('This controls the title which the user sees during checkout.', 'blockbee-cryptocurrency-payment-gateway'),
-                    'default' => __('Cryptocurrency', 'blockbee-cryptocurrency-payment-gateway'),
+                    'default' => __('Pay with BlockBee', 'blockbee-cryptocurrency-payment-gateway'),
                     'desc_tip' => true,
                 ),
                 'description' => array(
@@ -161,17 +193,24 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     'default' => '',
                     'description' => sprintf(__('Insert here your BlockBee API Key. You can get one here: %1$s', 'blockbee-cryptocurrency-payment-gateway'), '<a href="https://dash.blockbee.io/" target="_blank">https://dash.blockbee.io/</a>')
                 ),
+                'checkout_enabled' => array(
+                    'title' => __('<span style="color: #c79a05;">(New)</span> Enable Checkout', 'blockbee-cryptocurrency-payment-gateway'),
+                    'type' => 'checkbox',
+                    'default' => 'no',
+                    'description' => __('By enabling this option, your users will be redirected to our secure Checkout page to complete their payment (<a href="https://pay.blockbee.io/payment/demo/" target="_blank">see demo</a>).<br/>You can configure the Checkout page settings in your BlockBee dashboard at <a href="https://dash.blockbee.io/settings/checkout/" target="_blank">https://dash.blockbee.io/settings/checkout/</a>.', 'blockbee-cryptocurrency-payment-gateway'),
+                ),
                 'show_crypto_logos' => array(
                     'title' => __('Show crypto logos in checkout', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'checkbox',
                     'label' => sprintf(__('Enable this to show the cryptocurrencies logos in the checkout %1$s %2$s Notice: %3$s It may break in some templates. Use at your own risk.', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>'),
-                    'default' => 'false'
+                    'default' => 'false',
+                    'class' => 'checkout-dependent'
                 ),
                 'add_blockchain_fee' => array(
                     'title' => __('Add the blockchain fee to the order', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'checkbox',
                     'label' => __("This will add an estimation of the blockchain fee to the order value", 'blockbee-cryptocurrency-payment-gateway'),
-                    'default' => 'no'
+                    'default' => 'no',
                 ),
                 'fee_order_percentage' => array(
                     'title' => __('Service fee manager', 'blockbee-cryptocurrency-payment-gateway'),
@@ -215,18 +254,21 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     'title' => __('QR Code by default', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'checkbox',
                     'label' => __('Show the QR Code by default.', 'blockbee-cryptocurrency-payment-gateway'),
-                    'default' => 'yes'
+                    'default' => 'yes',
+                    'class' => 'checkout-dependent'
                 ),
                 'qrcode_size' => array(
                     'title' => __('QR Code size', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'number',
                     'default' => 300,
-                    'description' => __('QR code image size.', 'blockbee-cryptocurrency-payment-gateway')
+                    'description' => __('QR code image size.', 'blockbee-cryptocurrency-payment-gateway'),
+                    'class' => 'checkout-dependent'
                 ),
                 'qrcode_setting' => array(
                     'title' => __('QR Code to show', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'select',
                     'default' => 'without_amount',
+                    'class' => 'checkout-dependent',
                     'options' => array(
                         'without_amount' => __('Default Without Amount', 'blockbee-cryptocurrency-payment-gateway'),
                         'amount' => __('Default Amount', 'blockbee-cryptocurrency-payment-gateway'),
@@ -239,6 +281,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     'title' => __('Color Scheme', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'select',
                     'default' => 'light',
+                    'class' => 'checkout-dependent',
                     'description' => __('Selects the color scheme of the plugin to match your website (Light, Dark and Auto to automatically detect it).', 'blockbee-cryptocurrency-payment-gateway'),
                     'options' => array(
                         'light' => __('Light', 'blockbee-cryptocurrency-payment-gateway'),
@@ -250,14 +293,15 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     'title' => __('Refresh converted value', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'select',
                     'default' => '300',
+                    'class' => 'checkout-dependent',
                     'options' => array(
-                        '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
                         '300' => __('Every 5 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
                         '600' => __('Every 10 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
                         '900' => __('Every 15 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
                         '1800' => __('Every 30 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
                         '2700' => __('Every 45 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
                         '3600' => __('Every 60 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
+                        '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
                     ),
                     'description' => sprintf(__('The system will automatically update the conversion value of the invoices (with real-time data), every X minutes. %1$s This feature is helpful whenever a customer takes long time to pay a generated invoice and the selected crypto a volatile coin/token (not stable coin). %1$s %4$s Warning: %3$s Setting this setting to none might create conversion issues, as we advise you to keep it at 5 minutes. %3$s', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>', '<strong style="color: #f44336;">'),
                 ),
@@ -266,15 +310,12 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     'type' => 'select',
                     'default' => '0',
                     'options' => array(
-                        '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
-                        '900' => __('15 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                        '1800' => __('30 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                        '2700' => __('45 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
                         '3600' => __('1 Hour', 'blockbee-cryptocurrency-payment-gateway'),
                         '21600' => __('6 Hours', 'blockbee-cryptocurrency-payment-gateway'),
                         '43200' => __('12 Hours', 'blockbee-cryptocurrency-payment-gateway'),
                         '64800' => __('18 Hours', 'blockbee-cryptocurrency-payment-gateway'),
                         '86400' => __('24 Hours', 'blockbee-cryptocurrency-payment-gateway'),
+                        '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
                     ),
                     'description' => sprintf(__('Selects the amount of time the user has to  pay for the order. %1$s When this time is over, order will be marked as "Cancelled" and every paid value will be ignored. %1$s %2$s Notice: %3$s If the user still sends money to the generated address, value will still be redirected to you. %1$s %4$s Warning: %3$s We do not advice more than 1 Hour.', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>', '<strong style="color: #f44336;">'),
                 ),
@@ -289,6 +330,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     'type' => 'multiselect',
                     'default' => '',
                     'css' => 'height: 300px;',
+                    'class' => 'checkout-dependent',
                     'options' => $coin_options,
                     'description' => __("Select which coins do you wish to accept. CTRL + click to select multiple. Addresses must be set on the dashboard.", 'blockbee-cryptocurrency-payment-gateway'),
                 ),
@@ -296,7 +338,8 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     'title' => __('Disable price conversion', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'checkbox',
                     'label' => sprintf(__('%2$s Attention: This option will disable the price conversion for ALL cryptocurrencies! %3$s %1$s If you check this, pricing will not be converted from the currency of your shop to the cryptocurrency selected by the user, and users will be requested to pay the same value as shown on your shop, regardless of the cryptocurrency selected', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>'),
-                    'default' => 'no'
+                    'default' => 'no',
+                    'class' => 'checkout-dependent'
                 ),
             );
         }
@@ -336,63 +379,66 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
             <?php
             return;
         }
-        ?>
-        <div class="form-row form-row-wide">
-            <p><?php echo esc_attr($this->description); ?></p>
-            <ul style="margin-top: 7px; list-style: none outside;">
-                <?php
-                if (!empty($this->coins) && is_array($this->coins)) {
-                    $selected = WC()->session->get('blockbee_coin');
-                    ?>
-                    <li>
-                        <select name="blockbee_coin" id="payment_blockbee_coin" class="input-control"
-                                style="display:block; margin-top: 10px">
-                            <option value="none"><?php echo esc_attr(__('Please select a Cryptocurrency', 'blockbee-cryptocurrency-payment-gateway')) ?></option>
-                            <?php
-                            foreach ($this->coins as $val) {
-                                $apikey = $this->api_key;
-                                if (!empty($apikey)) { ?>
-                                    <option data-image="<?php echo esc_url($load_coins[$val]['logo']); ?>"
-                                            value="<?php echo esc_attr($val); ?>" <?php
-                                    if (!empty($selected) && $selected === $val) {
-                                        echo esc_attr("selected='true'");
-                                    }
-                                    $crypto_name = is_array($load_coins[$val]) ? esc_attr($load_coins[$val]['name']) : esc_attr($load_coins[$val]);
-                                    ?>> <?php echo esc_attr(__('Pay with', 'blockbee-cryptocurrency-payment-gateway') . ' ' . $crypto_name); ?></option>
-                                    <?php
-                                }
-                            }
-                            ?>
-                        </select>
-                    </li>
-                    <?php
-                } ?>
-            </ul>
-        </div>
-        <?php
-        if ($this->show_crypto_logos) {
-            ?>
-            <script>
-                if (typeof jQuery.fn.selectWoo !== 'undefined') {
-                    jQuery('#payment_blockbee_coin').selectWoo({
-                        minimumResultsForSearch: -1,
-                        templateResult: formatState
-                    })
 
-                    function formatState(opt) {
-                        if (!opt.id) {
-                            return opt.text
-                        }
-                        let optImage = jQuery(opt.element).attr('data-image')
-                        if (!optImage) {
-                            return opt.text
-                        } else {
-                            return jQuery('<span style="display:flex; align-items:center;"><img style="margin-right: 8px" src="' + optImage + '" width="24px" alt="' + opt.text + '" /> ' + opt.text + '</span>')
+        if (!$this->checkout_enabled) {
+            ?>
+            <div class="form-row form-row-wide">
+                <p><?php echo esc_attr($this->description); ?></p>
+                <ul style="margin-top: 7px; list-style: none outside;">
+                    <?php
+                    if (!empty($this->coins) && is_array($this->coins)) {
+                        $selected = WC()->session->get('blockbee_coin');
+                        ?>
+                        <li>
+                            <select name="blockbee_coin" id="payment_blockbee_coin" class="input-control"
+                                    style="display:block; margin-top: 10px">
+                                <option value="none"><?php echo esc_attr(__('Please select a Cryptocurrency', 'blockbee-cryptocurrency-payment-gateway')) ?></option>
+                                <?php
+                                foreach ($this->coins as $val) {
+                                    $apikey = $this->api_key;
+                                    if (!empty($apikey)) { ?>
+                                        <option data-image="<?php echo esc_url($load_coins[$val]['logo']); ?>"
+                                                value="<?php echo esc_attr($val); ?>" <?php
+                                        if (!empty($selected) && $selected === $val) {
+                                            echo esc_attr("selected='true'");
+                                        }
+                                        $crypto_name = is_array($load_coins[$val]) ? esc_attr($load_coins[$val]['name']) : esc_attr($load_coins[$val]);
+                                        ?>> <?php echo esc_attr(__('Pay with', 'blockbee-cryptocurrency-payment-gateway') . ' ' . $crypto_name); ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </li>
+                        <?php
+                    } ?>
+                </ul>
+            </div>
+            <?php
+            if ($this->show_crypto_logos) {
+                ?>
+                <script>
+                    if (typeof jQuery.fn.selectWoo !== 'undefined') {
+                        jQuery('#payment_blockbee_coin').selectWoo({
+                            minimumResultsForSearch: -1,
+                            templateResult: formatState
+                        })
+
+                        function formatState(opt) {
+                            if (!opt.id) {
+                                return opt.text
+                            }
+                            let optImage = jQuery(opt.element).attr('data-image')
+                            if (!optImage) {
+                                return opt.text
+                            } else {
+                                return jQuery('<span style="display:flex; align-items:center;"><img style="margin-right: 8px" src="' + optImage + '" width="24px" alt="' + opt.text + '" /> ' + opt.text + '</span>')
+                            }
                         }
                     }
-                }
-            </script>
-            <?php
+                </script>
+                <?php
+            }
         }
     }
 
@@ -416,13 +462,14 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
         $apikey = $this->api_key;
 
-        if (!empty($apikey)) {
-            $load_coins = $this->load_coins();
+        $nonce = $this->generate_nonce();
 
-            $nonce = $this->generate_nonce();
+        if (!empty($apikey)) {
+            $currency = get_woocommerce_currency();
 
             $callback_url = str_replace('https:', 'http:', add_query_arg(array(
                 'wc-api' => 'WC_Gateway_BlockBee',
+                'wc_api_type' => $this->checkout_enabled ? 'checkout': "custom_api",
                 'order_id' => $order_id,
                 'nonce' => $nonce,
             ), home_url('/')));
@@ -430,17 +477,17 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
             try {
                 $order = new WC_Order($order_id);
 
+                $total = $order->get_total('edit');
+
                 if (in_array('woocommerce-subscriptions/woocommerce-subscriptions.php', apply_filters('active_plugins', get_option('active_plugins')))) {
-
                     if (wcs_order_contains_subscription($order_id)) {
-
                         $sign_up_fee = (WC_Subscriptions_Order::get_sign_up_fee($order)) ? 0 : WC_Subscriptions_Order::get_sign_up_fee($order);
                         $initial_payment = (WC_Subscriptions_Order::get_total_initial_payment($order)) ? 0 : WC_Subscriptions_Order::get_total_initial_payment($order);
                         $price_per_period = (WC_Subscriptions_Order::get_recurring_total($order)) ? 0 : WC_Subscriptions_Order::get_recurring_total($order);
 
                         $total = $sign_up_fee + $initial_payment + $price_per_period + $order->get_total('edit');
 
-                        if ($total == 0) {
+                        if ($total === 0) {
                             $order->add_meta_data('blockbee_currency', $selected);
                             $order->save_meta_data();
                             $order->payment_complete();
@@ -454,9 +501,45 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     }
                 }
 
-                $total = $order->get_total('edit');
+                // If Checkout is enabled flow is simpler, yet different
+                if ($this->checkout_enabled) {
+                    $api = new BlockBee\Helper(null, $apikey, $callback_url, []);
 
-                $currency = get_woocommerce_currency();
+                    $payment= $api->payment_request(
+                        $this->get_return_url($order),
+                        $total,
+                        $currency,
+                        $order_id,
+                        (int) $this->order_cancellation_timeout
+                    );
+
+                    if (empty($payment)) {
+                        wc_add_notice(__('Payment error:', 'woocommerce') . ' ' . __('There was an error with the payment. Please try again.', 'blockbee-cryptocurrency-payment-gateway'));
+
+                        return null;
+                    }
+
+                    $payment_url = $payment->payment_url;
+
+                    $order->add_meta_data('blockbee_version', BLOCKBEE_PLUGIN_VERSION);
+                    $order->add_meta_data('blockbee_checkout', 'true');
+                    $order->add_meta_data('blockbee_php_version', PHP_VERSION);
+                    $order->add_meta_data('blockbee_success_token', $payment->success_token);
+                    $order->add_meta_data('blockbee_payment_url', $payment_url);
+                    $order->add_meta_data('blockbee_payment_id', $payment->payment_id);
+
+                    $order->save_meta_data();
+
+                    $order->update_status('on-hold', __('Awaiting payment', 'blockbee-cryptocurrency-payment-gateway'));
+                    $woocommerce->cart->empty_cart();
+
+                    return array(
+                        'result' => 'success',
+                        'redirect' => $payment_url
+                    );
+                }
+
+                $load_coins = $this->load_coins();
 
                 $info = BlockBee\Helper::get_info($selected);
                 $min_tx = BlockBee\Helper::sig_fig($info->minimum_transaction_coin, 6);
@@ -483,6 +566,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                 $qr_code_data = BlockBee\Helper::get_static_qrcode($addr_in, $selected, '', $apikey, $this->qrcode_size);
 
                 $order->add_meta_data('blockbee_version', BLOCKBEE_PLUGIN_VERSION);
+                $order->add_meta_data('blockbee_checkout', 'false');
                 $order->add_meta_data('blockbee_php_version', PHP_VERSION);
                 $order->add_meta_data('blockbee_nonce', $nonce);
                 $order->add_meta_data('blockbee_address', $addr_in);
@@ -506,7 +590,6 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                     'result' => 'success',
                     'redirect' => $this->get_return_url($order)
                 );
-
             } catch (Exception $e) {
                 wc_add_notice(__('Payment error:', 'blockbee-cryptocurrency-payment-gateway') . 'Unknown coin', 'error');
 
@@ -521,9 +604,22 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
     function validate_payment()
     {
-        $data = BlockBee\Helper::process_callback($_GET);
+        $data = Helper::process_callback($_GET);
 
         $order = new WC_Order($data['order_id']);
+
+        $type = $data['wc_api_type'] ?? null;
+
+        if ($type === 'checkout'){
+            $saved_success_token=$order->get_meta('blockbee_success_token');
+            // If success token provided in IPN isn't the same as the one stored locally will just die here.
+            if ($order->is_paid() || $order->get_status() === 'cancelled' || $saved_success_token !== $data['success_token']) {
+                die('*ok*');
+            }
+
+            $this->process_checkout_ipn($data, $order);
+            return;
+        }
 
         if ($order->is_paid() || $order->get_status() === 'cancelled' || $data['nonce'] != $order->get_meta('blockbee_nonce')) {
             die("*ok*");
@@ -622,29 +718,77 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
         $order_id = sanitize_text_field($_REQUEST['order_id']);
         $order = new WC_Order($order_id);
 
+        $type = (bool)$order->get_meta('blockbee_checkout') ? 'checkout' : 'custom_api';
+
+        $order->update_meta_data('blockbee_last_checked', time());
+        $order->save_meta_data();
+
         try {
+            if ($type === 'checkout') {
+                $logs = Helper::payment_logs($order->get_meta(('blockbee_payment_id')), $this->api_key);
 
-            $callbacks = BlockBee\Helper::check_logs($order->get_meta('blockbee_callback_url'), $order->get_meta('blockbee_currency'));
+                if ($logs) {
+                    $payload = (array) $logs[0]->payload;
+                    $this->process_checkout_ipn($payload, $order);
+                }
+            } else {
+                $callbacks = BlockBee\Helper::check_logs($order->get_meta('blockbee_callback_url'), $order->get_meta('blockbee_currency'));
 
-            $order->update_meta_data('blockbee_last_checked', time());
-            $order->save_meta_data();
+                if ($callbacks) {
+                    foreach ($callbacks as $callback) {
+                        $logs = $callback->logs;
+                        $request_url = parse_url($logs[0]->request_url);
+                        parse_str($request_url['query'], $data);
 
-            if ($callbacks) {
-                foreach ($callbacks as $callback) {
-                    $logs = $callback->logs;
-                    $request_url = parse_url($logs[0]->request_url);
-                    parse_str($request_url['query'], $data);
-
-                    if (empty($history[$data->uuid]) || (!empty($history[$data->uuid]) && (int)$history[$data->uuid]['pending'] === 1 && (int)$data['pending'] === 0)) {
-                        $this->process_callback_data($data, $order, true);
+                        if (empty($history[$data->uuid]) || (!empty($history[$data->uuid]) && (int)$history[$data->uuid]['pending'] === 1 && (int)$data['pending'] === 0)) {
+                            $this->process_callback_data($data, $order, true);
+                        }
                     }
                 }
             }
+
             die();
         } catch (Exception $e) {
             //
         }
         die();
+    }
+
+    function process_checkout_ipn($data, $order) {
+        $order->add_order_note(
+            '[CONFIRMED] ' . __('User sent a payment of', 'blockbee-cryptocurrency-payment-gateway') . ' ' .
+            $data['paid_amount'] . ' ' . $data['paid_coin'] .
+            '. TXID(s): ' . $data['txid']
+        );
+
+        $order->update_meta_data('blockbee_address', $data['address']);
+        $order->update_meta_data('blockbee_txids', $data['txid']);
+        $order->update_meta_data('blockbee_fiat_currency', $data['currency']);
+        $order->update_meta_data('blockbee_exchange_rate', $data['exchange_rate']);
+        $order->update_meta_data('blockbee_currency', $data['paid_coin']);
+        $order->update_meta_data('blockbee_currency_amount', $data['paid_amount']);
+        $order->save_meta_data();
+
+        $order->payment_complete($data['address']);
+
+        if ($this->virtual_complete) {
+            $count_products = count($order->get_items());
+            $count_virtual = 0;
+            foreach ($order->get_items() as $order_item) {
+                $item = wc_get_product($order_item->get_product_id());
+                $item_obj = $item->get_type() === 'variable' ? wc_get_product($order_item['variation_id']) : $item;
+
+                if ($item_obj->is_virtual()) {
+                    $count_virtual += 1;
+                }
+            }
+            if ($count_virtual === $count_products) {
+                $order->update_status('completed');
+            }
+        }
+
+        // All processed, respond with *ok*
+        die('*ok*');
     }
 
     function process_callback_data($data, $order, $validation = false)
@@ -794,6 +938,10 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
             return;
         }
         WC_BlockBee_Gateway::$HAS_TRIGGERED = true;
+
+        if ($this->checkout_enabled) {
+            return;
+        }
 
         $order = new WC_Order($order_id);
         // run value conversion

@@ -241,4 +241,8 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 #### 1.1.7
 * Minor improvements
 
+#### 1.2.0
+* Support BlockBee Checkout page
+* Minor improvements
+
 ### Upgrade Notice

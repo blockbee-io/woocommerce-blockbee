@@ -16,7 +16,7 @@ printf(
 		)
 	),
 	esc_html( get_bloginfo( 'name', 'display' ) ),
-	'<a href="' . esc_url( $order->get_checkout_payment_url() ) . '">' . esc_html__( 'Pay for this order', 'woocommerce' ) . '</a>'
+	'<a href="' . esc_url( (bool) $order->get_meta('blockbee_checkout') ? $order->get_meta('blockbee_payment_url') : $order->get_checkout_payment_url() ) . '">' . esc_html__( 'Pay for this order', 'woocommerce' ) . '</a>'
 );
 /*
  * @hooked WC_Emails::email_footer() Output the email footer
