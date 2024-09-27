@@ -1462,7 +1462,14 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
         if ($email->id == 'customer_on_hold_order') {
             WC_BlockBee_Gateway::$HAS_TRIGGERED = true;
-            echo esc_html('<a style="display:block;text-align:center;margin: 40px auto; font-size: 16px; font-weight: bold;" href="' . $this->get_return_url($order) . '" target="_blank">' . __('Check your payment status', 'blockbee-cryptocurrency-payment-gateway') . '</a>');
+
+            $link = (bool) $order->get_meta('blockbee_checkout') ? $order->get_meta('blockbee_payment_url') : $order->get_checkout_payment_url();
+
+            if ($plain_text) {
+                echo $link;
+            } else {
+                echo wp_kses_post('<div style="text-align:center; margin-bottom: 30px;"><a style="display:block;text-align:center;margin: 40px auto; font-size: 16px; font-weight: bold;" href="' . esc_url($link) . '" target="_blank">' . __('Check your payment status', 'blockbee-cryptocurrency-payment-gateway') . '</a></div>');
+            }
         }
     }
 
@@ -1470,9 +1477,10 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
     {
         if ($order->has_status('on-hold')) {
             $action_slug = 'blockbee_payment_url';
+            $link = (bool) $order->get_meta('blockbee_checkout') ? $order->get_meta('blockbee_payment_url') : $order->get_checkout_payment_url();
 
             $actions[$action_slug] = array(
-                'url' => $this->get_return_url($order),
+                'url' => $link,
                 'name' => __('Pay', 'blockbee-cryptocurrency-payment-gateway'),
             );
         }
