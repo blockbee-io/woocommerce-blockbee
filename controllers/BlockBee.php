@@ -379,11 +379,12 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
             <?php
             return;
         }
-
-        if (!$this->checkout_enabled) {
-            ?>
-            <div class="form-row form-row-wide">
-                <p><?php echo esc_attr($this->description); ?></p>
+        ?>
+        <div class="form-row form-row-wide">
+            <p><?php echo esc_attr($this->description); ?></p>
+            <?php
+            if (!$this->checkout_enabled) {
+                ?>
                 <ul style="margin-top: 7px; list-style: none outside;">
                     <?php
                     if (!empty($this->coins) && is_array($this->coins)) {
@@ -413,32 +414,34 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                         <?php
                     } ?>
                 </ul>
-            </div>
-            <?php
-            if ($this->show_crypto_logos) {
-                ?>
-                <script>
-                    if (typeof jQuery.fn.selectWoo !== 'undefined') {
-                        jQuery('#payment_blockbee_coin').selectWoo({
-                            minimumResultsForSearch: -1,
-                            templateResult: formatState
-                        })
-
-                        function formatState(opt) {
-                            if (!opt.id) {
-                                return opt.text
-                            }
-                            let optImage = jQuery(opt.element).attr('data-image')
-                            if (!optImage) {
-                                return opt.text
-                            } else {
-                                return jQuery('<span style="display:flex; align-items:center;"><img style="margin-right: 8px" src="' + optImage + '" width="24px" alt="' + opt.text + '" /> ' + opt.text + '</span>')
-                            }
-                        }
-                    }
-                </script>
                 <?php
             }
+            ?>
+        </div>
+        <?php
+        if ($this->show_crypto_logos) {
+            ?>
+            <script>
+                if (typeof jQuery.fn.selectWoo !== 'undefined') {
+                    jQuery('#payment_blockbee_coin').selectWoo({
+                        minimumResultsForSearch: -1,
+                        templateResult: formatState
+                    })
+
+                    function formatState(opt) {
+                        if (!opt.id) {
+                            return opt.text
+                        }
+                        let optImage = jQuery(opt.element).attr('data-image')
+                        if (!optImage) {
+                            return opt.text
+                        } else {
+                            return jQuery('<span style="display:flex; align-items:center;"><img style="margin-right: 8px" src="' + optImage + '" width="24px" alt="' + opt.text + '" /> ' + opt.text + '</span>')
+                        }
+                    }
+                }
+            </script>
+            <?php
         }
     }
 
