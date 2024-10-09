@@ -545,7 +545,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                 $load_coins = $this->load_coins();
 
                 $info = BlockBee\Helper::get_info($selected);
-                $min_tx = BlockBee\Helper::sig_fig($info->minimum_transaction_coin, 6);
+                $min_tx = BlockBee\Helper::sig_fig($info->minimum_transaction_coin, 8);
 
                 $crypto_total = BlockBee\Helper::get_conversion($currency, $selected, $total, $this->disable_conversion);
 
@@ -573,7 +573,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                 $order->add_meta_data('blockbee_php_version', PHP_VERSION);
                 $order->add_meta_data('blockbee_nonce', $nonce);
                 $order->add_meta_data('blockbee_address', $addr_in);
-                $order->add_meta_data('blockbee_total', BlockBee\Helper::sig_fig($crypto_total, 6));
+                $order->add_meta_data('blockbee_total', BlockBee\Helper::sig_fig($crypto_total, 8));
                 $order->add_meta_data('blockbee_total_fiat', $total);
                 $order->add_meta_data('blockbee_currency', $selected);
                 $order->add_meta_data('blockbee_qr_code_value', $qr_code_data_value['qr_code']);
@@ -800,7 +800,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
         $saved_coin = $order->get_meta('blockbee_currency');
 
-        $paid = (float)$data['value_coin'];
+        $paid = $data['value_coin'];
 
         $min_tx = (float)$order->get_meta('blockbee_min');
 
@@ -831,7 +831,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
             $history[$data['uuid']] = [
                 'timestamp' => time(),
-                'value_paid' => BlockBee\Helper::sig_fig($paid, 6),
+                'value_paid' => BlockBee\Helper::sig_fig($paid, 8),
                 'value_paid_fiat' => $conversion[strtoupper($order->get_currency())],
                 'pending' => $data['pending']
             ];
@@ -1311,14 +1311,14 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
         if (!empty($history)) {
             foreach ($history as $uuid => $item) {
                 if ((int)$item['pending'] === 0) {
-                    $remaining = bcsub(BlockBee\Helper::sig_fig($remaining, 6), $item['value_paid'], 8);
+                    $remaining = bcsub(BlockBee\Helper::sig_fig($remaining, 8), $item['value_paid'], 8);
                 }
 
-                $remaining_pending = bcsub(BlockBee\Helper::sig_fig($remaining_pending, 6), $item['value_paid'], 8);
-                $remaining_fiat = bcsub(BlockBee\Helper::sig_fig($remaining_fiat, 6), $item['value_paid_fiat'], 8);
+                $remaining_pending = bcsub(BlockBee\Helper::sig_fig($remaining_pending, 8), $item['value_paid'], 8);
+                $remaining_fiat = bcsub(BlockBee\Helper::sig_fig($remaining_fiat, 8), $item['value_paid_fiat'], 8);
 
-                $already_paid = bcadd(BlockBee\Helper::sig_fig($already_paid, 6), $item['value_paid'], 8);
-                $already_paid_fiat = bcadd(BlockBee\Helper::sig_fig($already_paid_fiat, 6), $item['value_paid_fiat'], 8);
+                $already_paid = bcadd(BlockBee\Helper::sig_fig($already_paid, 8), $item['value_paid'], 8);
+                $already_paid_fiat = bcadd(BlockBee\Helper::sig_fig($already_paid_fiat, 8), $item['value_paid_fiat'], 8);
             }
         }
 
@@ -1580,7 +1580,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
             $blockbee_coin = $order->get_meta('blockbee_currency');
 
             $crypto_conversion = (float)BlockBee\Helper::get_conversion($woocommerce_currency, $blockbee_coin, $order_total, $this->disable_conversion);
-            $crypto_total = BlockBee\Helper::sig_fig($crypto_conversion, 6);
+            $crypto_total = BlockBee\Helper::sig_fig($crypto_conversion, 8);
             $order->update_meta_data('blockbee_total', $crypto_total);
 
             $calc_cron = $this->calc_order($history, $crypto_total, $order_total);
