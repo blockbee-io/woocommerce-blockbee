@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-01 14:46+0000\n"
-"PO-Revision-Date: 2024-09-20 10:45+0000\n"
+"PO-Revision-Date: 2024-12-03 17:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.6.7; wp-6.4.3"
 
-#: controllers/BlockBee.php:343
+#: controllers/BlockBee.php:340
 msgid ""
 "%2$s Attention: This option will disable the price conversion for ALL "
 "cryptocurrencies! %3$s %1$s If you check this, pricing will not be converted "
@@ -31,35 +31,23 @@ msgstr ""
 "wie in Ihrem Shop angezeigt zu bezahlen, unabhängig von der ausgewählten "
 "Kryptowährung"
 
-#: controllers/BlockBee.php:317
+#: controllers/BlockBee.php:313
 msgid "1 Hour"
 msgstr "1 Stunde"
 
-#: controllers/BlockBee.php:319
+#: controllers/BlockBee.php:315
 msgid "12 Hours"
 msgstr "12 Stunden"
 
-#: controllers/BlockBee.php:314
-msgid "15 Minutes"
-msgstr "15 Minuten"
-
-#: controllers/BlockBee.php:320
+#: controllers/BlockBee.php:316
 msgid "18 Hours"
 msgstr "18 Stunden"
 
-#: controllers/BlockBee.php:321
+#: controllers/BlockBee.php:317
 msgid "24 Hours"
 msgstr "24 Stunden"
 
-#: controllers/BlockBee.php:315
-msgid "30 Minutes"
-msgstr "30 Minuten"
-
-#: controllers/BlockBee.php:316
-msgid "45 Minutes"
-msgstr "45 Minuten"
-
-#: controllers/BlockBee.php:318
+#: controllers/BlockBee.php:314
 msgid "6 Hours"
 msgstr "6 Stunden"
 
@@ -76,7 +64,7 @@ msgstr "einem Moment"
 msgid "Accept cryptocurrency payments on your WooCommerce website"
 msgstr "Akzeptieren Sie Kryptowährungszahlungen auf Ihrer WooCommerce-Website"
 
-#: controllers/BlockBee.php:332
+#: controllers/BlockBee.php:329
 msgid "Accepted cryptocurrencies"
 msgstr "Akzeptierte Kryptowährungen"
 
@@ -152,19 +140,19 @@ msgstr ""
 "io/settings/checkout/\" target=\"_blank\">https://dash.blockbee."
 "io/settings/checkout/</a> konfigurieren."
 
-#: controllers/BlockBee.php:1528
+#: controllers/BlockBee.php:1539
 msgid "Check for Callbacks"
 msgstr "Nach Callbacks suchen"
 
-#: controllers/BlockBee.php:1465
+#: controllers/BlockBee.php:1472
 msgid "Check your payment status"
 msgstr "Überprüfen Sie Ihren Zahlungsstatus"
 
-#: controllers/BlockBee.php:1537
+#: controllers/BlockBee.php:1548
 msgid "Checking"
 msgstr "Überprüfung"
 
-#: controllers/BlockBee.php:1168
+#: controllers/BlockBee.php:1171
 msgid "Close QR CODE"
 msgstr "QR-CODE schließen"
 
@@ -172,21 +160,17 @@ msgstr "QR-CODE schließen"
 msgid "Color Scheme"
 msgstr "Farbschema"
 
-#: controllers/BlockBee.php:326
+#: controllers/BlockBee.php:323
 msgid "Completed status for virtual products"
 msgstr "Abgeschlossener Status für virtuelle Produkte"
 
-#: controllers/BlockBee.php:1103 controllers/BlockBee.php:1141
+#: controllers/BlockBee.php:1103 controllers/BlockBee.php:1144
 msgid "COPIED!"
 msgstr "KOPIERT!"
 
-#: controllers/BlockBee.php:1101 controllers/BlockBee.php:1139
+#: controllers/BlockBee.php:1101 controllers/BlockBee.php:1142
 msgid "COPY"
 msgstr "KOPIEREN"
-
-#: controllers/BlockBee.php:181
-msgid "Cryptocurrency"
-msgstr "Kryptowährung"
 
 #: controllers/BlockBee.php:288
 msgid "Dark"
@@ -204,7 +188,7 @@ msgstr "Standard ohne Betrag"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: controllers/BlockBee.php:341
+#: controllers/BlockBee.php:338
 msgid "Disable price conversion"
 msgstr "Preisumrechnung deaktivieren"
 
@@ -225,31 +209,31 @@ msgstr ""
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: controllers/BlockBee.php:300
+#: controllers/BlockBee.php:299
 msgid "Every 10 Minutes"
 msgstr "Alle 10 Minuten"
 
-#: controllers/BlockBee.php:301
+#: controllers/BlockBee.php:300
 msgid "Every 15 Minutes"
 msgstr "Alle 15 Minuten"
 
-#: controllers/BlockBee.php:302
+#: controllers/BlockBee.php:301
 msgid "Every 30 Minutes"
 msgstr "Alle 30 Minuten"
 
-#: controllers/BlockBee.php:303
+#: controllers/BlockBee.php:302
 msgid "Every 45 Minutes"
 msgstr "Alle 45 Minuten"
 
-#: controllers/BlockBee.php:299
+#: controllers/BlockBee.php:298
 msgid "Every 5 Minutes"
 msgstr "Alle 5 Minuten"
 
-#: controllers/BlockBee.php:304
+#: controllers/BlockBee.php:303
 msgid "Every 60 Minutes"
 msgstr "Jede Stunde"
 
-#: controllers/BlockBee.php:1236
+#: controllers/BlockBee.php:1239
 msgid "FIAT Value"
 msgstr "FIAT-Wert"
 
@@ -280,7 +264,7 @@ msgstr "https://blockbee.io/"
 msgid "https://blockbee.io/resources/woocommerce/"
 msgstr "https://blockbee.io/resources/woocommerce/"
 
-#: controllers/BlockBee.php:1524
+#: controllers/BlockBee.php:1535
 msgid ""
 "If the order is not being updated, your ISP is probably blocking our IPs "
 "(%1$s and %2$s): please try to get them whitelisted and feel free to contact "
@@ -338,7 +322,7 @@ msgstr ""
 msgid "Light"
 msgstr "Hell"
 
-#: controllers/BlockBee.php:298 controllers/BlockBee.php:313
+#: controllers/BlockBee.php:304 controllers/BlockBee.php:318
 msgid "Never"
 msgstr "Nie"
 
@@ -350,11 +334,20 @@ msgstr ""
 "Derzeit sind keine Kryptowährungen verfügbar. Bitte wählen Sie eine andere "
 "Zahlungsmethode oder versuchen Sie es später erneut."
 
+#: controllers/BlockBee.php:1136
+msgid ""
+"Note: If using an exchange please add the exchange fee to the sent amount. "
+"Exchanges usually deduct the fee from the sent amount."
+msgstr ""
+"Hinweis: Wenn Sie eine Börse nutzen, fügen Sie bitte die Börsengebühr zum "
+"überwiesenen Betrag hinzu. Börsen ziehen die Gebühr in der Regel vom "
+"überwiesenen Betrag ab."
+
 #: controllers/BlockBee.php:1116
 msgid "Notice"
 msgstr "Hinweis"
 
-#: controllers/BlockBee.php:1163
+#: controllers/BlockBee.php:1166
 msgid "Open QR CODE"
 msgstr "QR-CODE öffnen"
 
@@ -363,11 +356,11 @@ msgstr "QR-CODE öffnen"
 msgid "Order cancellation timeout"
 msgstr "Zeitüberschreitung bei Stornierung der Bestellung"
 
-#: controllers/BlockBee.php:1297
+#: controllers/BlockBee.php:1300
 msgid "Order cancelled due to lack of payment."
 msgstr "Bestellung aufgrund fehlender Zahlung storniert."
 
-#: controllers/BlockBee.php:1224
+#: controllers/BlockBee.php:1227
 msgid ""
 "Order has been cancelled due to lack of payment. Please don't send any "
 "payment to the address."
@@ -375,19 +368,23 @@ msgstr ""
 "Die Bestellung wurde wegen fehlender Zahlung storniert. Bitte senden Sie "
 "keine Zahlung an die Adresse."
 
-#: controllers/BlockBee.php:1150
+#: controllers/BlockBee.php:1153
 msgid "Order will be cancelled in less than a minute."
 msgstr "Die Bestellung wird in weniger als einer Minute storniert."
 
-#: controllers/BlockBee.php:1476
+#: controllers/BlockBee.php:1487
 msgid "Pay"
 msgstr "Zahlen"
 
-#: controllers/BlockBee.php:409
+#: controllers/BlockBee.php:407
 msgid "Pay with"
 msgstr "Bezahlen mit"
 
-#: controllers/BlockBee.php:1267
+#: controllers/BlockBee.php:181
+msgid "Pay with BlockBee"
+msgstr "Zahlen Sie mit BlockBee"
+
+#: controllers/BlockBee.php:1270
 msgid "Payment confirmed"
 msgstr "Zahlung bestätigt"
 
@@ -412,7 +409,7 @@ msgstr ""
 msgid "Please choose a cryptocurrency"
 msgstr "Bitte wählen Sie eine Kryptowährung"
 
-#: controllers/BlockBee.php:1350
+#: controllers/BlockBee.php:1353
 msgid "Please renew your subscription"
 msgstr "Bitte erneuern Sie Ihr Abonnement"
 
@@ -425,7 +422,7 @@ msgstr ""
 "Bitte erneuern Sie Ihr Abonnement auf %1$s. Sie können die Verlängerung "
 "bezahlen, wenn Sie bereit sind: %2$s"
 
-#: controllers/BlockBee.php:398
+#: controllers/BlockBee.php:396
 msgid "Please select a Cryptocurrency"
 msgstr "Bitte wählen Sie eine Kryptowährung aus"
 
@@ -433,7 +430,7 @@ msgstr "Bitte wählen Sie eine Kryptowährung aus"
 msgid "PLEASE SEND"
 msgstr "BITTE SENDEN"
 
-#: controllers/BlockBee.php:1204
+#: controllers/BlockBee.php:1207
 msgid "Processing can take some time depending on the blockchain."
 msgstr ""
 "Die Verarbeitung kann je nach Blockchain einige Zeit in Anspruch nehmen."
@@ -475,7 +472,7 @@ msgstr ""
 "Wählen Sie aus, wie Sie den QR-Code dem Benutzer anzeigen möchten. Wählen "
 "Sie entweder einen Standard zum Anzeigen aus oder verbergen Sie einen davon."
 
-#: controllers/BlockBee.php:338
+#: controllers/BlockBee.php:335
 msgid ""
 "Select which coins do you wish to accept. CTRL + click to select multiple. "
 "Addresses must be set on the dashboard."
@@ -483,7 +480,7 @@ msgstr ""
 "Wählen Sie aus, welche Münzen Sie akzeptieren möchten. Drücken Sie STRG + "
 "Klick, um mehrere auszuwählen. Adressen müssen im Dashboard festgelegt sein."
 
-#: controllers/BlockBee.php:323
+#: controllers/BlockBee.php:320
 #| msgid ""
 #| "Selects the amount of time the user has to pay for the order. %1$s When "
 #| "this time is over, order will be marked as \"Cancelled\" and every paid "
@@ -515,7 +512,7 @@ msgstr ""
 "Wählt das Farbschema des Plugins, um es an Ihre Website anzupassen (Hell, "
 "Dunkel und Auto zur automatischen Erkennung)."
 
-#: controllers/BlockBee.php:1420
+#: controllers/BlockBee.php:1423
 msgid "Service Fee"
 msgstr "Servicegebühr"
 
@@ -549,7 +546,7 @@ msgstr "QR-Code mit Wert anzeigen"
 msgid "Show QR Code without value"
 msgstr "QR-Code ohne Wert anzeigen"
 
-#: controllers/BlockBee.php:1158
+#: controllers/BlockBee.php:1161
 msgid "Show the QR code"
 msgstr "Den QR-Code anzeigen"
 
@@ -595,7 +592,7 @@ msgstr "Es gab einen Fehler bei der Zahlung. Bitte versuchen Sie es erneut."
 msgid "This controls the title which the user sees during checkout."
 msgstr "Dies steuert den Titel, den der Benutzer beim Checkout sieht."
 
-#: controllers/BlockBee.php:1151
+#: controllers/BlockBee.php:1154
 msgid "This order will be valid for %s"
 msgstr "Diese Bestellung ist für %s gültig."
 
@@ -604,7 +601,7 @@ msgid "This will add an estimation of the blockchain fee to the order value"
 msgstr ""
 "Dies wird eine Schätzung der Blockchain-Gebühr zum Bestellwert hinzufügen"
 
-#: controllers/BlockBee.php:1230
+#: controllers/BlockBee.php:1233
 msgid "Time"
 msgstr "Zeit"
 
@@ -617,7 +614,7 @@ msgstr "Titel"
 msgid "User sent a payment of"
 msgstr "Benutzer hat eine Zahlung von"
 
-#: controllers/BlockBee.php:1233
+#: controllers/BlockBee.php:1236
 msgid "Value Paid"
 msgstr "Bezahlter Wert"
 
@@ -625,15 +622,15 @@ msgstr "Bezahlter Wert"
 msgid "Value too low, minimum is"
 msgstr "Wert zu niedrig, Minimum ist"
 
-#: controllers/BlockBee.php:1259
+#: controllers/BlockBee.php:1262
 msgid "Waiting for network confirmation"
 msgstr "Warten auf Netzwerkbestätigung"
 
-#: controllers/BlockBee.php:1251
+#: controllers/BlockBee.php:1254
 msgid "Waiting for payment"
 msgstr "Warten auf Zahlung"
 
-#: controllers/BlockBee.php:328
+#: controllers/BlockBee.php:325
 msgid ""
 "When this setting is enabled, the plugin will mark the order as "
 "\"completed\" then payment is received. %1$s Only for virtual products %2$s."
@@ -646,10 +643,10 @@ msgstr ""
 msgid "WITH AMOUNT"
 msgstr "MIT BETRAG"
 
-#: controllers/BlockBee.php:1214
+#: controllers/BlockBee.php:1217
 msgid "Your payment has been confirmed!"
 msgstr "Ihre Zahlung wurde bestätigt!"
 
-#: controllers/BlockBee.php:1203
+#: controllers/BlockBee.php:1206
 msgid "Your payment is being processed!"
 msgstr "Ihre Zahlung wird bearbeitet!"

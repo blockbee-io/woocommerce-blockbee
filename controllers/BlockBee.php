@@ -882,9 +882,9 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
             if ($remaining > 0) {
                 if ($remaining <= $min_tx) {
-                    $order->add_order_note(__('Payment detected and confirmed. Customer still need to send', 'blockbee-cryptocurrency-payment-gateway') . ' ' . $min_tx . $crypto_coin, false);
+                    $order->add_order_note(__('Payment detected and confirmed. Customer still need to send', 'blockbee-cryptocurrency-payment-gateway') . ' ' . $min_tx . ' ' . $crypto_coin, false);
                 } else {
-                    $order->add_order_note(__('Payment detected and confirmed. Customer still need to send', 'blockbee-cryptocurrency-payment-gateway') . ' ' . $remaining . $crypto_coin, false);
+                    $order->add_order_note(__('Payment detected and confirmed. Customer still need to send', 'blockbee-cryptocurrency-payment-gateway') . ' ' . $remaining . ' ' . $crypto_coin, false);
                 }
             }
         }
@@ -1132,6 +1132,9 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                                 <?php
                             }
                             ?>
+                            <div class="blockbee_send_warning">
+                                <?php echo esc_attr(__('Note: If using an exchange please add the exchange fee to the sent amount. Exchanges usually deduct the fee from the sent amount.', 'blockbee-cryptocurrency-payment-gateway')); ?>
+                            </div>
                             <div class="blockbee_details_input">
                                 <span><?php echo esc_attr($address_in) ?></span>
                                 <button class="blockbee_copy blockbee_copy_icon"
@@ -1461,8 +1464,6 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
         }
 
         if ($email->id == 'customer_on_hold_order') {
-            WC_BlockBee_Gateway::$HAS_TRIGGERED = true;
-
             $link = (bool) $order->get_meta('blockbee_checkout') ? $order->get_meta('blockbee_payment_url') : $order->get_checkout_payment_url();
 
             if ($plain_text) {
@@ -1471,6 +1472,8 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                 echo wp_kses_post('<div style="text-align:center; margin-bottom: 30px;"><a style="display:block;text-align:center;margin: 40px auto; font-size: 16px; font-weight: bold;" href="' . esc_url($link) . '" target="_blank">' . __('Check your payment status', 'blockbee-cryptocurrency-payment-gateway') . '</a></div>');
             }
         }
+
+        WC_BlockBee_Gateway::$HAS_TRIGGERED = true;
     }
 
     function add_order_link($actions, $order)

@@ -2,11 +2,11 @@
 Contributors: blockbee
 Tags: crypto payments, payment gateway, cryptocurrencies, payments,
 Requires at least: 5.8
-Tested up to: 6.6.2
-Stable tag: 1.2.5
+Tested up to: 6.7
+Stable tag: 1.2.7
 Requires PHP: 7.2
 WC requires at least: 5.8
-WC tested up to: 9.3.3
+WC tested up to: 9.4.1
 License: MIT
 
 Accept cryptocurrency payments on your WooCommerce website
@@ -270,6 +270,13 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Minor fixes.
 
 = 1.2.5 =
+* Minor fixes.
+
+= 1.2.6 =
+* Minor improvements.
+
+= 1.2.7 =
+* Minor improvements.
 * Minor fixes.
 
 == Upgrade Notice ==

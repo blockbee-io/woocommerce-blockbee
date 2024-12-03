@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-01 14:46+0000\n"
-"PO-Revision-Date: 2024-09-20 10:48+0000\n"
+"PO-Revision-Date: 2024-12-03 17:27+0000\n"
 "Last-Translator: \n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.6.11; wp-6.6.2"
 
-#: controllers/BlockBee.php:343
+#: controllers/BlockBee.php:340
 msgid ""
 "%2$s Attention: This option will disable the price conversion for ALL "
 "cryptocurrencies! %3$s %1$s If you check this, pricing will not be converted "
@@ -31,35 +31,23 @@ msgstr ""
 "запропоновано сплатити ту ж саму вартість, яка вказана в вашому магазині, "
 "незалежно від вибраної криптовалюти"
 
-#: controllers/BlockBee.php:317
+#: controllers/BlockBee.php:313
 msgid "1 Hour"
 msgstr "1 година"
 
-#: controllers/BlockBee.php:319
+#: controllers/BlockBee.php:315
 msgid "12 Hours"
 msgstr "12 годин"
 
-#: controllers/BlockBee.php:314
-msgid "15 Minutes"
-msgstr "15 хвилин"
-
-#: controllers/BlockBee.php:320
+#: controllers/BlockBee.php:316
 msgid "18 Hours"
 msgstr "18 годин"
 
-#: controllers/BlockBee.php:321
+#: controllers/BlockBee.php:317
 msgid "24 Hours"
 msgstr "24 години"
 
-#: controllers/BlockBee.php:315
-msgid "30 Minutes"
-msgstr "30 хвилин"
-
-#: controllers/BlockBee.php:316
-msgid "45 Minutes"
-msgstr "45 хвилин"
-
-#: controllers/BlockBee.php:318
+#: controllers/BlockBee.php:314
 msgid "6 Hours"
 msgstr "6 годин"
 
@@ -76,7 +64,7 @@ msgstr "момент"
 msgid "Accept cryptocurrency payments on your WooCommerce website"
 msgstr "Приймайте платежі в криптовалюті на вашому сайті WooCommerce"
 
-#: controllers/BlockBee.php:332
+#: controllers/BlockBee.php:329
 msgid "Accepted cryptocurrencies"
 msgstr ""
 "Прийняті криптовалюти\n"
@@ -160,19 +148,19 @@ msgstr ""
 "BlockBee за адресою <a href=\"https://dash.blockbee.io/settings/checkout/\" "
 "target=\"_blank\">https://dash.blockbee.io/settings/checkout/</a>."
 
-#: controllers/BlockBee.php:1528
+#: controllers/BlockBee.php:1539
 msgid "Check for Callbacks"
 msgstr "Перевірити наявність зворотних викликів"
 
-#: controllers/BlockBee.php:1465
+#: controllers/BlockBee.php:1472
 msgid "Check your payment status"
 msgstr "Перевірте статус вашого платежу"
 
-#: controllers/BlockBee.php:1537
+#: controllers/BlockBee.php:1548
 msgid "Checking"
 msgstr "Перевірка"
 
-#: controllers/BlockBee.php:1168
+#: controllers/BlockBee.php:1171
 msgid "Close QR CODE"
 msgstr "Закрити QR-КОД"
 
@@ -180,21 +168,17 @@ msgstr "Закрити QR-КОД"
 msgid "Color Scheme"
 msgstr "Кольорова схема"
 
-#: controllers/BlockBee.php:326
+#: controllers/BlockBee.php:323
 msgid "Completed status for virtual products"
 msgstr "Статус \"Завершено\" для віртуальних продуктів"
 
-#: controllers/BlockBee.php:1103 controllers/BlockBee.php:1141
+#: controllers/BlockBee.php:1103 controllers/BlockBee.php:1144
 msgid "COPIED!"
 msgstr "СКОПІЙОВАНО!"
 
-#: controllers/BlockBee.php:1101 controllers/BlockBee.php:1139
+#: controllers/BlockBee.php:1101 controllers/BlockBee.php:1142
 msgid "COPY"
 msgstr "КОПІЮВАТИ"
-
-#: controllers/BlockBee.php:181
-msgid "Cryptocurrency"
-msgstr "Криптовалюта"
 
 #: controllers/BlockBee.php:288
 msgid "Dark"
@@ -212,7 +196,7 @@ msgstr "За замовчуванням без суми"
 msgid "Description"
 msgstr "Опис"
 
-#: controllers/BlockBee.php:341
+#: controllers/BlockBee.php:338
 msgid "Disable price conversion"
 msgstr "Відключити конвертацію ціни"
 
@@ -240,31 +224,31 @@ msgstr ""
 msgid "Enabled"
 msgstr "Увімкнено"
 
-#: controllers/BlockBee.php:300
+#: controllers/BlockBee.php:299
 msgid "Every 10 Minutes"
 msgstr "Кожні 10 хвилин"
 
-#: controllers/BlockBee.php:301
+#: controllers/BlockBee.php:300
 msgid "Every 15 Minutes"
 msgstr "Кожні 15 хвилин"
 
-#: controllers/BlockBee.php:302
+#: controllers/BlockBee.php:301
 msgid "Every 30 Minutes"
 msgstr "Кожні 30 хвилин"
 
-#: controllers/BlockBee.php:303
+#: controllers/BlockBee.php:302
 msgid "Every 45 Minutes"
 msgstr "Кожні 45 хвилин"
 
-#: controllers/BlockBee.php:299
+#: controllers/BlockBee.php:298
 msgid "Every 5 Minutes"
 msgstr "Кожні 5 хвилин"
 
-#: controllers/BlockBee.php:304
+#: controllers/BlockBee.php:303
 msgid "Every 60 Minutes"
 msgstr "Кожну годину"
 
-#: controllers/BlockBee.php:1236
+#: controllers/BlockBee.php:1239
 msgid "FIAT Value"
 msgstr "FIAT вартість"
 
@@ -294,7 +278,7 @@ msgstr "https://blockbee.io/"
 msgid "https://blockbee.io/resources/woocommerce/"
 msgstr "https://blockbee.io/resources/woocommerce/"
 
-#: controllers/BlockBee.php:1524
+#: controllers/BlockBee.php:1535
 msgid ""
 "If the order is not being updated, your ISP is probably blocking our IPs "
 "(%1$s and %2$s): please try to get them whitelisted and feel free to contact "
@@ -349,7 +333,7 @@ msgstr "Введіть тут ваш BlockBee API ключ. Ви можете о
 msgid "Light"
 msgstr "Світла"
 
-#: controllers/BlockBee.php:298 controllers/BlockBee.php:313
+#: controllers/BlockBee.php:304 controllers/BlockBee.php:318
 msgid "Never"
 msgstr "Ніколи"
 
@@ -361,11 +345,19 @@ msgstr ""
 "На даний момент криптовалюти недоступні. Будь ласка, оберіть інший спосіб "
 "оплати або спробуйте пізніше."
 
+#: controllers/BlockBee.php:1136
+msgid ""
+"Note: If using an exchange please add the exchange fee to the sent amount. "
+"Exchanges usually deduct the fee from the sent amount."
+msgstr ""
+"Примітка: Якщо використовуєте біржу, будь ласка, додайте комісію біржі до "
+"суми переказу. Біржі зазвичай утримують комісію із суми переказу."
+
 #: controllers/BlockBee.php:1116
 msgid "Notice"
 msgstr "Увага"
 
-#: controllers/BlockBee.php:1163
+#: controllers/BlockBee.php:1166
 msgid "Open QR CODE"
 msgstr "Відкрити QR-КОД"
 
@@ -374,11 +366,11 @@ msgstr "Відкрити QR-КОД"
 msgid "Order cancellation timeout"
 msgstr "Тайм-аут скасування замовлення"
 
-#: controllers/BlockBee.php:1297
+#: controllers/BlockBee.php:1300
 msgid "Order cancelled due to lack of payment."
 msgstr "Замовлення скасовано через відсутність платежу."
 
-#: controllers/BlockBee.php:1224
+#: controllers/BlockBee.php:1227
 msgid ""
 "Order has been cancelled due to lack of payment. Please don't send any "
 "payment to the address."
@@ -386,19 +378,23 @@ msgstr ""
 "Замовлення було скасовано через відсутність платежу. Будь ласка, не "
 "надсилайте жодних платежів на адресу."
 
-#: controllers/BlockBee.php:1150
+#: controllers/BlockBee.php:1153
 msgid "Order will be cancelled in less than a minute."
 msgstr "Замовлення буде скасовано менш ніж за хвилину."
 
-#: controllers/BlockBee.php:1476
+#: controllers/BlockBee.php:1487
 msgid "Pay"
 msgstr "Оплатити"
 
-#: controllers/BlockBee.php:409
+#: controllers/BlockBee.php:407
 msgid "Pay with"
 msgstr "Оплатити за допомогою"
 
-#: controllers/BlockBee.php:1267
+#: controllers/BlockBee.php:181
+msgid "Pay with BlockBee"
+msgstr "Оплатіть через BlockBee"
+
+#: controllers/BlockBee.php:1270
 msgid "Payment confirmed"
 msgstr "Платіж підтверджено"
 
@@ -422,7 +418,7 @@ msgstr "Опис способу оплати, який побачить поку
 msgid "Please choose a cryptocurrency"
 msgstr "Будь ласка, виберіть криптовалюту"
 
-#: controllers/BlockBee.php:1350
+#: controllers/BlockBee.php:1353
 msgid "Please renew your subscription"
 msgstr "Будь ласка, оновіть вашу підписку"
 
@@ -435,7 +431,7 @@ msgstr ""
 "Будь ласка, оновіть вашу підписку на %1$s. Ви можете сплатити оновлення, "
 "коли будете готові: %2$s"
 
-#: controllers/BlockBee.php:398
+#: controllers/BlockBee.php:396
 msgid "Please select a Cryptocurrency"
 msgstr "Будь ласка, виберіть криптовалюту"
 
@@ -443,7 +439,7 @@ msgstr "Будь ласка, виберіть криптовалюту"
 msgid "PLEASE SEND"
 msgstr "БУДЬ ЛАСКА, ВІДПРАВТЕ"
 
-#: controllers/BlockBee.php:1204
+#: controllers/BlockBee.php:1207
 msgid "Processing can take some time depending on the blockchain."
 msgstr "Обробка може зайняти деякий час залежно від блокчейну."
 
@@ -484,7 +480,7 @@ msgstr ""
 "Виберіть, як ви хочете показати QR-код користувачу. Виберіть варіант для "
 "показу за замовчуванням або сховайте один із них."
 
-#: controllers/BlockBee.php:338
+#: controllers/BlockBee.php:335
 msgid ""
 "Select which coins do you wish to accept. CTRL + click to select multiple. "
 "Addresses must be set on the dashboard."
@@ -493,7 +489,7 @@ msgstr ""
 "Виберіть, які монети ви хочете приймати. CTRL + клік для вибору декількох. "
 "Адреси потрібно встановити на панелі керування."
 
-#: controllers/BlockBee.php:323
+#: controllers/BlockBee.php:320
 #| msgid ""
 #| "Selects the amount of time the user has to pay for the order. %1$s When "
 #| "this time is over, order will be marked as \"Cancelled\" and every paid "
@@ -525,7 +521,7 @@ msgstr ""
 "Вибирає колірну схему плагіна, щоб вона відповідала вашому сайту (Світла, "
 "Темна та Авто для автоматичного визначення)."
 
-#: controllers/BlockBee.php:1420
+#: controllers/BlockBee.php:1423
 msgid "Service Fee"
 msgstr "Сервісний збір"
 
@@ -559,7 +555,7 @@ msgstr "Показати QR-код із вказівкою суми"
 msgid "Show QR Code without value"
 msgstr "Показати QR-код без вказівки суми"
 
-#: controllers/BlockBee.php:1158
+#: controllers/BlockBee.php:1161
 msgid "Show the QR code"
 msgstr "Показати QR-код"
 
@@ -604,7 +600,7 @@ msgstr "Сталася помилка з оплатою. Будь ласка, с
 msgid "This controls the title which the user sees during checkout."
 msgstr "Це контролює назву, яку бачить користувач під час оформлення покупки."
 
-#: controllers/BlockBee.php:1151
+#: controllers/BlockBee.php:1154
 msgid "This order will be valid for %s"
 msgstr "Це замовлення буде дійсне протягом %s"
 
@@ -612,7 +608,7 @@ msgstr "Це замовлення буде дійсне протягом %s"
 msgid "This will add an estimation of the blockchain fee to the order value"
 msgstr "Це додасть оцінку комісії блокчейну до вартості замовлення"
 
-#: controllers/BlockBee.php:1230
+#: controllers/BlockBee.php:1233
 msgid "Time"
 msgstr "Час"
 
@@ -625,7 +621,7 @@ msgstr "Назва"
 msgid "User sent a payment of"
 msgstr "Користувач відправив платіж на суму"
 
-#: controllers/BlockBee.php:1233
+#: controllers/BlockBee.php:1236
 msgid "Value Paid"
 msgstr "Сплачена сума"
 
@@ -633,15 +629,15 @@ msgstr "Сплачена сума"
 msgid "Value too low, minimum is"
 msgstr "Значення надто мале, мінімум становить"
 
-#: controllers/BlockBee.php:1259
+#: controllers/BlockBee.php:1262
 msgid "Waiting for network confirmation"
 msgstr "Очікування на підтвердження мережею"
 
-#: controllers/BlockBee.php:1251
+#: controllers/BlockBee.php:1254
 msgid "Waiting for payment"
 msgstr "Очікування на платіж"
 
-#: controllers/BlockBee.php:328
+#: controllers/BlockBee.php:325
 msgid ""
 "When this setting is enabled, the plugin will mark the order as "
 "\"completed\" then payment is received. %1$s Only for virtual products %2$s."
@@ -653,10 +649,10 @@ msgstr ""
 msgid "WITH AMOUNT"
 msgstr "З СУМОЮ"
 
-#: controllers/BlockBee.php:1214
+#: controllers/BlockBee.php:1217
 msgid "Your payment has been confirmed!"
 msgstr "Ваш платіж було підтверджено!"
 
-#: controllers/BlockBee.php:1203
+#: controllers/BlockBee.php:1206
 msgid "Your payment is being processed!"
 msgstr "Ваш платіж обробляється!"

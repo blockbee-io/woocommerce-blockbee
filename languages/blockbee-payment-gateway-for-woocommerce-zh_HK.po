@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-04-01 14:46+0000\n"
-"PO-Revision-Date: 2024-09-20 10:48+0000\n"
+"PO-Revision-Date: 2024-12-03 17:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: Chinese (Hong Kong)\n"
 "Language: zh_HK\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.6.11; wp-6.6.2"
 
-#: controllers/BlockBee.php:343
+#: controllers/BlockBee.php:340
 msgid ""
 "%2$s Attention: This option will disable the price conversion for ALL "
 "cryptocurrencies! %3$s %1$s If you check this, pricing will not be converted "
@@ -27,35 +27,23 @@ msgstr ""
 "%2$s 注意：此选项将禁用所有加密货币的价格转换！%3$s %1$s "
 "如果您选中此项，定价将不会从您商店的货币转换为用户选择的加密货币，且无论选择哪种加密货币，用户都将被要求支付与您商店显示的相同价值"
 
-#: controllers/BlockBee.php:317
+#: controllers/BlockBee.php:313
 msgid "1 Hour"
 msgstr "1小时"
 
-#: controllers/BlockBee.php:319
+#: controllers/BlockBee.php:315
 msgid "12 Hours"
 msgstr "12小时"
 
-#: controllers/BlockBee.php:314
-msgid "15 Minutes"
-msgstr "15分钟"
-
-#: controllers/BlockBee.php:320
+#: controllers/BlockBee.php:316
 msgid "18 Hours"
 msgstr "18小时"
 
-#: controllers/BlockBee.php:321
+#: controllers/BlockBee.php:317
 msgid "24 Hours"
 msgstr "24小时"
 
-#: controllers/BlockBee.php:315
-msgid "30 Minutes"
-msgstr "30分钟"
-
-#: controllers/BlockBee.php:316
-msgid "45 Minutes"
-msgstr "45分钟"
-
-#: controllers/BlockBee.php:318
+#: controllers/BlockBee.php:314
 msgid "6 Hours"
 msgstr "6小时"
 
@@ -72,7 +60,7 @@ msgstr "片刻后调整"
 msgid "Accept cryptocurrency payments on your WooCommerce website"
 msgstr "在您的WooCommerce网站上接受加密货币支付"
 
-#: controllers/BlockBee.php:332
+#: controllers/BlockBee.php:329
 msgid "Accepted cryptocurrencies"
 msgstr ""
 "接受的加密货币\n"
@@ -151,19 +139,19 @@ msgstr ""
 "href=\"https://dash.blockbee.io/settings/checkout/\" target=\"_blank\">https:"
 "//dash.blockbee.io/settings/checkout/</a> 配置結帳頁面設置。"
 
-#: controllers/BlockBee.php:1528
+#: controllers/BlockBee.php:1539
 msgid "Check for Callbacks"
 msgstr "检查回调"
 
-#: controllers/BlockBee.php:1465
+#: controllers/BlockBee.php:1472
 msgid "Check your payment status"
 msgstr "检查您的支付状态"
 
-#: controllers/BlockBee.php:1537
+#: controllers/BlockBee.php:1548
 msgid "Checking"
 msgstr "正在检查"
 
-#: controllers/BlockBee.php:1168
+#: controllers/BlockBee.php:1171
 msgid "Close QR CODE"
 msgstr "关闭二维码"
 
@@ -171,21 +159,17 @@ msgstr "关闭二维码"
 msgid "Color Scheme"
 msgstr "配色方案"
 
-#: controllers/BlockBee.php:326
+#: controllers/BlockBee.php:323
 msgid "Completed status for virtual products"
 msgstr "虚拟产品的完成状态"
 
-#: controllers/BlockBee.php:1103 controllers/BlockBee.php:1141
+#: controllers/BlockBee.php:1103 controllers/BlockBee.php:1144
 msgid "COPIED!"
 msgstr "已复制！"
 
-#: controllers/BlockBee.php:1101 controllers/BlockBee.php:1139
+#: controllers/BlockBee.php:1101 controllers/BlockBee.php:1142
 msgid "COPY"
 msgstr "复制"
-
-#: controllers/BlockBee.php:181
-msgid "Cryptocurrency"
-msgstr "加密货币"
 
 #: controllers/BlockBee.php:288
 msgid "Dark"
@@ -203,7 +187,7 @@ msgstr "默认不带金额"
 msgid "Description"
 msgstr "描述"
 
-#: controllers/BlockBee.php:341
+#: controllers/BlockBee.php:338
 msgid "Disable price conversion"
 msgstr "禁用价格转换"
 
@@ -221,31 +205,31 @@ msgstr "启用此功能在结账时显示加密货币标志 %1$s %2$s 注意：%
 msgid "Enabled"
 msgstr "已启用"
 
-#: controllers/BlockBee.php:300
+#: controllers/BlockBee.php:299
 msgid "Every 10 Minutes"
 msgstr "每10分钟"
 
-#: controllers/BlockBee.php:301
+#: controllers/BlockBee.php:300
 msgid "Every 15 Minutes"
 msgstr "每15分钟"
 
-#: controllers/BlockBee.php:302
+#: controllers/BlockBee.php:301
 msgid "Every 30 Minutes"
 msgstr "每30分钟"
 
-#: controllers/BlockBee.php:303
+#: controllers/BlockBee.php:302
 msgid "Every 45 Minutes"
 msgstr "每45分钟"
 
-#: controllers/BlockBee.php:299
+#: controllers/BlockBee.php:298
 msgid "Every 5 Minutes"
 msgstr "每5分钟"
 
-#: controllers/BlockBee.php:304
+#: controllers/BlockBee.php:303
 msgid "Every 60 Minutes"
 msgstr "每60分钟"
 
-#: controllers/BlockBee.php:1236
+#: controllers/BlockBee.php:1239
 msgid "FIAT Value"
 msgstr "法定货币价值"
 
@@ -273,7 +257,7 @@ msgstr "https://blockbee.io/"
 msgid "https://blockbee.io/resources/woocommerce/"
 msgstr "https://blockbee.io/resources/woocommerce/"
 
-#: controllers/BlockBee.php:1524
+#: controllers/BlockBee.php:1535
 msgid ""
 "If the order is not being updated, your ISP is probably blocking our IPs "
 "(%1$s and %2$s): please try to get them whitelisted and feel free to contact "
@@ -323,7 +307,7 @@ msgstr "在此处输入您的BlockBee API密钥。您可以在这里获取一个
 msgid "Light"
 msgstr "浅色"
 
-#: controllers/BlockBee.php:298 controllers/BlockBee.php:313
+#: controllers/BlockBee.php:304 controllers/BlockBee.php:318
 msgid "Never"
 msgstr "从不"
 
@@ -333,11 +317,17 @@ msgid ""
 "payment method or try again later."
 msgstr "目前沒有加密貨幣可用。請選擇其他付款方式或稍後再試。"
 
+#: controllers/BlockBee.php:1136
+msgid ""
+"Note: If using an exchange please add the exchange fee to the sent amount. "
+"Exchanges usually deduct the fee from the sent amount."
+msgstr "注意：如果使用交易所，請將交易所手續費添加到發送金額中。交易所通常會從發送金額中扣除手續費。"
+
 #: controllers/BlockBee.php:1116
 msgid "Notice"
 msgstr "注意"
 
-#: controllers/BlockBee.php:1163
+#: controllers/BlockBee.php:1166
 msgid "Open QR CODE"
 msgstr "打开二维码"
 
@@ -346,29 +336,33 @@ msgstr "打开二维码"
 msgid "Order cancellation timeout"
 msgstr "订单取消超时"
 
-#: controllers/BlockBee.php:1297
+#: controllers/BlockBee.php:1300
 msgid "Order cancelled due to lack of payment."
 msgstr "由于缺乏支付，订单已取消。"
 
-#: controllers/BlockBee.php:1224
+#: controllers/BlockBee.php:1227
 msgid ""
 "Order has been cancelled due to lack of payment. Please don't send any "
 "payment to the address."
 msgstr "由于缺乏支付，订单已被取消。请不要向该地址发送任何支付。"
 
-#: controllers/BlockBee.php:1150
+#: controllers/BlockBee.php:1153
 msgid "Order will be cancelled in less than a minute."
 msgstr "订单将在不到一分钟内取消。"
 
-#: controllers/BlockBee.php:1476
+#: controllers/BlockBee.php:1487
 msgid "Pay"
 msgstr "支付"
 
-#: controllers/BlockBee.php:409
+#: controllers/BlockBee.php:407
 msgid "Pay with"
 msgstr "支付方式"
 
-#: controllers/BlockBee.php:1267
+#: controllers/BlockBee.php:181
+msgid "Pay with BlockBee"
+msgstr "使用 BlockBee 付款"
+
+#: controllers/BlockBee.php:1270
 msgid "Payment confirmed"
 msgstr "支付已确认"
 
@@ -392,7 +386,7 @@ msgstr "客户在您的结账页面上将看到的支付方式描述"
 msgid "Please choose a cryptocurrency"
 msgstr "请选择一种加密货币"
 
-#: controllers/BlockBee.php:1350
+#: controllers/BlockBee.php:1353
 msgid "Please renew your subscription"
 msgstr "请续订您的订阅"
 
@@ -403,7 +397,7 @@ msgid ""
 "ready: %2$s"
 msgstr "请在%1$s上续订您的订阅。您可以在准备好时支付续订费用：%2$s。"
 
-#: controllers/BlockBee.php:398
+#: controllers/BlockBee.php:396
 msgid "Please select a Cryptocurrency"
 msgstr "请选择一种加密货币"
 
@@ -411,7 +405,7 @@ msgstr "请选择一种加密货币"
 msgid "PLEASE SEND"
 msgstr "請發送"
 
-#: controllers/BlockBee.php:1204
+#: controllers/BlockBee.php:1207
 msgid "Processing can take some time depending on the blockchain."
 msgstr "处理时间可能根据区块链的不同而有所不同。"
 
@@ -450,7 +444,7 @@ msgid ""
 "to show first, or hide one of them."
 msgstr "选择您想如何向用户显示二维码。选择一个默认显示，或隐藏其中一个。"
 
-#: controllers/BlockBee.php:338
+#: controllers/BlockBee.php:335
 msgid ""
 "Select which coins do you wish to accept. CTRL + click to select multiple. "
 "Addresses must be set on the dashboard."
@@ -463,7 +457,7 @@ msgstr ""
 "\n"
 "\n"
 
-#: controllers/BlockBee.php:323
+#: controllers/BlockBee.php:320
 #| msgid ""
 #| "Selects the amount of time the user has to pay for the order. %1$s When "
 #| "this time is over, order will be marked as \"Cancelled\" and every paid "
@@ -489,7 +483,7 @@ msgid ""
 "and Auto to automatically detect it)."
 msgstr "选择插件的配色方案以匹配您的网站（浅色，深色和自动以自动检测）"
 
-#: controllers/BlockBee.php:1420
+#: controllers/BlockBee.php:1423
 msgid "Service Fee"
 msgstr "服务费"
 
@@ -521,7 +515,7 @@ msgstr "显示带有金额的二维码"
 msgid "Show QR Code without value"
 msgstr "显示无金额的二维码"
 
-#: controllers/BlockBee.php:1158
+#: controllers/BlockBee.php:1161
 msgid "Show the QR code"
 msgstr "显示二维码"
 
@@ -561,7 +555,7 @@ msgstr "支付时出错。请再试一次。"
 msgid "This controls the title which the user sees during checkout."
 msgstr "这控制了用户在结账时看到的标题。"
 
-#: controllers/BlockBee.php:1151
+#: controllers/BlockBee.php:1154
 msgid "This order will be valid for %s"
 msgstr "這份訂單將會在 %s 內有效。"
 
@@ -569,7 +563,7 @@ msgstr "這份訂單將會在 %s 內有效。"
 msgid "This will add an estimation of the blockchain fee to the order value"
 msgstr "这将在订单价值中加入一个区块链费用的估算"
 
-#: controllers/BlockBee.php:1230
+#: controllers/BlockBee.php:1233
 msgid "Time"
 msgstr "时间"
 
@@ -582,7 +576,7 @@ msgstr "标题"
 msgid "User sent a payment of"
 msgstr "用户已发送支付金额"
 
-#: controllers/BlockBee.php:1233
+#: controllers/BlockBee.php:1236
 msgid "Value Paid"
 msgstr "支付的金额"
 
@@ -590,15 +584,15 @@ msgstr "支付的金额"
 msgid "Value too low, minimum is"
 msgstr "价值过低，最低为"
 
-#: controllers/BlockBee.php:1259
+#: controllers/BlockBee.php:1262
 msgid "Waiting for network confirmation"
 msgstr "等待网络确认"
 
-#: controllers/BlockBee.php:1251
+#: controllers/BlockBee.php:1254
 msgid "Waiting for payment"
 msgstr "等待支付"
 
-#: controllers/BlockBee.php:328
+#: controllers/BlockBee.php:325
 msgid ""
 "When this setting is enabled, the plugin will mark the order as "
 "\"completed\" then payment is received. %1$s Only for virtual products %2$s."
@@ -608,10 +602,10 @@ msgstr "当此设置启用时，插件将在接收到付款后将订单标记为
 msgid "WITH AMOUNT"
 msgstr "带金额"
 
-#: controllers/BlockBee.php:1214
+#: controllers/BlockBee.php:1217
 msgid "Your payment has been confirmed!"
 msgstr "您的支付已被确认！"
 
-#: controllers/BlockBee.php:1203
+#: controllers/BlockBee.php:1206
 msgid "Your payment is being processed!"
 msgstr "您的支付正在处理中！"

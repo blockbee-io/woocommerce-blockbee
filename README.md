@@ -260,4 +260,11 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 #### 1.2.5
 * Minor fixes
 
+#### 1.2.6
+* Minor improvements
+
+#### 1.2.7
+* Minor improvements.
+* Minor fixes.
+
 ### Upgrade Notice

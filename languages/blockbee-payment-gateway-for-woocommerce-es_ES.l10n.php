@@ -1,6 +1,6 @@
 <?php
-return ['project-id-version'=>'','report-msgid-bugs-to'=>'','pot-creation-date'=>'2024-04-01 14:46+0000','po-revision-date'=>'2024-09-20 10:46+0000','last-translator'=>'','language-team'=>'Spanish (Spain)','language'=>'es_ES','plural-forms'=>'nplurals=2; plural=n != 1;','mime-version'=>'1.0','content-type'=>'text/plain; charset=UTF-8','content-transfer-encoding'=>'8bit','x-generator'=>'Loco https://localise.biz/','x-loco-version'=>'2.6.11; wp-6.6.2','messages'=>['%2$s Attention: This option will disable the price conversion for ALL cryptocurrencies! %3$s %1$s If you check this, pricing will not be converted from the currency of your shop to the cryptocurrency selected by the user, and users will be requested to pay the same value as shown on your shop, regardless of the cryptocurrency selected'=>'%2$s Atención: ¡Esta opción deshabilitará la conversión de precios para TODAS las criptomonedas! %3$s %1$s Si marca esto, el precio no se convertirá de la moneda de su tienda a la criptomoneda seleccionada por el usuario, y se les pedirá a los usuarios que paguen el mismo valor que se muestra en su tienda, independientemente de la criptomoneda seleccionada','1 Hour'=>'1 Hora','12 Hours'=>'12 Horas
-','15 Minutes'=>'15 Minutos','18 Hours'=>'18 Horas','24 Hours'=>'24 Horas','30 Minutes'=>'30 Minutos','45 Minutes'=>'45 Minutos','6 Hours'=>'6 Horas','<span style="color: #c79a05;">(New)</span> Enable Checkout'=>'<span style="color: #c79a05;">(Nuevo)</span> Habilitar Checkout
+return ['project-id-version'=>'','report-msgid-bugs-to'=>'','pot-creation-date'=>'2024-04-01 14:46+0000','po-revision-date'=>'2024-12-03 17:31+0000','last-translator'=>'','language-team'=>'Spanish (Spain)','language'=>'es_ES','plural-forms'=>'nplurals=2; plural=n != 1;','mime-version'=>'1.0','content-type'=>'text/plain; charset=UTF-8','content-transfer-encoding'=>'8bit','x-generator'=>'Loco https://localise.biz/','x-loco-version'=>'2.6.11; wp-6.6.2','messages'=>['%2$s Attention: This option will disable the price conversion for ALL cryptocurrencies! %3$s %1$s If you check this, pricing will not be converted from the currency of your shop to the cryptocurrency selected by the user, and users will be requested to pay the same value as shown on your shop, regardless of the cryptocurrency selected'=>'%2$s Atención: ¡Esta opción deshabilitará la conversión de precios para TODAS las criptomonedas! %3$s %1$s Si marca esto, el precio no se convertirá de la moneda de su tienda a la criptomoneda seleccionada por el usuario, y se les pedirá a los usuarios que paguen el mismo valor que se muestra en su tienda, independientemente de la criptomoneda seleccionada','1 Hour'=>'1 Hora','12 Hours'=>'12 Horas
+','18 Hours'=>'18 Horas','24 Hours'=>'24 Horas','6 Hours'=>'6 Horas','<span style="color: #c79a05;">(New)</span> Enable Checkout'=>'<span style="color: #c79a05;">(Nuevo)</span> Habilitar Checkout
 ','a moment'=>'un momento','Accept cryptocurrency payments on your WooCommerce website'=>'Acepte pagos en criptomonedas en su sitio web de WooCommerce
 ','Accepted cryptocurrencies'=>'Criptomonedas aceptadas','Add the blockchain fee to the order'=>'Agregue la tarifa de blockchain al pedido
 ','ADDRESS'=>'DIRECCIÓN
@@ -16,7 +16,6 @@ return ['project-id-version'=>'','report-msgid-bugs-to'=>'','pot-creation-date'=
 ','COPIED!'=>'
 ¡COPIADA!(feminino)
 ¡COPIADO!','COPY'=>'COPIAR
-','Cryptocurrency'=>'Criptomoneda
 ','Dark'=>'Oscuro','Default Amount'=>'Predeterminado con Valor
 ','Default Without Amount'=>'Predeterminado Sin Valor
 ','Description'=>'Descripción
@@ -36,13 +35,13 @@ return ['project-id-version'=>'','report-msgid-bugs-to'=>'','pot-creation-date'=
 ','If you need any help or have any suggestion, contact us via the <b>live chat</b> on our <b><a href=\'https://blockbee.io\' target=\'_blank\'>website</a></b> or join our <b><a href=\'https://discord.gg/cryptapi\' target=\'_blank\'>Discord server</a></b>'=>'Si necesita ayuda o tiene alguna sugerencia, comuníquese con nosotros a través del <b>chat en vivo</b> en nuestro <b><a href=\'https://blockbee.io\' target=\'_blank\'>sitio web</ a></b> o únete a nuestro <b><a href=\'https://discord.gg/cryptapi\' target=\'_blank\'>servidor de Discord</a></b>
 ','Insert here your BlockBee API Key. You can get one here: %1$s'=>'Inserte aquí su clave API de BlockBee. Puedes conseguir uno aquí: %1$s
 ','Light'=>'Ligero','Never'=>'Nunca
-','No cryptocurrencies available at the moment. Please choose a different payment method or try again later.'=>'No hay criptomonedas disponibles en este momento. Por favor, elija otro método de pago o inténtelo de nuevo más tarde.','Notice'=>'Aviso
+','No cryptocurrencies available at the moment. Please choose a different payment method or try again later.'=>'No hay criptomonedas disponibles en este momento. Por favor, elija otro método de pago o inténtelo de nuevo más tarde.','Note: If using an exchange please add the exchange fee to the sent amount. Exchanges usually deduct the fee from the sent amount.'=>'Nota: Si utiliza un exchange, por favor añada la comisión del exchange al monto enviado. Los exchanges usualmente deducen la comisión del monto enviado.','Notice'=>'Aviso
 ','Open QR CODE'=>'Abrir CÓDIGO QR
 ','Order cancellation timeout'=>'Tiempo de espera de cancelación de pedido
 ','Order cancelled due to lack of payment.'=>'Pedido cancelado por falta de pago.
 ','Order has been cancelled due to lack of payment. Please don\'t send any payment to the address.'=>'El pedido ha sido cancelado por falta de pago. Por favor, no envíe ningún pago a la dirección.
 ','Order will be cancelled in less than a minute.'=>'El pedido se cancelará en menos de un minuto.
-','Pay'=>'Pagar','Pay with'=>'Pagar con','Payment confirmed'=>'Pago confirmado
+','Pay'=>'Pagar','Pay with'=>'Pagar con','Pay with BlockBee'=>'Paga con BlockBee','Payment confirmed'=>'Pago confirmado
 ','Payment could not be processed, please try again'=>'No se pudo procesar el pago, intente nuevamente
 ','Payment detected and confirmed. Customer still need to send'=>'Pago detectado y confirmado. El cliente todavía necesita enviar
 ','Payment error:'=>'Error en el pago:
