@@ -3,7 +3,7 @@ Contributors: blockbee
 Tags: crypto payments, payment gateway, cryptocurrencies, payments,
 Requires at least: 5.8
 Tested up to: 6.7
-Stable tag: 1.2.7
+Stable tag: 1.2.8
 Requires PHP: 7.2
 WC requires at least: 5.8
 WC tested up to: 9.4.1
@@ -276,6 +276,10 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Minor improvements.
 
 = 1.2.7 =
+* Minor improvements.
+* Minor fixes.
+
+= 1.2.8 =
 * Minor improvements.
 * Minor fixes.
 

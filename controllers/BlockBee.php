@@ -1478,7 +1478,7 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
 
     function add_order_link($actions, $order)
     {
-        if ($order->has_status('on-hold')) {
+        if ($order->has_status('on-hold') && $order->get_payment_method() === 'blockbee') {
             $action_slug = 'blockbee_payment_url';
             $link = (bool) $order->get_meta('blockbee_checkout') ? $order->get_meta('blockbee_payment_url') : $order->get_checkout_payment_url();
 
@@ -1487,7 +1487,6 @@ class WC_BlockBee_Gateway extends WC_Payment_Gateway
                 'name' => __('Pay', 'blockbee-cryptocurrency-payment-gateway'),
             );
         }
-
         return $actions;
     }
 
