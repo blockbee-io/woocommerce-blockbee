@@ -271,4 +271,7 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Minor improvements.
 * Minor fixes.
 
+#### 1.3.0
+* Version bump
+
 ### Upgrade Notice
