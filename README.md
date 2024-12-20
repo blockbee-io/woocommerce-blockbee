@@ -28,8 +28,10 @@ The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto dire
 * (TRX) Tron
 * (BNB) Binance Coin
 * (USDT) USDT
+* (USDC) USDC
 * (SHIB) Shiba Inu
 * (DOGE) Dogecoin
+* (SOL) Solana
 
 among many others, for a full list of the supported cryptocurrencies and tokens, check [this page](https://blockbee.io/cryptocurrencies/).
 
@@ -273,5 +275,9 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 
 #### 1.3.0
 * Version bump
+
+#### 1.4.0
+* Now supports WordPress Blocks.
+* Bug fixes.
 
 ### Upgrade Notice
