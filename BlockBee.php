@@ -3,7 +3,7 @@
 Plugin Name: BlockBee Cryptocurrency Payment Gateway
 Plugin URI: https://blockbee.io/resources/woocommerce/
 Description: Accept cryptocurrency payments on your WooCommerce website
-Version: 1.4.0
+Version: 1.4.1
 Requires at least: 5.8
 Tested up to: 6.7.1
 WC requires at least: 5.8
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-define('BLOCKBEE_PLUGIN_VERSION', '1.4.0');
+define('BLOCKBEE_PLUGIN_VERSION', '1.4.1');
 define('BLOCKBEE_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('BLOCKBEE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -104,21 +104,29 @@ add_filter('woocommerce_rest_checkout_process_payment_method_data', function($pa
 }, 10, 2);
 
 
-
 // Register minimum endpoint to be used in the blocks
-
 add_action('rest_api_init', function () {
     register_rest_route('blockbee/v1', '/get-minimum', array(
         'methods' => 'POST',
         'callback' => 'blockbee_get_minimum',
-        'permission_callback' => '__return_true', // Update for better security
+        'permission_callback' => 'blockbee_verify_nonce',
     ));
     register_rest_route('blockbee/v1', '/update-coin', array(
         'methods' => 'POST',
         'callback' => 'blockbee_update_coin',
-        'permission_callback' => '__return_true', // Add security check as needed
+        'permission_callback' => 'blockbee_verify_nonce',
     ));
 });
+
+function blockbee_verify_nonce(WP_REST_Request $request) {
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+    if ($origin !== home_url()) {
+        return false;
+    }
+
+    $nonce = $request->get_header('X-WP-Nonce');
+    return wp_verify_nonce($nonce, 'wp_rest');
+}
 
 function blockbee_get_minimum(WP_REST_Request $request) {
     $coin = sanitize_text_field($request->get_param('coin'));

@@ -136,7 +136,7 @@ class WC_BlockBee_Payments extends AbstractPaymentMethodType {
             'wp-api-fetch'
         ], $version, true);
         wp_localize_script($handle, 'blockbeeData', [
-            'nonce' => wp_create_nonce('wp_rest'),
+            'nonce' => wp_create_nonce('blockbee_rest'),
         ]);
 
         return [

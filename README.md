@@ -280,4 +280,8 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Now supports WordPress Blocks.
 * Bug fixes.
 
+#### 1.4.1
+* Now supports WordPress Blocks.
+* Bug fixes.
+
 ### Upgrade Notice

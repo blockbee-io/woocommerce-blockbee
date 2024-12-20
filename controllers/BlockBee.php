@@ -5,6 +5,10 @@ namespace BlockBee\Controllers;
 require_once BLOCKBEE_PLUGIN_PATH . 'utils/Api.php';
 require_once BLOCKBEE_PLUGIN_PATH . 'utils/Helper.php';
 
+use AllowDynamicProperties;
+use Exception;
+
+#[AllowDynamicProperties]
 class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
     private static $HAS_TRIGGERED = false;
 
