@@ -3,11 +3,11 @@
 Plugin Name: BlockBee Cryptocurrency Payment Gateway
 Plugin URI: https://blockbee.io/resources/woocommerce/
 Description: Accept cryptocurrency payments on your WooCommerce website
-Version: 1.4.1
+Version: 1.4.2
 Requires at least: 5.8
 Tested up to: 6.7.1
 WC requires at least: 5.8
-WC tested up to: 9.5.1
+WC tested up to: 9.6.0
 Requires PHP: 7.2
 Author: BlockBee
 Author URI: https://blockbee.io/
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-define('BLOCKBEE_PLUGIN_VERSION', '1.4.1');
+define('BLOCKBEE_PLUGIN_VERSION', '1.4.2');
 define('BLOCKBEE_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('BLOCKBEE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
