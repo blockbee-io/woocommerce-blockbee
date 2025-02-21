@@ -79,7 +79,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
         add_action('wp_footer', array($this, 'refresh_checkout'));
 
-        add_action('woocommerce_email_order_details', array($this, 'add_email_link'), 2, 4);
+        add_action('woocommerce_email_order_details', array($this, 'add_email_link'), 10, 4);
 
         add_filter('woocommerce_my_account_my_orders_actions', array($this, 'add_order_link'), 10, 2);
 
@@ -1476,28 +1476,29 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
     function add_email_link($order, $sent_to_admin, $plain_text, $email)
     {
-        if (WC_BlockBee_Gateway::$HAS_TRIGGERED) {
+        if ($order->get_meta('_blockbee_email_link_added') === 'yes') {
             return;
         }
 
         if ($email->id == 'customer_on_hold_order') {
-            $link = (bool) $order->get_meta('blockbee_checkout') ? $order->get_meta('blockbee_payment_url') : $order->get_checkout_payment_url();
+            $link = esc_url($order->get_meta('blockbee_checkout') === 'true' ? $order->get_meta('blockbee_payment_url') : $order->get_checkout_order_received_url());
 
             if ($plain_text) {
                 echo $link;
             } else {
                 echo wp_kses_post('<div style="text-align:center; margin-bottom: 30px;"><a style="display:block;text-align:center;margin: 40px auto; font-size: 16px; font-weight: bold;" href="' . esc_url($link) . '" target="_blank">' . __('Check your payment status', 'blockbee-cryptocurrency-payment-gateway') . '</a></div>');
             }
-        }
 
-        WC_BlockBee_Gateway::$HAS_TRIGGERED = true;
+            $order->update_meta_data('_blockbee_email_link_added', 'yes');
+            $order->save();
+        }
     }
 
     function add_order_link($actions, $order)
     {
         if ($order->has_status('on-hold') && $order->get_payment_method() === 'blockbee') {
             $action_slug = 'blockbee_payment_url';
-            $link = (bool) $order->get_meta('blockbee_checkout') ? $order->get_meta('blockbee_payment_url') : $order->get_checkout_payment_url();
+            $link = esc_url($order->get_meta('blockbee_checkout') === 'true' ? $order->get_meta('blockbee_payment_url') : $order->get_checkout_order_received_url());
 
             $actions[$action_slug] = array(
                 'url' => $link,
