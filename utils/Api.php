@@ -296,6 +296,16 @@ class Api {
         return null;
     }
 
+    public static function get_pubkey() {
+        $response = self::_request(null, 'pubkey', []);
+
+        if ($response->status == 'success') {
+            return $response->pubkey;
+        }
+
+        return null;
+    }
+
     private static function _request($coin, $endpoint, $params = [], $assoc = false)
     {
         $base_url = Api::$base_url;

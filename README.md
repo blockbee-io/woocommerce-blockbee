@@ -290,4 +290,8 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 #### 1.4.3
 * Bug fixes.
 
+#### 1.5.0
+* Callback improvements
+* Minor bugfixes
+
 ### Upgrade Notice

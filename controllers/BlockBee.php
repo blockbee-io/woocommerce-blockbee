@@ -234,6 +234,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                 'add_blockchain_fee' => array(
                     'title' => __('Add the blockchain fee to the order', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'checkbox',
+                    'class' => 'checkout-dependent',
                     'label' => __("This will add an estimation of the blockchain fee to the order value", 'blockbee-cryptocurrency-payment-gateway'),
                     'default' => 'no',
                 ),
@@ -494,12 +495,12 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         if (!empty($apikey)) {
             $currency = get_woocommerce_currency();
 
-            $callback_url = str_replace('https:', 'http:', add_query_arg(array(
+            $callback_url = add_query_arg(array(
                 'wc-api' => 'WC_Gateway_BlockBee',
                 'wc_api_type' => $this->checkout_enabled ? 'checkout': "custom_api",
                 'order_id' => $order_id,
                 'nonce' => $nonce,
-            ), home_url('/')));
+            ), trailingslashit(home_url('')));
 
             try {
                 $order = new \WC_Order($order_id);
@@ -636,6 +637,10 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
         $type = $data['wc_api_type'] ?? null;
 
+        if (!$this->verify_signature($_SERVER)) {
+            die('Sig not valid');
+        }
+
         if ($type === 'checkout'){
             $saved_success_token=$order->get_meta('blockbee_success_token');
             // If success token provided in IPN isn't the same as the one stored locally will just die here.
@@ -656,6 +661,41 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
         // Actually process the callback data
         $this->process_callback_data($data, $order);
+    }
+
+    static function load_pubkey() {
+        $transient = get_transient('blockbee_pubkey');
+
+        if (!empty($transient)) {
+            $pubkey = $transient;
+        } else {
+            $pubkey = \BlockBee\Utils\Api::get_pubkey();
+            set_transient('blockbee_pubkey', $pubkey, 86400);
+
+            if (empty($pubkey)) {
+                throw new Exception('Failed fetching the pubkey.');
+            }
+        }
+
+        return $pubkey;
+    }
+
+    function verify_signature($server) {
+        $pubkey = $this->load_pubkey();
+
+        if (!array_key_exists( 'HTTP_X_CA_SIGNATURE', $server )) {
+            return false;
+        }
+
+        $signature = base64_decode($server['HTTP_X_CA_SIGNATURE']);
+
+        $algo = OPENSSL_ALGO_SHA256;
+
+        $home_url = home_url('');
+
+        $data = "$home_url$server[REQUEST_URI]";
+
+        return (bool) openssl_verify($data, $signature, $pubkey, $algo);
     }
 
     function order_status()
