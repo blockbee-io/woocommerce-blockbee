@@ -294,4 +294,7 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Callback improvements
 * Minor bugfixes
 
+#### 1.5.1
+* Version bump
+
 ### Upgrade Notice
