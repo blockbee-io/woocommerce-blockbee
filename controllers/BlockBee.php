@@ -224,6 +224,12 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                     'default' => 'no',
                     'description' => __('By enabling this option, your users will be redirected to our secure Checkout page to complete their payment (<a href="https://pay.blockbee.io/payment/demo/" target="_blank">see demo</a>).<br/>You can configure the Checkout page settings in your BlockBee dashboard at <a href="https://dash.blockbee.io/settings/checkout/" target="_blank">https://dash.blockbee.io/settings/checkout/</a>.', 'blockbee-cryptocurrency-payment-gateway'),
                 ),
+                'show_branding' => array(
+                    'title' => esc_attr(__('Show BlockBee branding', 'blockbee-cryptocurrency-payment-gateway')),
+                    'type' => 'checkbox',
+                    'label' => esc_attr(__('Show BlockBee logo and credits', 'blockbee-cryptocurrency-payment-gateway')),
+                    'default' => 'yes'
+                ),
                 'show_crypto_logos' => array(
                     'title' => __('Show crypto logos in checkout', 'blockbee-cryptocurrency-payment-gateway'),
                     'type' => 'checkbox',
@@ -388,7 +394,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
     public function get_icon()
     {
-        $icon = '<img style="position:relative" width="120" src="' . esc_url(BLOCKBEE_PLUGIN_URL) . 'static/files/blockbee_logo.png' . '" alt="' . esc_attr($this->get_title()) . '" />';
+        $icon = $this->show_branding ? '<img style="position:relative" width="120" src="' . esc_url(BLOCKBEE_PLUGIN_URL) . 'static/files/blockbee_logo.png' . '" alt="' . esc_attr($this->get_title()) . '" />' : '';
 
         return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
     }

@@ -85,6 +85,7 @@ class WC_BlockBee_Payments extends AbstractPaymentMethodType {
             'description'   => $this->get_setting('description'),
             'checkout_enabled' => $this-> get_setting('checkout_enabled') === 'yes',
             'coins' => $output_coins,
+            'show_branding' => $this-> get_setting('show_branding') === 'yes',
             'show_crypto_logos' => $this-> get_setting('show_crypto_logos') === 'yes',
             'add_blockchain_fee' => $this-> get_setting('add_blockchain_fee') === 'yes',
             'fee_order_percentage' => (float) $this-> get_setting('fee_order_percentage'),
@@ -106,7 +107,7 @@ class WC_BlockBee_Payments extends AbstractPaymentMethodType {
             [
                 'id'  => $this->name,
                 'alt' => $this->get_setting('title'),
-                'src' => esc_url(BLOCKBEE_PLUGIN_URL) . 'static/files/blockbee_logo.png'
+                'src' => $this->get_setting('show_crypto_logos') === 'yes' ? esc_url(BLOCKBEE_PLUGIN_URL) . 'static/files/blockbee_logo.png' : ''
             ]
         ];
     }
