@@ -2,11 +2,11 @@
 Contributors: blockbee
 Tags: crypto payments, payment gateway, cryptocurrencies, payments,
 Requires at least: 5.8
-Tested up to: 6.8.1
-Stable tag: 1.5.3
+Tested up to: 6.8.2
+Stable tag: 1.5.4
 Requires PHP: 7.2
 WC requires at least: 5.8
-WC tested up to: 9.8.3
+WC tested up to: 10.0.2
 License: MIT
 
 Accept cryptocurrency payments on your WooCommerce website
@@ -145,7 +145,7 @@ If the WooCommerce order total is below the chosen cryptocurrency's minimum, an 
 
 = Where can I find more documentation on your service? =
 
-You can find more documentation about our service on our [website](https://blockbee.io/), our [technical documentation](https://docs.blockbee.io/) page or our [e-commerce](https://blockbee.io/ecommerce/) page.
+You can find more documentation about our service on our [website](https://blockbee.io/), our [technical documentation](https://docs.blockbee.io/get-started/woocommerce) page.
 If there's anything else you need that is not covered on those pages, please get in touch with us, we're here to help you!
 
 = Where can I get support? =
@@ -310,6 +310,9 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 
 = 1.5.3 =
 * New customization options
+* Minor bugfixes
+
+= 1.5.4 =
 * Minor bugfixes
 
 == Upgrade Notice ==

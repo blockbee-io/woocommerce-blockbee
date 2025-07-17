@@ -304,5 +304,7 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * New customization options
 * Minor bugfixes
 
+#### 1.5.4
+* Minor bugfixes
 
 ### Upgrade Notice

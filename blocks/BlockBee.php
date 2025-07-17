@@ -91,9 +91,9 @@ class WC_BlockBee_Payments extends AbstractPaymentMethodType {
             'fee_order_percentage' => (float) $this-> get_setting('fee_order_percentage'),
             'supports' => array_filter($this->gateway->supports, [$this->gateway, 'supports']),
             'translations' => [
-                'please_select_cryptocurrency' => __('Please select a Cryptocurrency', 'blockbee-cryptocurrency-payment-gateway'),
-                'error_ocurred' => __('There was an error with the payment. Please try again.', 'blockbee-cryptocurrency-payment-gateway'),
-                'cart_must_be_higher' => __('The cart total must be higher to use this cryptocurrency.', 'blockbee-cryptocurrency-payment-gateway')
+                'please_select_cryptocurrency' => __('Please select a Cryptocurrency', 'blockbee'),
+                'error_ocurred' => __('There was an error with the payment. Please try again.', 'blockbee'),
+                'cart_must_be_higher' => __('The cart total must be higher to use this cryptocurrency.', 'blockbee')
             ],
         ];
     }

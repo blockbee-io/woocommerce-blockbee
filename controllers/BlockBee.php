@@ -40,7 +40,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         $this->icon = $plugin_path . 'static/files/blockbee_logo.png';
         $this->has_fields = true;
         $this->method_title = 'BlockBee Cryptocurrency Payment Gateway';
-        $this->method_description = __('BlockBee allows customers to pay in cryptocurrency', 'blockbee-cryptocurrency-payment-gateway');
+        $this->method_description = esc_attr(__('BlockBee allows customers to pay in cryptocurrency', 'blockbee'));
 
         $this->supports = array(
             'products',
@@ -104,7 +104,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
             set_transient('blockbee_coins', $coins, 86400);
 
             if (empty($coins)) {
-                throw new Exception(__('No cryptocurrencies available at the moment. Please choose a different payment method or try again later.', 'blockbee-cryptocurrency-payment-gateway'));
+                throw new Exception(esc_attr__('No cryptocurrencies available at the moment. Please choose a different payment method or try again later.', 'blockbee'));
             }
         }
 
@@ -119,10 +119,10 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         parent::admin_options();
         ?>
         <div style='margin-top: 2rem;'>
-            <?php echo __("If you need any help or have any suggestion, contact us via the <b>live chat</b> on our <b><a href='https://blockbee.io' target='_blank'>website</a></b> or join our <b><a href='https://discord.gg/cryptapi' target='_blank'>Discord server</a></b>", "blockbee-cryptocurrency-payment-gateway"); ?>
+            <?php echo __("If you need any help or have any suggestion, contact us via the <b>live chat</b> on our <b><a href='https://blockbee.io' target='_blank'>website</a></b> or join our <b><a href='https://discord.gg/cryptapi' target='_blank'>Discord server</a></b>", "blockbee"); ?>
         </div>
         <div style='margin-top: .5rem;'>
-            <?php echo __("If you enjoy this plugin please <b><a href='https://wordpress.org/support/plugin/blockbee-cryptocurrency-payment-gateway-for-woocommerce/reviews/#new-post' target='_blank'>rate and review it</a></b>!", "blockbee-cryptocurrency-payment-gateway"); ?>
+            <?php echo __("If you enjoy this plugin please <b><a href='https://wordpress.org/support/plugin/blockbee-for-woocommerce/reviews/#new-post' target='_blank'>rate and review it</a></b>!", "blockbee"); ?>
         </div>
         <?php
     }
@@ -194,58 +194,58 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
             $this->form_fields = array(
                 'enabled' => array(
-                    'title' => __('Enabled', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Enabled', 'blockbee'),
                     'type' => 'checkbox',
-                    'label' => __('Enable BlockBee', 'blockbee-cryptocurrency-payment-gateway'),
+                    'label' => __('Enable BlockBee', 'blockbee'),
                     'default' => 'yes'
                 ),
                 'title' => array(
-                    'title' => __('Title', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Title', 'blockbee'),
                     'type' => 'text',
-                    'description' => __('This controls the title which the user sees during checkout.', 'blockbee-cryptocurrency-payment-gateway'),
-                    'default' => __('Pay with BlockBee', 'blockbee-cryptocurrency-payment-gateway'),
+                    'description' => __('This controls the title which the user sees during checkout.', 'blockbee'),
+                    'default' => __('Pay with BlockBee', 'blockbee'),
                     'desc_tip' => true,
                 ),
                 'description' => array(
-                    'title' => __('Description', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Description', 'blockbee'),
                     'type' => 'textarea',
                     'default' => '',
-                    'description' => __('Payment method description that the customer will see on your checkout', 'blockbee-cryptocurrency-payment-gateway')
+                    'description' => __('Payment method description that the customer will see on your checkout', 'blockbee')
                 ),
                 'api_key' => array(
-                    'title' => __('API Key', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('API Key', 'blockbee'),
                     'type' => 'text',
                     'default' => '',
-                    'description' => sprintf(__('Insert here your BlockBee API Key. You can get one here: %1$s', 'blockbee-cryptocurrency-payment-gateway'), '<a href="https://dash.blockbee.io/" target="_blank">https://dash.blockbee.io/</a>')
+                    'description' => sprintf(__('Insert here your BlockBee API Key. You can get one here: %1$s', 'blockbee'), '<a href="https://dash.blockbee.io/" target="_blank">https://dash.blockbee.io/</a>')
                 ),
                 'checkout_enabled' => array(
-                    'title' => __('<span style="color: #c79a05;">(New)</span> Enable Checkout', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('<span style="color: #c79a05;">(New)</span> Enable Checkout', 'blockbee'),
                     'type' => 'checkbox',
                     'default' => 'no',
-                    'description' => __('By enabling this option, your users will be redirected to our secure Checkout page to complete their payment (<a href="https://pay.blockbee.io/payment/demo/" target="_blank">see demo</a>).<br/>You can configure the Checkout page settings in your BlockBee dashboard at <a href="https://dash.blockbee.io/settings/checkout/" target="_blank">https://dash.blockbee.io/settings/checkout/</a>.', 'blockbee-cryptocurrency-payment-gateway'),
+                    'description' => __('By enabling this option, your users will be redirected to our secure Checkout page to complete their payment (<a href="https://pay.blockbee.io/payment/demo/" target="_blank">see demo</a>).<br/>You can configure the Checkout page settings in your BlockBee dashboard at <a href="https://dash.blockbee.io/settings/checkout/" target="_blank">https://dash.blockbee.io/settings/checkout/</a>.', 'blockbee'),
                 ),
                 'show_branding' => array(
-                    'title' => esc_attr(__('Show BlockBee branding', 'blockbee-cryptocurrency-payment-gateway')),
+                    'title' => esc_attr__('Show BlockBee branding', 'blockbee'),
                     'type' => 'checkbox',
-                    'label' => esc_attr(__('Show BlockBee logo and credits', 'blockbee-cryptocurrency-payment-gateway')),
+                    'label' => esc_attr__('Show BlockBee logo and credits', 'blockbee'),
                     'default' => 'yes'
                 ),
                 'show_crypto_logos' => array(
-                    'title' => __('Show crypto logos in checkout', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Show crypto logos in checkout', 'blockbee'),
                     'type' => 'checkbox',
-                    'label' => sprintf(__('Enable this to show the cryptocurrencies logos in the checkout %1$s %2$s Notice: %3$s It may break in some templates. Use at your own risk.', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>'),
+                    'label' => sprintf(__('Enable this to show the cryptocurrencies logos in the checkout %1$s %2$s Notice: %3$s It may break in some templates. Use at your own risk.', 'blockbee'), '<br/>', '<strong>', '</strong>'),
                     'default' => 'false',
                     'class' => 'checkout-dependent'
                 ),
                 'add_blockchain_fee' => array(
-                    'title' => __('Add the blockchain fee to the order', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Add the blockchain fee to the order', 'blockbee'),
                     'type' => 'checkbox',
                     'class' => 'checkout-dependent',
-                    'label' => __("This will add an estimation of the blockchain fee to the order value", 'blockbee-cryptocurrency-payment-gateway'),
+                    'label' => __("This will add an estimation of the blockchain fee to the order value", 'blockbee'),
                     'default' => 'no',
                 ),
                 'fee_order_percentage' => array(
-                    'title' => __('Service fee manager', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Service fee manager', 'blockbee'),
                     'type' => 'select',
                     'default' => '0',
                     'options' => array(
@@ -280,96 +280,96 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                         '0.0025' => '0.25%',
                         '0' => '0%',
                     ),
-                    'description' => sprintf(__('Set the BlockBee service fee you want to charge the costumer. %1$s %2$s Note: %3$s Fee you want to charge your costumers (to cover BlockBee\'s fees fully or partially).', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>')
+                    'description' => sprintf(__('Set the BlockBee service fee you want to charge the costumer. %1$s %2$s Note: %3$s Fee you want to charge your costumers (to cover BlockBee\'s fees fully or partially).', 'blockbee'), '<br/>', '<strong>', '</strong>')
                 ),
                 'qrcode_default' => array(
-                    'title' => __('QR Code by default', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('QR Code by default', 'blockbee'),
                     'type' => 'checkbox',
-                    'label' => __('Show the QR Code by default.', 'blockbee-cryptocurrency-payment-gateway'),
+                    'label' => __('Show the QR Code by default.', 'blockbee'),
                     'default' => 'yes',
                     'class' => 'checkout-dependent'
                 ),
                 'qrcode_size' => array(
-                    'title' => __('QR Code size', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('QR Code size', 'blockbee'),
                     'type' => 'number',
                     'default' => 300,
-                    'description' => __('QR code image size.', 'blockbee-cryptocurrency-payment-gateway'),
+                    'description' => __('QR code image size.', 'blockbee'),
                     'class' => 'checkout-dependent'
                 ),
                 'qrcode_setting' => array(
-                    'title' => __('QR Code to show', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('QR Code to show', 'blockbee'),
                     'type' => 'select',
                     'default' => 'without_amount',
                     'class' => 'checkout-dependent',
                     'options' => array(
-                        'without_amount' => __('Default Without Amount', 'blockbee-cryptocurrency-payment-gateway'),
-                        'amount' => __('Default Amount', 'blockbee-cryptocurrency-payment-gateway'),
-                        'hide_amount' => __('Hide Amount', 'blockbee-cryptocurrency-payment-gateway'),
-                        'hide_without_amount' => __('Hide Without Amount', 'blockbee-cryptocurrency-payment-gateway'),
+                        'without_amount' => __('Default Without Amount', 'blockbee'),
+                        'amount' => __('Default Amount', 'blockbee'),
+                        'hide_amount' => __('Hide Amount', 'blockbee'),
+                        'hide_without_amount' => __('Hide Without Amount', 'blockbee'),
                     ),
-                    'description' => __('Select how you want to show the QR Code to the user. Either select a default to show first, or hide one of them.', 'blockbee-cryptocurrency-payment-gateway')
+                    'description' => __('Select how you want to show the QR Code to the user. Either select a default to show first, or hide one of them.', 'blockbee')
                 ),
                 'color_scheme' => array(
-                    'title' => __('Color Scheme', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Color Scheme', 'blockbee'),
                     'type' => 'select',
                     'default' => 'light',
                     'class' => 'checkout-dependent',
-                    'description' => __('Selects the color scheme of the plugin to match your website (Light, Dark and Auto to automatically detect it).', 'blockbee-cryptocurrency-payment-gateway'),
+                    'description' => __('Selects the color scheme of the plugin to match your website (Light, Dark and Auto to automatically detect it).', 'blockbee'),
                     'options' => array(
-                        'light' => __('Light', 'blockbee-cryptocurrency-payment-gateway'),
-                        'dark' => __('Dark', 'blockbee-cryptocurrency-payment-gateway'),
-                        'auto' => __('Auto', 'blockbee-cryptocurrency-payment-gateway'),
+                        'light' => __('Light', 'blockbee'),
+                        'dark' => __('Dark', 'blockbee'),
+                        'auto' => __('Auto', 'blockbee'),
                     ),
                 ),
                 'refresh_value_interval' => array(
-                    'title' => __('Refresh converted value', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Refresh converted value', 'blockbee'),
                     'type' => 'select',
                     'default' => '300',
                     'class' => 'checkout-dependent',
                     'options' => array(
-                        '300' => __('Every 5 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                        '600' => __('Every 10 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                        '900' => __('Every 15 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                        '1800' => __('Every 30 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                        '2700' => __('Every 45 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                        '3600' => __('Every 60 Minutes', 'blockbee-cryptocurrency-payment-gateway'),
-                        '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
+                        '300' => __('Every 5 Minutes', 'blockbee'),
+                        '600' => __('Every 10 Minutes', 'blockbee'),
+                        '900' => __('Every 15 Minutes', 'blockbee'),
+                        '1800' => __('Every 30 Minutes', 'blockbee'),
+                        '2700' => __('Every 45 Minutes', 'blockbee'),
+                        '3600' => __('Every 60 Minutes', 'blockbee'),
+                        '0' => __('Never', 'blockbee'),
                     ),
-                    'description' => sprintf(__('The system will automatically update the conversion value of the invoices (with real-time data), every X minutes. %1$s This feature is helpful whenever a customer takes long time to pay a generated invoice and the selected crypto a volatile coin/token (not stable coin). %1$s %4$s Warning: %3$s Setting this setting to none might create conversion issues, as we advise you to keep it at 5 minutes. %3$s', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>', '<strong style="color: #f44336;">'),
+                    'description' => sprintf(__('The system will automatically update the conversion value of the invoices (with real-time data), every X minutes. %1$s This feature is helpful whenever a customer takes long time to pay a generated invoice and the selected crypto a volatile coin/token (not stable coin). %1$s %4$s Warning: %3$s Setting this setting to none might create conversion issues, as we advise you to keep it at 5 minutes. %3$s', 'blockbee'), '<br/>', '<strong>', '</strong>', '<strong style="color: #f44336;">'),
                 ),
                 'order_cancellation_timeout' => array(
-                    'title' => __('Order cancellation timeout', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Order cancellation timeout', 'blockbee'),
                     'type' => 'select',
                     'default' => '0',
                     'options' => array(
-                        '3600' => __('1 Hour', 'blockbee-cryptocurrency-payment-gateway'),
-                        '21600' => __('6 Hours', 'blockbee-cryptocurrency-payment-gateway'),
-                        '43200' => __('12 Hours', 'blockbee-cryptocurrency-payment-gateway'),
-                        '64800' => __('18 Hours', 'blockbee-cryptocurrency-payment-gateway'),
-                        '86400' => __('24 Hours', 'blockbee-cryptocurrency-payment-gateway'),
-                        '0' => __('Never', 'blockbee-cryptocurrency-payment-gateway'),
+                        '3600' => __('1 Hour', 'blockbee'),
+                        '21600' => __('6 Hours', 'blockbee'),
+                        '43200' => __('12 Hours', 'blockbee'),
+                        '64800' => __('18 Hours', 'blockbee'),
+                        '86400' => __('24 Hours', 'blockbee'),
+                        '0' => __('Never', 'blockbee'),
                     ),
-                    'description' => sprintf(__('Selects the amount of time the user has to  pay for the order. %1$s When this time is over, order will be marked as "Cancelled" and every paid value will be ignored. %1$s %2$s Notice: %3$s If the user still sends money to the generated address, value will still be redirected to you. %1$s %4$s Warning: %3$s We do not advice more than 1 Hour.', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>', '<strong style="color: #f44336;">'),
+                    'description' => sprintf(__('Selects the amount of time the user has to  pay for the order. %1$s When this time is over, order will be marked as "Cancelled" and every paid value will be ignored. %1$s %2$s Notice: %3$s If the user still sends money to the generated address, value will still be redirected to you. %1$s %4$s Warning: %3$s We do not advice more than 1 Hour.', 'blockbee'), '<br/>', '<strong>', '</strong>', '<strong style="color: #f44336;">'),
                 ),
                 'virtual_complete' => array(
-                    'title' => __('Completed status for virtual products', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Completed status for virtual products', 'blockbee'),
                     'type' => 'checkbox',
-                    'label' => sprintf(__('When this setting is enabled, the plugin will mark the order as "completed" then payment is received. %1$s Only for virtual products %2$s.', 'blockbee-cryptocurrency-payment-gateway'), '<strong>', '</strong>'),
+                    'label' => sprintf(__('When this setting is enabled, the plugin will mark the order as "completed" then payment is received. %1$s Only for virtual products %2$s.', 'blockbee'), '<strong>', '</strong>'),
                     'default' => 'no'
                 ),
                 'coins' => array(
-                    'title' => __('Accepted cryptocurrencies', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Accepted cryptocurrencies', 'blockbee'),
                     'type' => 'multiselect',
                     'default' => '',
                     'css' => 'height: 300px;',
                     'class' => 'checkout-dependent',
                     'options' => $coin_options,
-                    'description' => __("Select which coins do you wish to accept. CTRL + click to select multiple. Addresses must be set on the dashboard.", 'blockbee-cryptocurrency-payment-gateway'),
+                    'description' => __("Select which coins do you wish to accept. CTRL + click to select multiple. Addresses must be set on the dashboard.", 'blockbee'),
                 ),
                 'disable_conversion' => array(
-                    'title' => __('Disable price conversion', 'blockbee-cryptocurrency-payment-gateway'),
+                    'title' => __('Disable price conversion', 'blockbee'),
                     'type' => 'checkbox',
-                    'label' => sprintf(__('%2$s Attention: This option will disable the price conversion for ALL cryptocurrencies! %3$s %1$s If you check this, pricing will not be converted from the currency of your shop to the cryptocurrency selected by the user, and users will be requested to pay the same value as shown on your shop, regardless of the cryptocurrency selected', 'blockbee-cryptocurrency-payment-gateway'), '<br/>', '<strong>', '</strong>'),
+                    'label' => sprintf(__('%2$s Attention: This option will disable the price conversion for ALL cryptocurrencies! %3$s %1$s If you check this, pricing will not be converted from the currency of your shop to the cryptocurrency selected by the user, and users will be requested to pay the same value as shown on your shop, regardless of the cryptocurrency selected', 'blockbee'), '<br/>', '<strong>', '</strong>'),
                     'default' => 'no',
                     'class' => 'checkout-dependent'
                 ),
@@ -424,7 +424,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                         <li>
                             <select name="blockbee_coin" id="payment_blockbee_coin" class="input-control"
                                     style="display:block; margin-top: 10px">
-                                <option value="none"><?php echo esc_attr(__('Please select a Cryptocurrency', 'blockbee-cryptocurrency-payment-gateway')) ?></option>
+                                <option value="none"><?php echo esc_attr__('Please select a Cryptocurrency', 'blockbee'); ?></option>
                                 <?php
                                 foreach ($this->coins as $val) {
                                     $apikey = $this->api_key;
@@ -435,7 +435,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                             echo esc_attr("selected='true'");
                                         }
                                         $crypto_name = is_array($load_coins[$val]) ? esc_attr($load_coins[$val]['name']) : esc_attr($load_coins[$val]);
-                                        ?>> <?php echo esc_attr(__('Pay with', 'blockbee-cryptocurrency-payment-gateway') . ' ' . $crypto_name); ?></option>
+                                        ?>> <?php echo esc_attr__('Pay with', 'blockbee') . ' ' . $crypto_name; ?></option>
                                         <?php
                                     }
                                 }
@@ -489,7 +489,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         $selected = sanitize_text_field($_POST['blockbee_coin']);
 
         if ($selected === 'none') {
-            wc_add_notice(__('Payment error: ', 'woocommerce') . ' ' . __('Please choose a cryptocurrency', 'blockbee-cryptocurrency-payment-gateway'), 'error');
+            wc_add_notice(__('Payment error: ', 'woocommerce') . ' ' . __('Please choose a cryptocurrency', 'blockbee'), 'error');
 
             return null;
         }
@@ -548,7 +548,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                     );
 
                     if (empty($payment)) {
-                        wc_add_notice(__('Payment error:', 'woocommerce') . ' ' . __('There was an error with the payment. Please try again.', 'blockbee-cryptocurrency-payment-gateway'));
+                        wc_add_notice(__('Payment error:', 'woocommerce') . ' ' . __('There was an error with the payment. Please try again.', 'blockbee'));
 
                         return null;
                     }
@@ -564,7 +564,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
                     $order->save_meta_data();
 
-                    $order->update_status('on-hold', __('Awaiting payment', 'blockbee-cryptocurrency-payment-gateway'));
+                    $order->update_status('on-hold', __('Awaiting payment', 'blockbee'));
                     $woocommerce->cart->empty_cart();
 
                     return array(
@@ -581,7 +581,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                 $crypto_total = \BlockBee\Utils\Api::get_conversion($currency, $selected, $total, $this->disable_conversion);
 
                 if ($crypto_total < $min_tx) {
-                    wc_add_notice(__('Payment error:', 'woocommerce') . ' ' . __('Value too low, for the selected cryptocurrency. Please select other or contact the merchant.', 'blockbee-cryptocurrency-payment-gateway') . strtoupper($selected), 'error');
+                    wc_add_notice(__('Payment error:', 'woocommerce') . ' ' . __('Value too low, for the selected cryptocurrency. Please select other or contact the merchant.', 'blockbee') . strtoupper($selected), 'error');
                     return null;
                 }
 
@@ -590,7 +590,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                 $addr_in = $api->get_address();
 
                 if (empty($addr_in)) {
-                    wc_add_notice(__('Payment error:', 'woocommerce') . ' ' . __('There was an error with the payment. Please try again.', 'blockbee-cryptocurrency-payment-gateway'));
+                    wc_add_notice(__('Payment error:', 'woocommerce') . ' ' . __('There was an error with the payment. Please try again.', 'blockbee'));
 
                     return null;
                 }
@@ -616,7 +616,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                 $order->add_meta_data('blockbee_last_checked', $order->get_date_created()->getTimestamp());
                 $order->save_meta_data();
 
-                $order->update_status('on-hold', __('Awaiting payment', 'blockbee-cryptocurrency-payment-gateway') . ': ' . $load_coins[$selected]);
+                $order->update_status('on-hold', __('Awaiting payment', 'blockbee') . ': ' . $load_coins[$selected]);
                 $woocommerce->cart->empty_cart();
 
                 return array(
@@ -624,13 +624,13 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                     'redirect' => $this->get_return_url($order) . '#blockbee_payment_section' // hash so it goes directly into the payment form
                 );
             } catch (Exception $e) {
-                wc_add_notice(__('Payment error:', 'blockbee-cryptocurrency-payment-gateway') . 'Unknown coin', 'error');
+                wc_add_notice(__('Payment error:', 'blockbee') . 'Unknown coin', 'error');
 
                 return null;
             }
         }
 
-        wc_add_notice(__('Payment error:', 'woocommerce') . __('Payment could not be processed, please try again', 'blockbee-cryptocurrency-payment-gateway'), 'error');
+        wc_add_notice(__('Payment error:', 'woocommerce') . __('Payment could not be processed, please try again', 'blockbee'), 'error');
 
         return null;
     }
@@ -828,7 +828,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
     function process_checkout_ipn($data, $order) {
         $order->add_order_note(
-            '[CONFIRMED] ' . __('User sent a payment of', 'blockbee-cryptocurrency-payment-gateway') . ' ' .
+            '[CONFIRMED] ' . __('User sent a payment of', 'blockbee') . ' ' .
             $data['paid_amount'] . ' ' . $data['paid_coin'] .
             '. TXID(s): ' . $data['txid']
         );
@@ -936,7 +936,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         if (!$has_pending) {
             $order->add_order_note(
                 '[PENDING] ' .
-                __('User sent a payment of', 'blockbee-cryptocurrency-payment-gateway') . ' ' .
+                __('User sent a payment of', 'blockbee') . ' ' .
                 $paid . ' ' . $crypto_coin .
                 '. TXID: ' . $data['txid_in']
             );
@@ -944,16 +944,16 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
         if (!$has_confirmed && (int)$data['pending'] === 0) {
             $order->add_order_note(
-                '[CONFIRMED] ' . __('User sent a payment of', 'blockbee-cryptocurrency-payment-gateway') . ' ' .
+                '[CONFIRMED] ' . __('User sent a payment of', 'blockbee') . ' ' .
                 $paid . ' ' . $crypto_coin .
                 '. TXID: ' . $data['txid_in']
             );
 
             if ($remaining > 0) {
                 if ($remaining <= $min_tx) {
-                    $order->add_order_note(__('Payment detected and confirmed. Customer still need to send', 'blockbee-cryptocurrency-payment-gateway') . ' ' . $min_tx . ' ' . $crypto_coin, false);
+                    $order->add_order_note(__('Payment detected and confirmed. Customer still need to send', 'blockbee') . ' ' . $min_tx . ' ' . $crypto_coin, false);
                 } else {
-                    $order->add_order_note(__('Payment detected and confirmed. Customer still need to send', 'blockbee-cryptocurrency-payment-gateway') . ' ' . $remaining . ' ' . $crypto_coin, false);
+                    $order->add_order_note(__('Payment detected and confirmed. Customer still need to send', 'blockbee') . ' ' . $remaining . ' ' . $crypto_coin, false);
                 }
             }
         }
@@ -1086,7 +1086,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                                 echo 'style="display:none;"';
                                             }
                                             ?> src="data:image/png;base64,<?php echo $qr_code_img; ?>"
-                                                 alt="<?php echo esc_attr(__('QR Code without value', 'blockbee-cryptocurrency-payment-gateway')); ?>"/>
+                                                 alt="<?php echo esc_attr__('QR Code without value', 'blockbee'); ?>"/>
                                             <?php
                                         }
                                         if ($qr_code_setting != 'hide_without_amount') {
@@ -1096,7 +1096,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                                 echo 'style="display:none;"';
                                             }
                                             ?> src="data:image/png;base64,<?php echo $qr_code_img_value; ?>"
-                                                 alt="<?php echo esc_attr(__('QR Code with value', 'blockbee-cryptocurrency-payment-gateway')); ?>"/>
+                                                 alt="<?php echo esc_attr__('QR Code with value', 'blockbee'); ?>"/>
                                             <?php
                                         }
                                         ?>
@@ -1116,8 +1116,8 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                                 echo 'active';
                                             }
                                             ?>"
-                                                    aria-label="<?php echo esc_attr(__('Show QR Code without value', 'blockbee-cryptocurrency-payment-gateway')); ?>">
-                                                <?php echo esc_attr(__('ADDRESS', 'blockbee-cryptocurrency-payment-gateway')); ?>
+                                                    aria-label="<?php echo esc_attr__('Show QR Code without value', 'blockbee'); ?>">
+                                                <?php echo esc_attr__('ADDRESS', 'blockbee'); ?>
                                             </button>
                                             <?php
                                         }
@@ -1128,8 +1128,8 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                                 echo 'active';
                                             }
                                             ?>"
-                                                    aria-label="<?php echo esc_attr(__('Show QR Code with value', 'blockbee-cryptocurrency-payment-gateway')); ?>">
-                                                <?php echo esc_attr(__('WITH AMOUNT', 'blockbee-cryptocurrency-payment-gateway')); ?>
+                                                    aria-label="<?php echo esc_attr__('Show QR Code with value', 'blockbee'); ?>">
+                                                <?php echo esc_attr__('WITH AMOUNT', 'blockbee'); ?>
                                             </button>
                                             </div>
                                             <?php
@@ -1144,15 +1144,15 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                     <figure>
                                         <img class="blockbee_qrcode no_value"
                                              src="data:image/png;base64,<?php echo $qr_code_img; ?>"
-                                             alt="<?php echo esc_attr(__('QR Code without value', 'blockbee-cryptocurrency-payment-gateway')); ?>"/>
+                                             alt="<?php echo esc_attr__('QR Code without value', 'blockbee'); ?>"/>
                                         <div class="blockbee_qrcode_coin">
                                             <?php echo esc_attr(strtoupper($coins[$crypto_coin]['name'])); ?>
                                         </div>
                                     </figure>
                                     <div class="blockbee_qrcode_buttons">
                                         <button class="blockbee_qrcode_btn no_value active"
-                                                aria-label="<?php echo esc_attr(__('Show QR Code without value', 'blockbee-cryptocurrency-payment-gateway')); ?>">
-                                            <?php echo esc_attr(__('ADDRESS', 'blockbee-cryptocurrency-payment-gateway')); ?>
+                                                aria-label="<?php echo esc_attr__('Show QR Code without value', 'blockbee'); ?>">
+                                            <?php echo esc_attr__('ADDRESS', 'blockbee'); ?>
                                         </button>
                                     </div>
                                 </div>
@@ -1162,27 +1162,26 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                         </div>
                         <div class="blockbee_details_box">
                             <div class="blockbee_details_text">
-                                <?php echo esc_attr(__('PLEASE SEND', 'blockbee-cryptocurrency-payment-gateway')); ?>
+                                <?php echo esc_attr__('PLEASE SEND', 'blockbee'); ?>
                                 <button class="blockbee_copy blockbee_details_copy"
                                         data-tocopy="<?php echo esc_attr($crypto_value); ?>">
                                     <span><b class="blockbee_value"><?php echo esc_attr($crypto_value); ?></b></span>
                                     <span><b><?php echo esc_attr(strtoupper($crypto_coin)); ?></b></span>
-                                    <span class="blockbee_tooltip blockbee_copy_icon_tooltip tip"><?php echo esc_attr(__('COPY', 'blockbee-cryptocurrency-payment-gateway')); ?></span>
+                                    <span class="blockbee_tooltip blockbee_copy_icon_tooltip tip"><?php echo esc_attr__('COPY', 'blockbee'); ?></span>
                                     <span class="blockbee_tooltip blockbee_copy_icon_tooltip success"
-                                          style="display: none"><?php echo esc_attr(__('COPIED!', 'blockbee-cryptocurrency-payment-gateway')); ?></span>
+                                          style="display: none"><?php echo esc_attr__('COPIED!', 'blockbee'); ?></span>
                                 </button>
-                                <strong>(<?php echo esc_attr($currency_symbol) . "<span class='blockbee_fiat_total'>" . esc_attr($total) . "</span>" ?>
-                                    )</strong>
+                                <strong>(<?php echo esc_attr($currency_symbol) . "<span class='blockbee_fiat_total'>" . esc_attr($total) . "</span>" ?>)</strong>
                             </div>
                             <div class="blockbee_payment_notification blockbee_notification_payment_received"
                                  style="display: none;">
-                                <?php echo sprintf(__('So far you sent %1s. Please send a new payment to complete the order, as requested above', 'blockbee-cryptocurrency-payment-gateway'),
+                                <?php echo sprintf(__('So far you sent %1s. Please send a new payment to complete the order, as requested above', 'blockbee'),
                                     '<strong><span class="blockbee_notification_amount"></span></strong>'
                                 ); ?>
                             </div>
                             <div class="blockbee_payment_notification blockbee_notification_remaining"
                                  style="display: none">
-                                <?php echo '<strong>' . __('Notice', 'blockbee-cryptocurrency-payment-gateway') . '</strong>: ' . sprintf(__('For technical reasons, the minimum amount for each transaction is %1s, so we adjusted the value by adding the remaining to it.', 'blockbee-cryptocurrency-payment-gateway'),
+                                <?php echo '<strong>' . __('Notice', 'blockbee') . '</strong>: ' . sprintf(__('For technical reasons, the minimum amount for each transaction is %1s, so we adjusted the value by adding the remaining to it.', 'blockbee'),
                                         esc_attr($min_tx) . ' ' . esc_attr(strtoupper($coins[$crypto_coin]['name'])),
                                         '<span class="blockbee_notification_remaining"></span>'
                                     ); ?>
@@ -1191,26 +1190,26 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                             if ((int)$this->refresh_value_interval != 0) {
                                 ?>
                                 <div class="blockbee_time_refresh">
-                                    <?php echo esc_attr(sprintf(__('The %1s conversion rate will be adjusted in', 'blockbee-cryptocurrency-payment-gateway'),
+                                    <?php echo esc_attr(sprintf(__('The %1s conversion rate will be adjusted in', 'blockbee'),
                                         esc_attr(strtoupper($coins[$crypto_coin]['name']))
                                     )); ?>
                                     <span class="blockbee_time_seconds_count"
-                                          data-soon="<?php echo esc_attr(__('a moment', 'blockbee-cryptocurrency-payment-gateway')); ?>"
+                                          data-soon="<?php echo esc_attr__('a moment', 'blockbee'); ?>"
                                           data-seconds="<?php echo esc_attr($conversion_timer); ?>"><?php echo date('i:s', esc_attr($conversion_timer)); ?></span>
                                 </div>
                                 <?php
                             }
                             ?>
                             <div class="blockbee_send_warning">
-                                <?php echo esc_attr(__('Note: If using an exchange please add the exchange fee to the sent amount. Exchanges usually deduct the fee from the sent amount.', 'blockbee-cryptocurrency-payment-gateway')); ?>
+                                <?php echo esc_attr__('Note: If using an exchange please add the exchange fee to the sent amount. Exchanges usually deduct the fee from the sent amount.', 'blockbee'); ?>
                             </div>
                             <div class="blockbee_details_input">
                                 <span><?php echo esc_attr($address_in) ?></span>
                                 <button class="blockbee_copy blockbee_copy_icon"
                                         data-tocopy="<?php echo esc_attr($address_in); ?>">
-                                    <span class="blockbee_tooltip blockbee_copy_icon_tooltip tip"><?php echo esc_attr(__('COPY', 'blockbee-cryptocurrency-payment-gateway')); ?></span>
+                                    <span class="blockbee_tooltip blockbee_copy_icon_tooltip tip"><?php echo esc_attr__('COPY', 'blockbee'); ?></span>
                                     <span class="blockbee_tooltip blockbee_copy_icon_tooltip success"
-                                          style="display: none"><?php echo esc_attr(__('COPIED!', 'blockbee-cryptocurrency-payment-gateway')); ?></span>
+                                          style="display: none"><?php echo esc_attr__('COPIED!', 'blockbee'); ?></span>
                                 </button>
                                 <div class="blockbee_loader"></div>
                             </div>
@@ -1219,25 +1218,25 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                         if ((int)$this->order_cancellation_timeout != 0) {
                             ?>
                             <span class="blockbee_notification_cancel"
-                                  data-text="<?php echo esc_attr(__('Order will be cancelled in less than a minute.', 'blockbee-cryptocurrency-payment-gateway')); ?>">
-                                    <?php echo sprintf(__('This order will be valid for %s', 'blockbee-cryptocurrency-payment-gateway'), '<strong><span class="blockbee_cancel_timer" data-timestamp="' . esc_attr($cancel_timer) . '">' . date('H:i', $cancel_timer) . '</span></strong>'); ?>
+                                  data-text="<?php echo esc_attr__('Order will be cancelled in less than a minute.', 'blockbee'); ?>">
+                                    <?php echo sprintf(__('This order will be valid for %s', 'blockbee'), '<strong><span class="blockbee_cancel_timer" data-timestamp="' . esc_attr($cancel_timer) . '">' . date('H:i', $cancel_timer) . '</span></strong>'); ?>
                                 </span>
                             <?php
                         }
                         ?>
                         <div class="blockbee_buttons_container">
                             <a class="blockbee_show_qr" href="#"
-                               aria-label="<?php echo esc_attr(__('Show the QR code', 'blockbee-cryptocurrency-payment-gateway')); ?>">
+                               aria-label="<?php echo esc_attr__('Show the QR code', 'blockbee'); ?>">
                                 <span class="blockbee_show_qr_open <?php
                                 if (!$this->qrcode_default) {
                                     echo ' active';
                                 }
-                                ?>"><?php echo __('Open QR CODE', 'blockbee-cryptocurrency-payment-gateway'); ?></span>
+                                ?>"><?php echo __('Open QR CODE', 'blockbee'); ?></span>
                                 <span class="blockbee_show_qr_close<?php
                                 if ($this->qrcode_default) {
                                     echo ' active';
                                 }
-                                ?>"><?php echo esc_attr(__('Close QR CODE', 'blockbee-cryptocurrency-payment-gateway')); ?></span>
+                                ?>"><?php echo esc_attr__('Close QR CODE', 'blockbee'); ?></span>
                             </a>
                         </div>
                         <?php
@@ -1272,8 +1271,8 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                     <div class="blockbee_payment_processing_icon">
                         <div class="blockbee_loader_payment_processing"></div>
                     </div>
-                    <h2><?php echo esc_attr(__('Your payment is being processed!', 'blockbee-cryptocurrency-payment-gateway')); ?></h2>
-                    <h5><?php echo esc_attr(__('Processing can take some time depending on the blockchain.', 'blockbee-cryptocurrency-payment-gateway')); ?></h5>
+                    <h2><?php echo esc_attr__('Your payment is being processed!', 'blockbee'); ?></h2>
+                    <h5><?php echo esc_attr__('Processing can take some time depending on the blockchain.', 'blockbee'); ?></h5>
                 </div>
 
                 <div class="blockbee_payment_confirmed" style="display: none;">
@@ -1283,7 +1282,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                   d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
                         </svg>
                     </div>
-                    <h2><?php echo esc_attr(__('Your payment has been confirmed!', 'blockbee-cryptocurrency-payment-gateway')); ?></h2>
+                    <h2><?php echo esc_attr__('Your payment has been confirmed!', 'blockbee'); ?></h2>
                 </div>
 
                 <div class="blockbee_payment_cancelled" style="display: none;">
@@ -1293,19 +1292,19 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                   d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"></path>
                         </svg>
                     </div>
-                    <h2><?php echo esc_attr(__('Order has been cancelled due to lack of payment. Please don\'t send any payment to the address.', 'blockbee-cryptocurrency-payment-gateway')); ?></h2>
+                    <h2><?php echo esc_attr__('Order has been cancelled due to lack of payment. Please don\'t send any payment to the address.', 'blockbee'); ?></h2>
                 </div>
                 <div class="blockbee_history" style="display: none;">
                     <table class="blockbee_history_fill">
                         <tr class="blockbee_history_header">
                             <th>
-                                <strong><?php echo esc_attr(__('Time', 'blockbee-cryptocurrency-payment-gateway')); ?></strong>
+                                <strong><?php echo esc_attr__('Time', 'blockbee'); ?></strong>
                             </th>
                             <th>
-                                <strong><?php echo esc_attr(__('Value Paid', 'blockbee-cryptocurrency-payment-gateway')); ?></strong>
+                                <strong><?php echo esc_attr__('Value Paid', 'blockbee'); ?></strong>
                             </th>
                             <th>
-                                <strong><?php echo esc_attr(__('FIAT Value', 'blockbee-cryptocurrency-payment-gateway')); ?></strong>
+                                <strong><?php echo esc_attr__('FIAT Value', 'blockbee'); ?></strong>
                             </th>
                         </tr>
                     </table>
@@ -1320,7 +1319,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                 <path d="M49.2188 25C49.2188 38.3789 38.3789 49.2188 25 49.2188C11.6211 49.2188 0.78125 38.3789 0.78125 25C0.78125 11.6211 11.6211 0.78125 25 0.78125C38.3789 0.78125 49.2188 11.6211 49.2188 25ZM35.1953 22.1777L28.125 29.5508V11.7188C28.125 10.4199 27.0801 9.375 25.7812 9.375H24.2188C22.9199 9.375 21.875 10.4199 21.875 11.7188V29.5508L14.8047 22.1777C13.8965 21.2305 12.3828 21.2109 11.4551 22.1387L10.3906 23.2129C9.47266 24.1309 9.47266 25.6152 10.3906 26.5234L23.3398 39.4824C24.2578 40.4004 25.7422 40.4004 26.6504 39.4824L39.6094 26.5234C40.5273 25.6055 40.5273 24.1211 39.6094 23.2129L38.5449 22.1387C37.6172 21.2109 36.1035 21.2305 35.1953 22.1777V22.1777Z"
                                       fill="#C79A05"/>
                             </svg>
-                            <p><?php echo esc_attr(__('Waiting for payment', 'blockbee-cryptocurrency-payment-gateway')); ?></p>
+                            <p><?php echo esc_attr__('Waiting for payment', 'blockbee'); ?></p>
                         </div>
                         <div class="blockbee_progress_icon waiting_network">
                             <svg width="60" height="60" viewBox="0 0 50 50" fill="none"
@@ -1328,7 +1327,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                 <path d="M46.875 15.625H3.125C1.39912 15.625 0 14.2259 0 12.5V6.25C0 4.52412 1.39912 3.125 3.125 3.125H46.875C48.6009 3.125 50 4.52412 50 6.25V12.5C50 14.2259 48.6009 15.625 46.875 15.625ZM42.1875 7.03125C40.8931 7.03125 39.8438 8.08057 39.8438 9.375C39.8438 10.6694 40.8931 11.7188 42.1875 11.7188C43.4819 11.7188 44.5312 10.6694 44.5312 9.375C44.5312 8.08057 43.4819 7.03125 42.1875 7.03125ZM35.9375 7.03125C34.6431 7.03125 33.5938 8.08057 33.5938 9.375C33.5938 10.6694 34.6431 11.7188 35.9375 11.7188C37.2319 11.7188 38.2812 10.6694 38.2812 9.375C38.2812 8.08057 37.2319 7.03125 35.9375 7.03125ZM46.875 31.25H3.125C1.39912 31.25 0 29.8509 0 28.125V21.875C0 20.1491 1.39912 18.75 3.125 18.75H46.875C48.6009 18.75 50 20.1491 50 21.875V28.125C50 29.8509 48.6009 31.25 46.875 31.25ZM42.1875 22.6562C40.8931 22.6562 39.8438 23.7056 39.8438 25C39.8438 26.2944 40.8931 27.3438 42.1875 27.3438C43.4819 27.3438 44.5312 26.2944 44.5312 25C44.5312 23.7056 43.4819 22.6562 42.1875 22.6562ZM35.9375 22.6562C34.6431 22.6562 33.5938 23.7056 33.5938 25C33.5938 26.2944 34.6431 27.3438 35.9375 27.3438C37.2319 27.3438 38.2812 26.2944 38.2812 25C38.2812 23.7056 37.2319 22.6562 35.9375 22.6562ZM46.875 46.875H3.125C1.39912 46.875 0 45.4759 0 43.75V37.5C0 35.7741 1.39912 34.375 3.125 34.375H46.875C48.6009 34.375 50 35.7741 50 37.5V43.75C50 45.4759 48.6009 46.875 46.875 46.875ZM42.1875 38.2812C40.8931 38.2812 39.8438 39.3306 39.8438 40.625C39.8438 41.9194 40.8931 42.9688 42.1875 42.9688C43.4819 42.9688 44.5312 41.9194 44.5312 40.625C44.5312 39.3306 43.4819 38.2812 42.1875 38.2812ZM35.9375 38.2812C34.6431 38.2812 33.5938 39.3306 33.5938 40.625C33.5938 41.9194 34.6431 42.9688 35.9375 42.9688C37.2319 42.9688 38.2812 41.9194 38.2812 40.625C38.2812 39.3306 37.2319 38.2812 35.9375 38.2812Z"
                                       fill="#C79A05"/>
                             </svg>
-                            <p><?php echo esc_attr(__('Waiting for network confirmation', 'blockbee-cryptocurrency-payment-gateway')); ?></p>
+                            <p><?php echo esc_attr__('Waiting for network confirmation', 'blockbee'); ?></p>
                         </div>
                         <div class="blockbee_progress_icon payment_done">
                             <svg width="60" height="60" viewBox="0 0 50 50" fill="none"
@@ -1336,7 +1335,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                 <path d="M45.0391 12.5H7.8125C6.94922 12.5 6.25 11.8008 6.25 10.9375C6.25 10.0742 6.94922 9.375 7.8125 9.375H45.3125C46.1758 9.375 46.875 8.67578 46.875 7.8125C46.875 5.22363 44.7764 3.125 42.1875 3.125H6.25C2.79785 3.125 0 5.92285 0 9.375V40.625C0 44.0771 2.79785 46.875 6.25 46.875H45.0391C47.7754 46.875 50 44.7725 50 42.1875V17.1875C50 14.6025 47.7754 12.5 45.0391 12.5ZM40.625 32.8125C38.8994 32.8125 37.5 31.4131 37.5 29.6875C37.5 27.9619 38.8994 26.5625 40.625 26.5625C42.3506 26.5625 43.75 27.9619 43.75 29.6875C43.75 31.4131 42.3506 32.8125 40.625 32.8125Z"
                                       fill="#C79A05"/>
                             </svg>
-                            <p><?php echo esc_attr(__('Payment confirmed', 'blockbee-cryptocurrency-payment-gateway')); ?></p>
+                            <p><?php echo esc_attr__('Payment confirmed', 'blockbee'); ?></p>
                         </div>
                     </div>
                     <?php
@@ -1366,7 +1365,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         }
 
         foreach ($orders as $order) {
-            $order->update_status('cancelled', __('Order cancelled due to lack of payment.', 'blockbee-cryptocurrency-payment-gateway'));
+            $order->update_status('cancelled', __('Order cancelled due to lack of payment.', 'blockbee'));
             $order->update_meta_data('blockbee_cancelled', '1');
             $order->save();
         }
@@ -1419,7 +1418,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
             $recipient = $customer->get_email();
 
-            $subject = sprintf('[%s] %s', get_bloginfo('name'), __('Please renew your subscription', 'blockbee-cryptocurrency-payment-gateway'));
+            $subject = sprintf('[%s] %s', get_bloginfo('name'), __('Please renew your subscription', 'blockbee'));
             $headers = 'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>' . '\r\n';
 
             $content = wc_get_template_html('emails/renewal-email.php', array(
@@ -1483,7 +1482,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                 return;
             }
 
-            WC()->cart->add_fee(__('Service Fee', 'blockbee-cryptocurrency-payment-gateway'), $fee_order, true);
+            WC()->cart->add_fee(__('Service Fee', 'blockbee'), $fee_order, true);
         }
     }
 
@@ -1532,7 +1531,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
             if ($plain_text) {
                 echo $link;
             } else {
-                echo wp_kses_post('<div style="text-align:center; margin-bottom: 30px;"><a style="display:block;text-align:center;margin: 40px auto; font-size: 16px; font-weight: bold;" href="' . esc_url($link) . '" target="_blank">' . __('Check your payment status', 'blockbee-cryptocurrency-payment-gateway') . '</a></div>');
+                echo wp_kses_post('<div style="text-align:center; margin-bottom: 30px;"><a style="display:block;text-align:center;margin: 40px auto; font-size: 16px; font-weight: bold;" href="' . esc_url($link) . '" target="_blank">' . __('Check your payment status', 'blockbee') . '</a></div>');
             }
 
             $order->update_meta_data('_blockbee_email_link_added', 'yes');
@@ -1548,7 +1547,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
             $actions[$action_slug] = array(
                 'url' => $link,
-                'name' => __('Pay', 'blockbee-cryptocurrency-payment-gateway'),
+                'name' => __('Pay', 'blockbee'),
             );
         }
         return $actions;
@@ -1595,11 +1594,11 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         ?>
         <p class="form-field form-field-wide wc-customer-user">
             <small style="display: block;">
-                <?php echo sprintf(esc_attr(__('If the order is not being updated, your ISP is probably blocking our IPs (%1$s and %2$s): please try to get them whitelisted and feel free to contact us anytime to get support (link to our contact page). In the meantime you can refresh the status of any payment by clicking this button below:', 'blockbee-cryptocurrency-payment-gateway')), '51.77.105.132', '135.125.112.47'); ?>
+                <?php echo sprintf(esc_attr__('If the order is not being updated, your ISP is probably blocking our IPs (%1$s and %2$s): please try to get them whitelisted and feel free to contact us anytime to get support (link to our contact page). In the meantime you can refresh the status of any payment by clicking this button below:', 'blockbee'), '51.77.105.132', '135.125.112.47'); ?>
             </small>
         </p>
         <a style="margin-top: 1rem;margin-bottom: 1rem;" id="validate_callbacks" class="button action" href="#">
-            <?php echo esc_attr(__('Check for Callbacks', 'blockbee-cryptocurrency-payment-gateway')); ?>
+            <?php echo esc_attr__('Check for Callbacks', 'blockbee'); ?>
         </a>
         <script>
             jQuery(function () {
@@ -1608,7 +1607,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                 validate_button.on('click', function (e) {
                     e.preventDefault()
                     validate_callbacks()
-                    validate_button.html('<?php echo esc_attr(__('Checking', 'blockbee-cryptocurrency-payment-gateway'));?>')
+                    validate_button.html('<?php echo esc_attr__('Checking', 'blockbee');?>')
                 })
 
                 function validate_callbacks() {

@@ -1,13 +1,13 @@
 <?php
 /*
 Plugin Name: BlockBee Cryptocurrency Payment Gateway
-Plugin URI: https://blockbee.io/resources/woocommerce/
+Plugin URI: https://docs.blockbee.io/get-started/woocommerce
 Description: Accept cryptocurrency payments on your WooCommerce website
-Version: 1.5.3
+Version: 1.5.4
 Requires at least: 5.8
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 WC requires at least: 5.8
-WC tested up to: 9.8.3
+WC tested up to: 10.0.2
 Requires PHP: 7.2
 Author: BlockBee
 Author URI: https://blockbee.io/
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-define('BLOCKBEE_PLUGIN_VERSION', '1.5.3');
+define('BLOCKBEE_PLUGIN_VERSION', '1.5.4');
 define('BLOCKBEE_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('BLOCKBEE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -40,6 +40,15 @@ spl_autoload_register(function ($class) {
     }
 });
 
+add_action('init', function () {
+    $plugin_dir = plugin_dir_path(__FILE__);
+    $mo_file_path = $plugin_dir . 'languages/blockbee-payment-gateway-for-woocommerce-' . get_locale() . '.mo';
+
+    if (file_exists($mo_file_path)) {
+        load_textdomain('blockbee', $mo_file_path);
+    }
+});
+
 // Check WooCommerce and PHP requirements
 add_action('plugins_loaded', function () {
     if (!class_exists('WC_Payment_Gateway')) {
@@ -49,7 +58,7 @@ add_action('plugins_loaded', function () {
     if (!class_exists('WooCommerce')) {
         add_action('admin_notices', function () {
             echo '<div class="error"><p><strong>' . sprintf(
-                    esc_html__('BlockBee requires WooCommerce to be installed and active. You can download %s here.', 'blockbee-cryptocurrency-payment-gateway'),
+                    esc_html__('BlockBee requires WooCommerce to be installed and active. You can download %s here.', 'blockbee'),
                     '<a href="https://woocommerce.com/" target="_blank">WooCommerce</a>'
                 ) . '</strong></p></div>';
         });
@@ -59,7 +68,7 @@ add_action('plugins_loaded', function () {
     if (!extension_loaded('bcmath')) {
         add_action('admin_notices', function () {
             echo '<div class="error"><p><strong>' . sprintf(
-                    esc_html__('BlockBee requires PHP\'s BCMath extension. Learn more about it %s.', 'blockbee-cryptocurrency-payment-gateway'),
+                    esc_html__('BlockBee requires PHP\'s BCMath extension. Learn more about it %s.', 'blockbee'),
                     '<a href="https://www.php.net/manual/en/book.bc.php" target="_blank">here</a>'
                 ) . '</strong></p></div>';
         });
