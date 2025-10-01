@@ -478,6 +478,10 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
     function validate_fields()
     {
+        if ($this->checkout_enabled) {
+            return true;
+        }
+
         $load_coins = self::load_coins();
         return array_key_exists(sanitize_text_field($_POST['blockbee_coin']), $load_coins);
     }
@@ -486,12 +490,17 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
     {
         global $woocommerce;
 
-        $selected = sanitize_text_field($_POST['blockbee_coin']);
+        $checkout_enabled = $this->checkout_enabled;
 
-        if ($selected === 'none') {
-            wc_add_notice(__('Payment error: ', 'woocommerce') . ' ' . __('Please choose a cryptocurrency', 'blockbee'), 'error');
+        if (!$checkout_enabled) {
+            # Only check the user selection if Checkout option is disabled.
+            $selected = sanitize_text_field($_POST['blockbee_coin']);
 
-            return null;
+            if ($selected === 'none') {
+                wc_add_notice(__('Payment error: ', 'woocommerce') . ' ' . __('Please choose a cryptocurrency', 'blockbee'), 'error');
+
+                return null;
+            }
         }
 
         $apikey = $this->api_key;
@@ -536,20 +545,19 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                 }
 
                 // If Checkout is enabled flow is simpler, yet different
-                if ($this->checkout_enabled) {
+                if ($checkout_enabled) {
                     $api = new \BlockBee\Utils\Api(null, $apikey, $callback_url, []);
 
                     $payment= $api->payment_request(
                         $this->get_return_url($order),
                         $total,
                         $currency,
-                        $order_id,
+                        __( 'Order', 'woocommerce' ) . ' #' . $order_id,
                         (int) $this->order_cancellation_timeout
                     );
 
                     if (empty($payment)) {
                         wc_add_notice(__('Payment error:', 'woocommerce') . ' ' . __('There was an error with the payment. Please try again.', 'blockbee'));
-
                         return null;
                     }
 
