@@ -69,11 +69,13 @@ class WC_BlockBee_Payments extends AbstractPaymentMethodType {
         $load_coins = \BlockBee\Controllers\WC_BlockBee_Gateway::load_coins();
         $output_coins = [];
 
-        foreach ($this->get_setting('coins') as $coin) {
-            $output_coins[] = array_merge(
-                ['ticker' => $coin],
-                $load_coins[$coin]
-            );
+        if ($load_coins) {
+            foreach ($this->get_setting('coins') as $coin) {
+                $output_coins[] = array_merge(
+                    ['ticker' => $coin],
+                    $load_coins[$coin]
+                );
+            }
         }
 
         return [

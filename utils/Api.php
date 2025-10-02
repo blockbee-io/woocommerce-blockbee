@@ -108,8 +108,7 @@ class Api {
         return null;
     }
 
-    public static function get_supported_coins()
-    {
+    public static function get_supported_coins() {
         $info = Api::get_info(null, true);
 
         if (empty($info)) {

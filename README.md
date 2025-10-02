@@ -313,4 +313,8 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 #### 1.5.6
 * Minor bugfixes
 
+#### 1.5.7
+* Minor bugfixes
+* Add a refresh coins option
+
 ### Upgrade Notice
