@@ -101,7 +101,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
             update_option('blockbee_coins_cache', [
                 'coins'   => $coins,
-                'expires' => $now + 60,
+                'expires' => $now + 3600,
             ], false);
         } catch (Exception $e) {
             // We don't want to reset the cache if we can't load the coins.
@@ -124,7 +124,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
                 update_option('blockbee_coins_cache', [
                     'coins'   => $coins,
-                    'expires' => $now + 60,
+                    'expires' => $now + 3600,
                 ], false);
             }
 
