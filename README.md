@@ -320,4 +320,8 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 #### 1.5.8
 * Minor bugfixes
 
+#### 1.5.9
+* Added payment tolerance option to handle minor payment discrepancies
+* Minor bugfixes
+
 ### Upgrade Notice
