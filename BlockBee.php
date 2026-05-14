@@ -3,7 +3,7 @@
 Plugin Name: BlockBee Cryptocurrency Payment Gateway
 Plugin URI: https://docs.blockbee.io/get-started/woocommerce
 Description: Accept cryptocurrency payments on your WooCommerce website
-Version: 1.5.9
+Version: 1.5.10
 Requires at least: 5.8
 Tested up to: 6.9
 WC requires at least: 5.8
@@ -12,12 +12,14 @@ Requires PHP: 7.2
 Author: BlockBee
 Author URI: https://blockbee.io/
 License: MIT
+Text Domain: blockbee
+Domain Path: /languages
 */
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-define('BLOCKBEE_PLUGIN_VERSION', '1.5.9');
+define('BLOCKBEE_PLUGIN_VERSION', '1.5.10');
 define('BLOCKBEE_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('BLOCKBEE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -41,13 +43,8 @@ spl_autoload_register(function ($class) {
 });
 
 add_action('init', function () {
-    $plugin_dir = plugin_dir_path(__FILE__);
-    $mo_file_path = $plugin_dir . 'languages/blockbee-payment-gateway-for-woocommerce-' . get_locale() . '.mo';
-
-    if (file_exists($mo_file_path)) {
-        load_textdomain('blockbee', $mo_file_path);
-    }
-});
+    load_plugin_textdomain('blockbee', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}, 1);
 
 // Check WooCommerce and PHP requirements
 add_action('plugins_loaded', function () {
@@ -81,7 +78,12 @@ add_action('plugins_loaded', function () {
     $initialize = new \BlockBee\Initialize();
     $initialize->initialize();
 
-    $blockbee = new \BlockBee\Controllers\WC_BlockBee_Gateway();
+    // Instantiate the gateway on `init` (not `plugins_loaded`) so that __() calls
+    // inside the constructor and init_form_fields() run after the textdomain is
+    // available. WP 6.7+ refuses to JIT-load translations before `init`.
+    add_action('init', function () {
+        new \BlockBee\Controllers\WC_BlockBee_Gateway();
+    }, 5);
 });
 
 register_activation_hook(__FILE__, function () {

@@ -101,6 +101,14 @@
     line-break: anywhere;
 }
 
+.blockbee_min_amount {
+    text-align: center;
+    margin-top: 6px;
+    font-size: 13px;
+    opacity: .8;
+    line-break: anywhere;
+}
+
 .blockbee_copy {
     position: relative;
 }

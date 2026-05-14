@@ -1343,6 +1343,21 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                 </button>
                                 <div class="blockbee_loader"></div>
                             </div>
+                            <?php
+                            if (!empty($min_tx) && (float)$min_tx > 0) {
+                                $min_tx_display = (strpos($min_tx, '.') !== false)
+                                    ? rtrim(rtrim($min_tx, '0'), '.')
+                                    : $min_tx;
+                                ?>
+                                <div class="blockbee_min_amount">
+                                    <?php echo sprintf(
+                                        esc_html__('Minimum amount per transaction: %s', 'blockbee'),
+                                        '<strong>' . esc_html($min_tx_display) . ' ' . esc_html(strtoupper($coins[$crypto_coin]['name'])) . '</strong>'
+                                    ); ?>
+                                </div>
+                                <?php
+                            }
+                            ?>
                         </div>
                         <?php
                         if ((int)$this->order_cancellation_timeout != 0) {
