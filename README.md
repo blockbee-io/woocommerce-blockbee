@@ -324,4 +324,12 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 * Added payment tolerance option to handle minor payment discrepancies
 * Minor bugfixes
 
+#### 1.5.10
+* Show minimum transaction amount on the payment page
+* Translation fixes
+* Minor bugfixes
+
+#### 1.5.11
+* Minor UI fixes
+
 ### Upgrade Notice
