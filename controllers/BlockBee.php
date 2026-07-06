@@ -65,8 +65,6 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
         add_action('woocommerce_scheduled_subscription_payment_' . $this->id, array($this, 'scheduled_subscription_mail'), 10, 2);
 
-        add_action('wcs_create_pending_renewal', array($this, 'subscription_send_email'));
-
         add_action('wp_ajax_nopriv_' . $this->id . '_order_status', array($this, 'order_status'));
         add_action('wp_ajax_' . $this->id . '_order_status', array($this, 'order_status'));
 
@@ -277,7 +275,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         $this->fee_order_percentage = $this->get_option('fee_order_percentage');
         $this->virtual_complete = $this->get_option('virtual_complete') === 'yes';
         $this->disable_conversion = $this->get_option('disable_conversion') === 'yes';
-        $this->tolerance = $this->get_option('tolerance');
+        $this->tolerance = min(10, max(0, (int) $this->get_option('tolerance'))); // clamp 0-10% server-side
         $this->icon = '';
     }
 
@@ -599,7 +597,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         }
 
         $load_coins = self::load_coins();
-        return array_key_exists(sanitize_text_field($_POST['blockbee_coin']), $load_coins);
+        return array_key_exists(sanitize_text_field($_POST['blockbee_coin'] ?? ''), $load_coins);
     }
 
     function process_payment($order_id)
@@ -610,9 +608,19 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
         if (!$checkout_enabled) {
             # Only check the user selection if Checkout option is disabled.
-            $selected = sanitize_text_field($_POST['blockbee_coin']);
+            $selected = sanitize_text_field($_POST['blockbee_coin'] ?? '');
 
-            if ($selected === 'none') {
+            if ($selected === 'none' || $selected === '') {
+                wc_add_notice(__('Payment error: ', 'woocommerce') . ' ' . __('Please choose a cryptocurrency', 'blockbee'), 'error');
+
+                return null;
+            }
+
+            // Whitelist the submitted coin. validate_fields() only runs on the
+            // classic checkout; the Blocks/Store-API path reaches process_payment
+            // directly, so this is the single server-side check covering both flows
+            // before $selected is used as a dynamic property and in outbound API URLs.
+            if (!array_key_exists($selected, self::load_coins())) {
                 wc_add_notice(__('Payment error: ', 'woocommerce') . ' ' . __('Please choose a cryptocurrency', 'blockbee'), 'error');
 
                 return null;
@@ -640,12 +648,6 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
                 if (in_array('woocommerce-subscriptions/woocommerce-subscriptions.php', apply_filters('active_plugins', get_option('active_plugins')))) {
                     if (wcs_order_contains_subscription($order_id)) {
-                        $sign_up_fee = (\WC_Subscriptions_Order::get_sign_up_fee($order)) ? 0 : \WC_Subscriptions_Order::get_sign_up_fee($order);
-                        $initial_payment = (\WC_Subscriptions_Order::get_total_initial_payment($order)) ? 0 : \WC_Subscriptions_Order::get_total_initial_payment($order);
-                        $price_per_period = (\WC_Subscriptions_Order::get_recurring_total($order)) ? 0 : \WC_Subscriptions_Order::get_recurring_total($order);
-
-                        $total = $sign_up_fee + $initial_payment + $price_per_period + $order->get_total('edit');
-
                         if ($total === 0) {
                             $order->add_meta_data('blockbee_currency', $selected);
                             $order->save_meta_data();
@@ -696,6 +698,13 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                         'redirect' => $payment_url
                     );
                 }
+
+                // The blockchain fee was estimated from the session coin during
+                // cart calculation; re-assert it here for the coin actually being
+                // charged so a mismatched session coin cannot underpay it (P2).
+                $this->reconcile_blockchain_fee($order, $selected);
+
+                $total = $order->get_total('edit');
 
                 $load_coins = self::load_coins();
 
@@ -764,18 +773,30 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
     {
         $data = \BlockBee\Utils\Api::process_callback($_GET);
 
-        $order = new \WC_Order($data['order_id']);
-
-        $type = $data['wc_api_type'] ?? null;
-
         if (!$this->verify_signature($_SERVER)) {
             die('Sig not valid');
         }
 
+        // Serialize concurrent callbacks for the same order so the
+        // read-modify-write on blockbee_history / blockbee_total cannot race
+        // and clobber a payment record. The named lock is released
+        // automatically when this request ends (every exit below is a die(),
+        // which closes the DB connection and releases the lock).
+        global $wpdb;
+        $lock_name = 'blockbee_order_' . (int) $data['order_id'];
+        $wpdb->get_var($wpdb->prepare('SELECT GET_LOCK(%s, %d)', $lock_name, 10));
+
+        $order = new \WC_Order($data['order_id']);
+
+        $type = $data['wc_api_type'] ?? null;
+
         if ($type === 'checkout'){
-            $saved_success_token=$order->get_meta('blockbee_success_token');
+            $saved_success_token = (string) $order->get_meta('blockbee_success_token');
+            $given_success_token = isset($data['success_token']) ? (string) $data['success_token'] : '';
             // If success token provided in IPN isn't the same as the one stored locally will just die here.
-            if ($order->is_paid() || $order->get_status() === 'cancelled' || $saved_success_token !== $data['success_token']) {
+            // Reject when the order has no stored token so an empty/absent token can never match.
+            if ($order->is_paid() || $order->get_status() === 'cancelled'
+                || $saved_success_token === '' || $saved_success_token !== $given_success_token) {
                 die('*ok*');
             }
 
@@ -783,7 +804,13 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
             return;
         }
 
-        if ($order->is_paid() || $order->get_status() === 'cancelled' || $data['nonce'] != $order->get_meta('blockbee_nonce')) {
+        $expected_nonce = (string) $order->get_meta('blockbee_nonce');
+        $given_nonce = isset($data['nonce']) ? (string) $data['nonce'] : '';
+
+        // Constant-time compare; reject when the order has no stored nonce so
+        // an empty/absent nonce can never satisfy a loose comparison.
+        if ($order->is_paid() || $order->get_status() === 'cancelled'
+            || $expected_nonce === '' || !hash_equals($expected_nonce, $given_nonce)) {
             die("*ok*");
         }
 
@@ -814,11 +841,15 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
     function verify_signature($server) {
         $pubkey = $this->load_pubkey();
 
-        if (!array_key_exists( 'HTTP_X_CA_SIGNATURE', $server )) {
+        if (empty($pubkey) || !array_key_exists('HTTP_X_CA_SIGNATURE', $server)) {
             return false;
         }
 
-        $signature = base64_decode($server['HTTP_X_CA_SIGNATURE']);
+        $signature = base64_decode($server['HTTP_X_CA_SIGNATURE'], true);
+
+        if ($signature === false) {
+            return false;
+        }
 
         $algo = OPENSSL_ALGO_SHA256;
 
@@ -826,15 +857,30 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
         $data = "$home_url$server[REQUEST_URI]";
 
-        return (bool) openssl_verify($data, $signature, $pubkey, $algo);
+        // openssl_verify() returns 1 (valid), 0 (invalid) or -1 (error).
+        // Only 1 is a valid signature; 0 and -1 must both fail closed.
+        // NOTE: never cast to (bool) here — (bool)(-1) === true would treat
+        // a verification error as a valid signature.
+        return openssl_verify($data, $signature, $pubkey, $algo) === 1;
     }
 
     function order_status()
     {
-        $order_id = sanitize_text_field($_REQUEST['order_id']);
+        $order_id = absint($_REQUEST['order_id'] ?? 0);
+        $order_key = isset($_REQUEST['key']) ? sanitize_text_field(wp_unslash($_REQUEST['key'])) : '';
+
+        $order = $order_id ? wc_get_order($order_id) : false;
+
+        // This endpoint is unauthenticated (nopriv). Require the order key from
+        // the customer's order-received URL as proof of ownership so it cannot
+        // be used to enumerate and read arbitrary orders' payment data or to
+        // force refresh_value() writes / outbound API calls on other orders.
+        if (!$order || $order_key === '' || !hash_equals((string) $order->get_order_key(), $order_key)) {
+            echo json_encode(['status' => 'error', 'error' => 'Not a valid order_id']);
+            die();
+        }
 
         try {
-            $order = new \WC_Order($order_id);
             $counter_calc = (int)$order->get_meta('blockbee_last_price_update') + (int)$this->refresh_value_interval - time();
 
             if (!$order->is_paid()) {
@@ -871,12 +917,6 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                 $blockbee_pending = 1;
             }
 
-            if (!$order->is_paid()) {
-                if ($counter_calc <= 0) {
-                    $this->refresh_value($order);
-                }
-            }
-
             if (($remaining_pending <= $min_tx && $remaining_pending) > 0 && !$blockbee_pending) {
                 $remaining_pending = $min_tx;
                 $showMinFee = 1;
@@ -890,7 +930,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                 'coin' => strtoupper($order->get_meta('blockbee_currency')),
                 'show_min_fee' => $showMinFee,
                 'order_history' => json_decode($order->get_meta('blockbee_history'), true),
-                'counter' => (string)$counter_calc,
+                'counter' => (string) max(0, $counter_calc),
                 'crypto_total' => (float)$blockbee_total,
                 'already_paid' => $already_paid,
                 'remaining' => $remaining_pending <= 0 ? 0 : $remaining_pending,
@@ -912,8 +952,18 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
     function validate_logs()
     {
-        $order_id = sanitize_text_field($_REQUEST['order_id']);
-        $order = new \WC_Order($order_id);
+        check_ajax_referer('blockbee_validate_logs');
+
+        if (!current_user_can('edit_shop_orders')) {
+            wp_send_json_error('forbidden', 403);
+        }
+
+        $order_id = absint($_REQUEST['order_id'] ?? 0);
+        $order = $order_id ? wc_get_order($order_id) : false;
+
+        if (!$order) {
+            wp_send_json_error('invalid order', 404);
+        }
 
         $type = (bool)$order->get_meta('blockbee_checkout') ? 'checkout' : 'custom_api';
 
@@ -932,12 +982,14 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                 $callbacks = \BlockBee\Utils\Api::check_logs($order->get_meta('blockbee_callback_url'), $order->get_meta('blockbee_currency'));
 
                 if ($callbacks) {
+                    $history = json_decode($order->get_meta('blockbee_history'), true) ?: [];
+
                     foreach ($callbacks as $callback) {
                         $logs = $callback->logs;
                         $request_url = parse_url($logs[0]->request_url);
                         parse_str($request_url['query'], $data);
 
-                        if (empty($history[$data->uuid]) || (!empty($history[$data->uuid]) && (int)$history[$data->uuid]['pending'] === 1 && (int)$data['pending'] === 0)) {
+                        if (empty($history[$data['uuid']]) || (!empty($history[$data['uuid']]) && (int)$history[$data['uuid']]['pending'] === 1 && (int)$data['pending'] === 0)) {
                             $this->process_callback_data($data, $order, true);
                         }
                     }
@@ -968,21 +1020,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
         $order->payment_complete($data['address']);
 
-        if ($this->virtual_complete) {
-            $count_products = count($order->get_items());
-            $count_virtual = 0;
-            foreach ($order->get_items() as $order_item) {
-                $item = wc_get_product($order_item->get_product_id());
-                $item_obj = $item->get_type() === 'variable' ? wc_get_product($order_item['variation_id']) : $item;
-
-                if ($item_obj->is_virtual()) {
-                    $count_virtual += 1;
-                }
-            }
-            if ($count_virtual === $count_products) {
-                $order->update_status('completed');
-            }
-        }
+        $this->maybe_complete_virtual_order($order);
 
         // All processed, respond with *ok*
         die('*ok*');
@@ -1039,7 +1077,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         $calc = $this->calc_order(
             json_decode(
                 $order->get_meta('blockbee_history'), true),
-                $order->get_meta('blockbee_total') * (1 - (int) $order->get_meta('blockbee_tolerance') / 100), // Calculate based on the tolerance. If tolerance is 0, no tolerance is applied.
+                $order->get_meta('blockbee_total') * (1 - min(10, max(0, (int) $order->get_meta('blockbee_tolerance'))) / 100), // Calculate based on the tolerance (clamped 0-10%). If tolerance is 0, no tolerance is applied.
                 $order->get_meta('blockbee_total_fiat')
         );
 
@@ -1054,11 +1092,11 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         foreach ($order_notes as $note) {
             $note_content = $note['note_content'];
 
-            if (strpos((string)$note_content, 'PENDING') && strpos((string)$note_content, $data['txid_in'])) {
+            if (strpos((string)$note_content, 'PENDING') !== false && strpos((string)$note_content, (string)$data['txid_in']) !== false) {
                 $has_pending = true;
             }
 
-            if (strpos((string)$note_content, 'CONFIRMED') && strpos((string)$note_content, $data['txid_in'])) {
+            if (strpos((string)$note_content, 'CONFIRMED') !== false && strpos((string)$note_content, (string)$data['txid_in']) !== false) {
                 $has_confirmed = true;
             }
         }
@@ -1093,21 +1131,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
              * Changes the order Status to "completed"
              */
             $order->payment_complete($data['address_in']);
-            if ($this->virtual_complete) {
-                $count_products = count($order->get_items());
-                $count_virtual = 0;
-                foreach ($order->get_items() as $order_item) {
-                    $item = wc_get_product($order_item->get_product_id());
-                    $item_obj = $item->get_type() === 'variable' ? wc_get_product($order_item['variation_id']) : $item;
-
-                    if ($item_obj->is_virtual()) {
-                        $count_virtual += 1;
-                    }
-                }
-                if ($count_virtual === $count_products) {
-                    $order->update_status('completed');
-                }
-            }
+            $this->maybe_complete_virtual_order($order);
 
             $order->save();
 
@@ -1168,6 +1192,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         $ajax_url = add_query_arg(array(
             'action' => 'blockbee_order_status',
             'order_id' => $order_id,
+            'key' => $order->get_order_key(),
         ), home_url('/wp-admin/admin-ajax.php'));
 
         wp_enqueue_script('blockbee-payment', BLOCKBEE_PLUGIN_URL . 'static/blockbee.js', array(), BLOCKBEE_PLUGIN_VERSION, true);
@@ -1183,7 +1208,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
         $crypto_allowed_value = false;
 
-        $conversion_timer = ((int)$order->get_meta('blockbee_last_price_update') + (int)$this->refresh_value_interval) - time();
+        $conversion_timer = max(0, ((int)$order->get_meta('blockbee_last_price_update') + (int)$this->refresh_value_interval) - time());
         $cancel_timer = $order->get_date_created()->getTimestamp() + (int)$this->order_cancellation_timeout - time();
 
         if (in_array($crypto_coin, $allowed_to_value, true)) {
@@ -1215,7 +1240,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                             if ($qr_code_setting == 'amount') {
                                                 echo 'style="display:none;"';
                                             }
-                                            ?> src="data:image/png;base64,<?php echo $qr_code_img; ?>"
+                                            ?> src="data:image/png;base64,<?php echo esc_attr($qr_code_img); ?>"
                                                  alt="<?php echo esc_attr__('QR Code without value', 'blockbee'); ?>"/>
                                             <?php
                                         }
@@ -1225,7 +1250,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                             if ($qr_code_setting == 'without_amount') {
                                                 echo 'style="display:none;"';
                                             }
-                                            ?> src="data:image/png;base64,<?php echo $qr_code_img_value; ?>"
+                                            ?> src="data:image/png;base64,<?php echo esc_attr($qr_code_img_value); ?>"
                                                  alt="<?php echo esc_attr__('QR Code with value', 'blockbee'); ?>"/>
                                             <?php
                                         }
@@ -1273,7 +1298,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                 <div class="inner-wrapper">
                                     <figure>
                                         <img class="blockbee_qrcode no_value"
-                                             src="data:image/png;base64,<?php echo $qr_code_img; ?>"
+                                             src="data:image/png;base64,<?php echo esc_attr($qr_code_img); ?>"
                                              alt="<?php echo esc_attr__('QR Code without value', 'blockbee'); ?>"/>
                                         <div class="blockbee_qrcode_coin">
                                             <?php echo esc_attr(strtoupper($coins[$crypto_coin]['name'])); ?>
@@ -1325,7 +1350,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
                                     )); ?>
                                     <span class="blockbee_time_seconds_count"
                                           data-soon="<?php echo esc_attr__('a moment', 'blockbee'); ?>"
-                                          data-seconds="<?php echo esc_attr($conversion_timer); ?>"><?php echo date('i:s', esc_attr($conversion_timer)); ?></span>
+                                          data-seconds="<?php echo esc_attr($conversion_timer); ?>"><?php echo esc_html($conversion_timer >= 3600 ? sprintf('%02d:%02d:%02d', intdiv($conversion_timer, 3600), intdiv($conversion_timer % 3600, 60), $conversion_timer % 60) : sprintf('%02d:%02d', intdiv($conversion_timer, 60), $conversion_timer % 60)); ?></span>
                                 </div>
                                 <?php
                             }
@@ -1499,17 +1524,34 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
             return;
         }
 
-        $orders = wc_get_orders(array(
+        $order_ids = wc_get_orders(array(
             'status' => array('wc-on-hold'),
             'payment_method' => 'blockbee',
             'date_created' => '<' . (time() - $order_timeout),
+            'limit' => -1,
+            'return' => 'ids',
         ));
 
-        if (empty($orders)) {
+        if (empty($order_ids)) {
             return;
         }
 
-        foreach ($orders as $order) {
+        foreach ($order_ids as $order_id) {
+            $order = wc_get_order($order_id);
+
+            if (!$order) {
+                continue;
+            }
+
+            // Do not cancel an order that already received a (pending or
+            // confirmed) crypto payment: the customer paid and funds were
+            // forwarded, so it must not be silently killed. Only orders with
+            // no recorded payment at all are timed out.
+            $history = json_decode($order->get_meta('blockbee_history'), true);
+            if (!empty($history)) {
+                continue;
+            }
+
             $order->update_status('cancelled', __('Order cancelled due to lack of payment.', 'blockbee'));
             $order->update_meta_data('blockbee_cancelled', '1');
             $order->save();
@@ -1555,16 +1597,20 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
         $order = $renewal_order;
 
-        $costumer_id = get_post_meta($order->get_id(), '_customer_user', true);
-        $customer = new \WC_Customer($costumer_id);
-
         if (empty($order->get_meta('blockbee_paid'))) {
             $mailer = WC()->mailer();
 
-            $recipient = $customer->get_email();
+            // HPOS-safe recipient resolution. get_post_meta('_customer_user')
+            // is empty under authoritative HPOS (orders are not posts), which
+            // previously sent the reminder to an empty address.
+            $recipient = $order->get_billing_email();
+            if (empty($recipient)) {
+                $customer = new \WC_Customer($order->get_customer_id());
+                $recipient = $customer->get_email();
+            }
 
             $subject = sprintf('[%s] %s', get_bloginfo('name'), __('Please renew your subscription', 'blockbee'));
-            $headers = 'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>' . '\r\n';
+            $headers = 'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>';
 
             $content = wc_get_template_html('emails/renewal-email.php', array(
                 'order' => $order,
@@ -1581,13 +1627,44 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         }
     }
 
+    private function maybe_complete_virtual_order($order)
+    {
+        if (!$this->virtual_complete) {
+            return;
+        }
+
+        $count_products = count($order->get_items());
+        $count_virtual = 0;
+
+        foreach ($order->get_items() as $order_item) {
+            $item = wc_get_product($order_item->get_product_id());
+
+            if (!$item) {
+                continue;
+            }
+
+            $variation_id = $order_item->get_variation_id();
+            $item_obj = ($item->get_type() === 'variable' && $variation_id)
+                ? wc_get_product($variation_id)
+                : $item;
+
+            if ($item_obj && $item_obj->is_virtual()) {
+                $count_virtual += 1;
+            }
+        }
+
+        if ($count_products > 0 && $count_virtual === $count_products) {
+            $order->update_status('completed');
+        }
+    }
+
     private function generate_nonce($len = 32)
     {
         $data = str_split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
 
         $nonce = [];
         for ($i = 0; $i < $len; $i++) {
-            $nonce[] = $data[mt_rand(0, sizeof($data) - 1)];
+            $nonce[] = $data[random_int(0, count($data) - 1)];
         }
 
         return implode('', $nonce);
@@ -1620,7 +1697,12 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
             if (!empty($selected) && $selected !== 'none' && $this->add_blockchain_fee) {
                 $est = \BlockBee\Utils\Api::get_estimate($selected, $apikey);
-                $fee_order += (float)$est->{get_woocommerce_currency()};
+
+                // get_estimate() returns null on API error; guard before deref.
+                $currency = get_woocommerce_currency();
+                if (is_object($est) && isset($est->{$currency})) {
+                    $fee_order += (float)$est->{$currency};
+                }
             }
 
             if (empty($fee_order)) {
@@ -1629,6 +1711,67 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
 
             WC()->cart->add_fee(__('Service Fee', 'blockbee'), $fee_order, true);
         }
+    }
+
+    /**
+     * Re-assert the BlockBee "Service Fee" on the order for the coin actually
+     * being charged. handling_fee() estimates the blockchain portion from the
+     * session coin during cart calculation, which a shopper can set to a
+     * different (cheaper-fee) coin than the one they submit (P2). This recomputes
+     * the fee from $coin and rewrites the fee line so the order total is correct.
+     */
+    private function reconcile_blockchain_fee($order, $coin)
+    {
+        if (!$this->add_blockchain_fee) {
+            // Only the coin-independent percentage fee applies; nothing to reconcile.
+            return;
+        }
+
+        $fee_name = __('Service Fee', 'blockbee');
+
+        $fee_item = null;
+        foreach ($order->get_items('fee') as $item) {
+            if ($item->get_name() === $fee_name) {
+                $fee_item = $item;
+                break;
+            }
+        }
+
+        // Percentage portion (coin-independent), recomputed from the order subtotal.
+        $total_fee = $this->get_option('fee_order_percentage') === '0' ? 0 : (float)$this->get_option('fee_order_percentage');
+        $percentage_fee = $total_fee !== 0 ? (float)$order->get_subtotal() * $total_fee : 0;
+
+        // Blockchain portion for the coin actually being charged.
+        $blockchain_fee = 0;
+        $est = \BlockBee\Utils\Api::get_estimate($coin, $this->get_option('api_key'));
+        $currency = get_woocommerce_currency();
+        if (is_object($est) && isset($est->{$currency})) {
+            $blockchain_fee = (float)$est->{$currency};
+        }
+
+        $correct_fee = round($percentage_fee + $blockchain_fee, wc_get_price_decimals());
+
+        if ($fee_item) {
+            if ($correct_fee > 0) {
+                $fee_item->set_amount($correct_fee);
+                $fee_item->set_total($correct_fee);
+                $fee_item->save();
+            } else {
+                $order->remove_item($fee_item->get_id());
+            }
+        } elseif ($correct_fee > 0) {
+            // No fee line existed (e.g. session coin was 'none' at cart time);
+            // add the correct one now.
+            $fee_item = new \WC_Order_Item_Fee();
+            $fee_item->set_name($fee_name);
+            $fee_item->set_amount($correct_fee);
+            $fee_item->set_total($correct_fee);
+            $fee_item->set_tax_status('taxable');
+            $order->add_item($fee_item);
+        }
+
+        // Recompute order totals so $order->get_total('edit') reflects the fee.
+        $order->calculate_totals();
     }
 
     function refresh_checkout()
@@ -1649,7 +1792,14 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         parse_str($posted_data, $fields);
 
         if (isset($fields['blockbee_coin'])) {
-            WC()->session->set('blockbee_coin', $fields['blockbee_coin']);
+            $coin = sanitize_text_field($fields['blockbee_coin']);
+
+            // Mirror the coin validation: only store 'none' or a currently-
+            // supported coin, so an arbitrary string cannot reach handling_fee()
+            // -> get_estimate() and outbound API URLs.
+            if ($coin === 'none' || array_key_exists($coin, self::load_coins())) {
+                WC()->session->set('blockbee_coin', $coin);
+            }
         }
     }
 
@@ -1729,6 +1879,7 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         $ajax_url = add_query_arg(array(
             'action' => 'blockbee_validate_logs',
             'order_id' => $order->get_ID(),
+            '_wpnonce' => wp_create_nonce('blockbee_validate_logs'),
         ), home_url('/wp-admin/admin-ajax.php'));
         ?>
         <p class="form-field form-field-wide wc-customer-user">
@@ -1776,11 +1927,21 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
         $blockbee_total = $order->get_meta('blockbee_total');
         $order_total = $order->get_total('edit');
 
+        // Nothing to do until a full refresh interval has actually elapsed.
+        if (empty($last_price_update) || (int)$last_price_update + $value_refresh >= time()) {
+            return false;
+        }
+
         $calc = $this->calc_order($history, $blockbee_total, $order_total);
         $remaining = $calc['remaining'];
         $remaining_pending = $calc['remaining_pending'];
 
-        if ((int)$last_price_update + $value_refresh < time() && !empty($last_price_update) && $remaining === $remaining_pending && $remaining_pending > 0) {
+        // Re-quote the conversion rate only when it is safe to change the amount
+        // owed — i.e. no unconfirmed/partial payment is in flight. $remaining
+        // counts confirmed txs only; $remaining_pending counts pending ones too,
+        // so they differ exactly while a payment is unconfirmed. Re-quoting then
+        // would move the total a customer is part-way through paying.
+        if ($remaining === $remaining_pending && $remaining_pending > 0) {
             $blockbee_coin = $order->get_meta('blockbee_currency');
 
             $crypto_conversion = (float)\BlockBee\Utils\Api::get_conversion($woocommerce_currency, $blockbee_coin, $order_total, $this->disable_conversion);
@@ -1797,12 +1958,16 @@ class WC_BlockBee_Gateway extends \WC_Payment_Gateway {
             }
 
             $order->update_meta_data('blockbee_qr_code_value', $qr_code_data_value['qr_code']);
-            $order->update_meta_data('blockbee_last_price_update', time());
-            $order->save_meta_data();
-
-            return true;
         }
 
-        return false;
+        // Always advance the price-update timestamp once the interval has
+        // elapsed, so the on-page countdown resets to a fresh interval instead
+        // of running past zero into negative territory (which the UI otherwise
+        // renders as a stuck 00:00 / bogus 59:xx). The rate itself only changes
+        // inside the guard above.
+        $order->update_meta_data('blockbee_last_price_update', time());
+        $order->save_meta_data();
+
+        return true;
     }
 }

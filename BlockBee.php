@@ -3,11 +3,11 @@
 Plugin Name: BlockBee Cryptocurrency Payment Gateway
 Plugin URI: https://docs.blockbee.io/get-started/woocommerce
 Description: Accept cryptocurrency payments on your WooCommerce website
-Version: 1.5.11
+Version: 1.6.1
 Requires at least: 5.8
-Tested up to: 6.9.4
+Tested up to: 7.0
 WC requires at least: 5.8
-WC tested up to: 10.7.0
+WC tested up to: 10.9.3
 Requires PHP: 7.2
 Author: BlockBee
 Author URI: https://blockbee.io/
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
-define('BLOCKBEE_PLUGIN_VERSION', '1.5.11');
+define('BLOCKBEE_PLUGIN_VERSION', '1.6.1');
 define('BLOCKBEE_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('BLOCKBEE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -130,13 +130,12 @@ add_action('rest_api_init', function () {
 });
 
 function blockbee_verify_nonce(WP_REST_Request $request) {
-    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-    if ($origin !== home_url()) {
-        return false;
-    }
-
+    // The wp_rest nonce is the real CSRF control here. The previous
+    // Origin === home_url() check was dropped: it was spoofable (non-browser
+    // clients set any Origin) and it broke sub-directory installs, where the
+    // browser Origin (scheme+host, no path) never equals home_url().
     $nonce = $request->get_header('X-WP-Nonce');
-    return wp_verify_nonce($nonce, 'wp_rest');
+    return (bool) wp_verify_nonce($nonce, 'wp_rest');
 }
 
 function blockbee_get_minimum(WP_REST_Request $request) {
@@ -144,7 +143,9 @@ function blockbee_get_minimum(WP_REST_Request $request) {
     $fiat = sanitize_text_field($request->get_param('fiat'));
     $value = sanitize_text_field($request->get_param('value'));
 
-    if (!$coin) {
+    // Only allow currently-supported coins: $coin flows into an outbound API
+    // URL path, so never forward an arbitrary caller-supplied string.
+    if (!$coin || !array_key_exists($coin, \BlockBee\Controllers\WC_BlockBee_Gateway::load_coins())) {
         return new WP_REST_Response(['status' => 'error'], 400);
     }
 
@@ -179,8 +180,11 @@ function blockbee_update_coin(WP_REST_Request $request) {
         return new WP_REST_Response(['success' => true, 'coin' => $coin], 200);
     }
 
-    if (!$coin) {
-        return new WP_REST_Response(['error' => 'Coin not specified'], 400);
+    // Only accept 'none' or a currently-supported coin; never store an
+    // arbitrary caller-supplied string in the session — it later flows into
+    // fee estimation and outbound API calls.
+    if ($coin !== 'none' && !array_key_exists($coin, \BlockBee\Controllers\WC_BlockBee_Gateway::load_coins())) {
+        return new WP_REST_Response(['error' => 'Invalid coin'], 400);
     }
 
     // Set the session value
