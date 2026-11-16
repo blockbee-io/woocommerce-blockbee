@@ -100,8 +100,8 @@ msgstr "BlockBee ermöglicht es Kunden, mit Kryptowährung zu bezahlen"
 
 #. Plugin Name of the plugin
 #: BlockBee.php
-msgid "BlockBee Cryptocurrency Payment Gateway"
-msgstr "BlockBee Kryptowährungs-Zahlungsgateway"
+msgid "BlockBee Cryptocurrency Payment Gateway for WooCommerce"
+msgstr "BlockBee Kryptowährungs-Zahlungsgateway für WooCommerce"
 
 #: BlockBee.php:62
 #| msgid ""

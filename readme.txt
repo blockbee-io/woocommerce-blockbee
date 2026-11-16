@@ -1,15 +1,15 @@
-=== BlockBee Cryptocurrency Payment Gateway ===
+=== BlockBee Cryptocurrency Payment Gateway for WooCommerce ===
 Contributors: blockbee
-Tags: crypto payments, payment gateway, cryptocurrencies, payments,
+Tags: crypto payments, bitcoin, usdt, usdc, stablecoin
 Requires at least: 5.8
 Tested up to: 7.0
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 Requires PHP: 7.2
 WC requires at least: 5.8
 WC tested up to: 10.9.3
 License: MIT
 
-Accept cryptocurrency payments on your WooCommerce website
+Accept Bitcoin, Ethereum, USDT, USDC, Solana and other cryptocurrency payments in WooCommerce, paid straight to your own wallet.
 
 == Description ==
 
@@ -33,7 +33,22 @@ The BlockBee plugin extends WooCommerce, allowing you to get paid in crypto dire
 * (DOGE) Dogecoin
 * (SOL) Solana
 
-among many others, for a full list of the supported cryptocurrencies and tokens, check [this page](https://blockbee.io/fees/).
+among many others, for a full list of the supported cryptocurrencies and tokens, check [this page](https://blockbee.io/cryptocurrencies/).
+
+Stablecoins include USDT on TRC20 (Tron), ERC20, BEP20, Polygon, Solana, Base and TON, and USDC on ERC20, BEP20, Polygon, Solana, Base and Arbitrum.
+
+= Features =
+
+* Works with both the WooCommerce block checkout and the classic checkout
+* Supports WooCommerce Subscriptions
+* Supports WooCommerce HPOS (High-Performance Order Storage)
+* QR codes with or without the amount
+* Handles partial payments and shows a payment history on the order page
+* Payment tolerance for small underpayments
+* Cancels unpaid orders after a time you choose
+* Can add service and blockchain fees at checkout
+* Light and dark color schemes
+* Translated into German, Spanish, French, Italian, Portuguese, Russian, Ukrainian and Chinese
 
 = Auto-value conversion =
 
@@ -77,7 +92,7 @@ Supported currencies for automatic exchange rates are:
 If your WooCommerce's currency is none of the above, the exchange rates will default to USD.
 If you're using WooCommerce in a different currency not listed here and need support, please [contact us](https://blockbee.io/contacts/) via our live chat.
 
-**Note:** BlockBee will not exchange your crypto for FIAT or other crypto, just convert the value
+**Note:** BlockBee will not exchange your crypto for FIAT or other crypto, just convert the value.
 
 = Why choose BlockBee? =
 
@@ -86,22 +101,22 @@ All you need to do is to register at our dashboard [click here](https://dash.blo
 As soon as your customers pay we forward your earnings directly to your own wallet.
 
 BlockBee has a low 1% fee on the transactions processed. No hidden costs.
-For more info on our fees [click here](https://blockbee.io/fees/)
+For more info on our fees [click here](https://blockbee.io/fees/).
 
 == Installation ==
 
 = Using The WordPress Dashboard =
 
-1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for 'BlockBee Payment Gateway for WooCommerce'
+1. Go to Plugins > Add New Plugin in the WordPress dashboard
+2. Search for 'BlockBee Cryptocurrency Payment Gateway for WooCommerce'
 3. Click 'Install Now'
 4. Activate the plugin on the Plugin dashboard
 
 = Uploading in WordPress Dashboard =
 
-1. Navigate to the 'Add New' in the plugins dashboard
-2. Navigate to the 'Upload' area
-3. Select `woocommerce-blockbee.zip` from your computer
+1. Go to Plugins > Add New Plugin in the WordPress dashboard
+2. Click 'Upload Plugin'
+3. Select `blockbee-cryptocurrency-payment-gateway.zip` from your computer
 4. Click 'Install Now'
 5. Activate the plugin in the Plugin dashboard
 
@@ -145,7 +160,7 @@ If the WooCommerce order total is below the chosen cryptocurrency's minimum, an 
 
 = Where can I find more documentation on your service? =
 
-You can find more documentation about our service on our [website](https://blockbee.io/), our [technical documentation](https://docs.blockbee.io/get-started/woocommerce) page.
+You can find more documentation about our service on our [website](https://blockbee.io/) and our [technical documentation](https://docs.blockbee.io/get-started/woocommerce) page.
 If there's anything else you need that is not covered on those pages, please get in touch with us, we're here to help you!
 
 = Where can I get support? =
@@ -345,5 +360,9 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 
 = 1.6.1 =
 * Version bump
+
+= 1.6.2 =
+* New plugin name
+* Translation updates
 
 == Upgrade Notice ==

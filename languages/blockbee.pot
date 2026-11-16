@@ -16,7 +16,7 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: BlockBee.php
-msgid "BlockBee Cryptocurrency Payment Gateway"
+msgid "BlockBee Cryptocurrency Payment Gateway for WooCommerce"
 msgstr ""
 
 #. Plugin URI of the plugin

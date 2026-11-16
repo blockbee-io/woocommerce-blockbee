@@ -96,8 +96,8 @@ msgstr "BlockBee允许客户使用加密货币支付"
 
 #. Plugin Name of the plugin
 #: BlockBee.php
-msgid "BlockBee Cryptocurrency Payment Gateway"
-msgstr "BlockBee 加密货币支付网关"
+msgid "BlockBee Cryptocurrency Payment Gateway for WooCommerce"
+msgstr "BlockBee WooCommerce 加密货币支付网关"
 
 #: BlockBee.php:62
 #| msgid ""
