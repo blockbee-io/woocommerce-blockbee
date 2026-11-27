@@ -659,3 +659,17 @@ msgstr "Ваш платеж обрабатывается!"
 #: controllers/BlockBee.php:1347
 msgid "Minimum amount per transaction: %s"
 msgstr "Минимальная сумма за транзакцию: %s"
+
+#. translators: 1: amount paid, 2: coin, 3: transaction ID
+#: controllers/BlockBee.php:1129
+msgid ""
+"Crypto total unavailable: payment of %1$s %2$s (TXID: %3$s) recorded, order "
+"not completed yet. It completes once a valid total is available and "
+"confirmed payments cover it, which may need another confirmed callback or "
+"the \"Check for Callbacks\" button."
+msgstr ""
+"Итоговая сумма в криптовалюте недоступна: платеж %1$s %2$s (TXID: %3$s) "
+"записан, заказ еще не завершен. Он будет завершен, когда появится "
+"действительная сумма и подтвержденные платежи ее покроют. Для этого может "
+"понадобиться еще один подтвержденный обратный вызов или кнопка «Проверить "
+"обратные вызовы»."

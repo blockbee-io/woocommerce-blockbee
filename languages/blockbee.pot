@@ -504,3 +504,12 @@ msgstr ""
 #: controllers/BlockBee.php:1347
 msgid "Minimum amount per transaction: %s"
 msgstr ""
+
+#. translators: 1: amount paid, 2: coin, 3: transaction ID
+#: controllers/BlockBee.php:1129
+msgid ""
+"Crypto total unavailable: payment of %1$s %2$s (TXID: %3$s) recorded, order "
+"not completed yet. It completes once a valid total is available and "
+"confirmed payments cover it, which may need another confirmed callback or "
+"the \"Check for Callbacks\" button."
+msgstr ""

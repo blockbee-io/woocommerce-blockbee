@@ -612,3 +612,15 @@ msgstr "您的支付正在处理中！"
 #: controllers/BlockBee.php:1347
 msgid "Minimum amount per transaction: %s"
 msgstr "每笔交易最低金额：%s"
+
+#. translators: 1: amount paid, 2: coin, 3: transaction ID
+#: controllers/BlockBee.php:1129
+msgid ""
+"Crypto total unavailable: payment of %1$s %2$s (TXID: %3$s) recorded, order "
+"not completed yet. It completes once a valid total is available and "
+"confirmed payments cover it, which may need another confirmed callback or "
+"the \"Check for Callbacks\" button."
+msgstr ""
+"加密货币总额不可用：已记录 %1$s %2$s 的支付（TXID：%3$s），订单尚未完成。当有"
+"效总额可用且已确认的支付足以覆盖时，订单将完成，这可能需要另一次已确认的回调"
+"或“检查回调”按钮。"

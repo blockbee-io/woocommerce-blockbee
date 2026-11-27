@@ -3,7 +3,7 @@ Contributors: blockbee
 Tags: crypto payments, bitcoin, usdt, usdc, stablecoin
 Requires at least: 5.8
 Tested up to: 7.0
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 Requires PHP: 7.2
 WC requires at least: 5.8
 WC tested up to: 10.9.3
@@ -364,5 +364,8 @@ The easiest and fastest way is via our live chat on our [website](https://blockb
 = 1.6.2 =
 * New plugin name
 * Translation updates
+
+= 1.6.3 =
+* Bugfixes
 
 == Upgrade Notice ==
